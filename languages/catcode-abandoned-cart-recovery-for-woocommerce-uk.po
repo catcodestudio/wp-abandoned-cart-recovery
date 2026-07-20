@@ -1,0 +1,568 @@
+# Copyright (C) 2026 CatCode
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: CatCode Abandoned Cart Recovery for WooCommerce 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/catcode-abandoned-cart-recovery-for-woocommerce\n"
+"PO-Revision-Date: 2026-07-20 16:00+0300\n"
+"Last-Translator: CatCode Studio <dev@catcode.com.ua>\n"
+"Language-Team: Ukrainian <dev@catcode.com.ua>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Domain: catcode-abandoned-cart-recovery-for-woocommerce\n"
+
+#. Plugin Name of the plugin
+#: catcode-abandoned-cart-recovery-for-woocommerce.php includes/Core/Privacy.php:153
+msgid "CatCode Abandoned Cart Recovery for WooCommerce"
+msgstr "CatCode Abandoned Cart Recovery for WooCommerce"
+
+#. Plugin URI of the plugin
+#: catcode-abandoned-cart-recovery-for-woocommerce.php
+msgid "https://catcode.com.ua/modules/catcode-abandoned-cart-recovery-for-woocommerce/"
+msgstr "https://catcode.com.ua/modules/catcode-abandoned-cart-recovery-for-woocommerce/"
+
+#. Description of the plugin
+#: catcode-abandoned-cart-recovery-for-woocommerce.php
+msgid "Captures abandoned WooCommerce carts and wins them back with a reminder email containing a one-click recovery link. Cart list with statistics, configurable timings and templates."
+msgstr "Захоплює кинуті кошики WooCommerce і повертає покупців листом-нагадуванням із посиланням відновлення в один клік. Список кошиків зі статистикою, налаштовувані таймінги та шаблони."
+
+#. Author of the plugin
+#: catcode-abandoned-cart-recovery-for-woocommerce.php
+msgid "CatCode"
+msgstr "CatCode"
+
+#. Author URI of the plugin
+#: catcode-abandoned-cart-recovery-for-woocommerce.php
+msgid "https://catcode.com.ua"
+msgstr "https://catcode.com.ua"
+
+#: catcode-abandoned-cart-recovery-for-woocommerce.php:93
+msgid "CatCode Abandoned Cart Recovery for WooCommerce requires an active WooCommerce installation."
+msgstr "Для роботи CatCode Abandoned Cart Recovery for WooCommerce потрібен активний WooCommerce."
+
+#: includes/Admin/CartsListTable.php:40
+msgid "Customer"
+msgstr "Покупець"
+
+#: includes/Admin/CartsListTable.php:41
+msgid "Products"
+msgstr "Товари"
+
+#: includes/Admin/CartsListTable.php:42
+msgid "Total"
+msgstr "Сума"
+
+#: includes/Admin/CartsListTable.php:43 includes/Core/Privacy.php:96
+msgid "Status"
+msgstr "Статус"
+
+#: includes/Admin/CartsListTable.php:44
+msgid "Reminders"
+msgstr "Нагадування"
+
+#: includes/Admin/CartsListTable.php:45
+msgid "Captured"
+msgstr "Захоплено"
+
+#: includes/Admin/CartsListTable.php:71
+msgid "All"
+msgstr "Усі"
+
+#: includes/Admin/CartsListTable.php:72 includes/Admin/CartsListTable.php:197
+msgid "Active"
+msgstr "Активний"
+
+#: includes/Admin/CartsListTable.php:73 includes/Admin/CartsListTable.php:198
+msgid "Abandoned"
+msgstr "Кинутий"
+
+#: includes/Admin/CartsListTable.php:74 includes/Admin/CartsListTable.php:199
+msgid "Recovered"
+msgstr "Відновлений"
+
+#: includes/Admin/CartsListTable.php:75 includes/Admin/CartsListTable.php:200
+msgid "Lost"
+msgstr "Втрачений"
+
+#: includes/Admin/CartsListTable.php:89
+msgid "No carts captured yet."
+msgstr "Поки що не захоплено жодного кошика."
+
+#: includes/Admin/CartsListTable.php:141
+msgid "Registered customer"
+msgstr "Зареєстрований покупець"
+
+#. translators: %d: number of additional products not shown.
+#: includes/Admin/CartsListTable.php:166
+#, php-format
+msgid "+%d more"
+msgstr "+%d ще"
+
+#. translators: %s: date and time the cart was marked as abandoned.
+#: includes/Admin/CartsListTable.php:231
+#, php-format
+msgid "abandoned: %s"
+msgstr "кинуто: %s"
+
+#: includes/Admin/CartsListTable.php:250
+msgid "Carts abandoned"
+msgstr "Кинуто кошиків"
+
+#: includes/Admin/CartsListTable.php:251
+msgid "Carts recovered"
+msgstr "Відновлено кошиків"
+
+#: includes/Admin/CartsListTable.php:252
+msgid "Revenue recovered"
+msgstr "Відновлена сума"
+
+#: includes/Admin/CartsListTable.php:253
+msgid "Recovery rate"
+msgstr "Конверсія відновлення"
+
+#: includes/Admin/CartsPage.php:29 includes/Admin/CartsPage.php:30 includes/Admin/CartsPage.php:50
+msgid "Abandoned Carts"
+msgstr "Кинуті кошики"
+
+#: includes/Admin/CartsPage.php:51 includes/Core/Plugin.php:203
+msgid "Settings"
+msgstr "Налаштування"
+
+#: includes/Admin/CartsPage.php:63
+msgid "Export CSV"
+msgstr "Експорт CSV"
+
+#: includes/Admin/CartsPage.php:76
+msgid "Search by e-mail"
+msgstr "Пошук за e-mail"
+
+#: includes/Admin/SettingsPage.php:32 includes/Admin/SettingsPage.php:33 includes/Admin/SettingsPage.php:61
+msgid "Abandoned Cart Settings"
+msgstr "Налаштування кинутих кошиків"
+
+#: includes/Admin/SettingsPage.php:62
+msgid "Cart list"
+msgstr "Список кошиків"
+
+#: includes/Admin/SettingsPage.php:82 includes/Admin/SettingsPage.php:93
+msgid "Save settings"
+msgstr "Зберегти налаштування"
+
+#: includes/Admin/SettingsPage.php:103
+msgid "Timing"
+msgstr "Тайминг"
+
+#: includes/Admin/SettingsPage.php:108
+msgid "Mark as abandoned after"
+msgstr "Вважати кинутим через"
+
+#: includes/Admin/SettingsPage.php:110
+msgid "Minutes of inactivity before a cart is considered abandoned. The scan runs every 15 minutes."
+msgstr "Хвилин бездіяльності, після яких кошик вважається кинутим. Сканування виконується кожні 15 хвилин."
+
+#: includes/Admin/SettingsPage.php:111 includes/Admin/SettingsPage.php:171
+msgid "minutes"
+msgstr "хвилин"
+
+#: includes/Admin/SettingsPage.php:116
+msgid "Recovery link lifetime"
+msgstr "Термін дії посилання відновлення"
+
+#: includes/Admin/SettingsPage.php:118
+msgid "How long a recovery link stays valid. Afterwards the cart is marked as lost."
+msgstr "Скільки діє посилання відновлення. Після цього кошик позначається як втрачений."
+
+#: includes/Admin/SettingsPage.php:119 includes/Admin/SettingsPage.php:127 includes/Admin/SettingsPage.php:212 includes/Admin/SettingsPage.php:303
+msgid "days"
+msgstr "днів"
+
+#: includes/Admin/SettingsPage.php:124
+msgid "Do not e-mail the same address more often than once every"
+msgstr "Не писати на ту саму адресу частіше ніж раз на"
+
+#: includes/Admin/SettingsPage.php:126
+msgid "Protects frequent shoppers from repeated reminders. Set to 0 to disable."
+msgstr "Захищає постійних покупців від повторних нагадувань. 0 — вимкнути."
+
+#: includes/Admin/SettingsPage.php:138
+msgid "Reminder e-mail 1"
+msgstr "Лист-нагадування 1"
+
+#: includes/Admin/SettingsPage.php:139
+msgid "Reminder e-mail 2"
+msgstr "Лист-нагадування 2"
+
+#: includes/Admin/SettingsPage.php:140
+msgid "Reminder e-mail 3"
+msgstr "Лист-нагадування 3"
+
+#: includes/Admin/SettingsPage.php:151
+msgid "The e-mail chain is a Pro feature. The free tier sends the first reminder only."
+msgstr "Ланцюжок листів — це Pro-функція. У безкоштовній версії надсилається лише перший лист."
+
+#: includes/Admin/SettingsPage.php:158 includes/Admin/SettingsPage.php:199 includes/Admin/SettingsPage.php:226
+msgid "Enabled"
+msgstr "Увімкнено"
+
+#: includes/Admin/SettingsPage.php:160
+msgid "Send this reminder"
+msgstr "Надсилати це нагадування"
+
+#: includes/Admin/SettingsPage.php:167
+msgid "Send after abandonment"
+msgstr "Надіслати після покидання"
+
+#: includes/Admin/SettingsPage.php:168
+msgid "Send after the previous reminder"
+msgstr "Надіслати після попереднього нагадування"
+
+#: includes/Admin/SettingsPage.php:176
+msgid "Subject"
+msgstr "Тема"
+
+#: includes/Admin/SettingsPage.php:181
+msgid "Message"
+msgstr "Повідомлення"
+
+#: includes/Admin/SettingsPage.php:183
+msgid "Placeholders:"
+msgstr "Плейсхолдери:"
+
+#: includes/Admin/SettingsPage.php:195
+msgid "Personal discount coupon"
+msgstr "Персональний купон-знижка"
+
+#: includes/Admin/SettingsPage.php:196
+msgid "A single-use WooCommerce coupon is generated per cart, restricted to the shopper e-mail address, and inserted through the {coupon} placeholder."
+msgstr "Для кожного кошика створюється одноразовий купон WooCommerce, обмежений e-mail покупця, і підставляється через плейсхолдер {coupon}."
+
+#: includes/Admin/SettingsPage.php:201
+msgid "Attach a personal coupon to the reminders"
+msgstr "Додавати персональний купон до нагадувань"
+
+#: includes/Admin/SettingsPage.php:204
+msgid "Discount type"
+msgstr "Тип знижки"
+
+#: includes/Admin/SettingsPage.php:206
+msgid "Percentage discount"
+msgstr "Знижка у відсотках"
+
+#: includes/Admin/SettingsPage.php:207
+msgid "Fixed cart discount"
+msgstr "Фіксована знижка на кошик"
+
+#: includes/Admin/SettingsPage.php:210
+msgid "Discount value"
+msgstr "Розмір знижки"
+
+#: includes/Admin/SettingsPage.php:211
+msgid "Attach starting from reminder"
+msgstr "Додавати починаючи з нагадування"
+
+#: includes/Admin/SettingsPage.php:211
+msgid "Reminder number the coupon first appears in (2 by default)."
+msgstr "Номер листа, у якому вперше з'являється купон (за замовчуванням 2)."
+
+#: includes/Admin/SettingsPage.php:212
+msgid "Coupon valid for"
+msgstr "Купон діє"
+
+#: includes/Admin/SettingsPage.php:222
+msgid "Telegram notification"
+msgstr "Сповіщення в Telegram"
+
+#: includes/Admin/SettingsPage.php:223
+msgid "Sends you a message the moment a cart is marked as abandoned. This is the only external service the plugin contacts."
+msgstr "Надсилає вам повідомлення щойно кошик позначено кинутим. Це єдиний зовнішній сервіс, до якого звертається плагін."
+
+#: includes/Admin/SettingsPage.php:228
+msgid "Notify me in Telegram"
+msgstr "Сповіщати мене в Telegram"
+
+#: includes/Admin/SettingsPage.php:231
+msgid "Bot token"
+msgstr "Токен бота"
+
+#: includes/Admin/SettingsPage.php:233
+msgid "Create a bot with @BotFather in Telegram and paste the token here."
+msgstr "Створіть бота через @BotFather у Telegram і вставте токен сюди."
+
+#: includes/Admin/SettingsPage.php:238
+msgid "Chat ID"
+msgstr "Chat ID"
+
+#: includes/Admin/SettingsPage.php:240
+msgid "Filled in automatically once you send /start to the bot — there is no need to look the number up by hand. A numeric chat id (negative for groups) or @channelname also works if you prefer to type it."
+msgstr "Заповнюється автоматично після того, як ви надішлете боту /start — шукати номер вручну не потрібно. Також можна ввести числовий chat id (від’ємний для груп) або @channelname."
+
+#: includes/Admin/SettingsPage.php:258
+msgid "Connection"
+msgstr "Підключення"
+
+#: includes/Admin/SettingsPage.php:262
+msgid "Bot not connected."
+msgstr "Бот не підключений."
+
+#: includes/Admin/SettingsPage.php:266
+msgid "Connect bot"
+msgstr "Підключити бота"
+
+#: includes/Admin/SettingsPage.php:267
+msgid "Saves the settings and registers a Telegram webhook pointing at this store. Afterwards send /start to the bot and the chat ID appears in the field below."
+msgstr "Зберігає налаштування та реєструє вебхук Telegram на цей магазин. Після цього надішліть боту /start — і chat ID з’явиться в полі нижче."
+
+#: includes/Admin/SettingsPage.php:271
+msgid "Bot connected — chat ID received."
+msgstr "Бот підключений — chat ID отримано."
+
+#: includes/Admin/SettingsPage.php:275
+msgid "Bot connected — waiting for /start."
+msgstr "Бот підключений — чекаємо на /start."
+
+#: includes/Admin/SettingsPage.php:277
+msgid "Open the chat with your bot (or add it to a group) and send /start. The bot replies with the chat ID and saves it here — reload this page to see it."
+msgstr "Відкрийте чат із ботом (або додайте його в групу) та надішліть /start. Бот у відповідь надішле chat ID і збереже його тут — перезавантажте цю сторінку, щоб побачити."
+
+#: includes/Admin/SettingsPage.php:281
+msgid "Disconnect bot"
+msgstr "Відключити бота"
+
+#: includes/Admin/SettingsPage.php:282
+msgid "Send /start again at any time to move the notifications to a different chat or group."
+msgstr "Щоб перенести сповіщення в інший чат або групу, будь-коли надішліть /start ще раз."
+
+#: includes/Admin/SettingsPage.php:285
+msgid "Telegram allows a bot either a webhook or getUpdates polling, never both — so one bot can serve only one store. Create a separate bot for every shop that uses this feature."
+msgstr "Telegram дозволяє боту або вебхук, або опитування getUpdates — ніколи обидва одночасно, тому один бот може обслуговувати лише один магазин. Створіть окремого бота для кожного магазину."
+
+#: includes/Admin/SettingsPage.php:295
+msgid "Data retention"
+msgstr "Зберігання даних"
+
+#: includes/Admin/SettingsPage.php:296
+msgid "The plugin stores the e-mail address, the name and the cart contents of shoppers who did not complete an order. Rows are deleted automatically once they are older than the retention period."
+msgstr "Плагін зберігає e-mail, ім'я та вміст кошика покупців, які не завершили замовлення. Записи видаляються автоматично, коли перевищують термін зберігання."
+
+#: includes/Admin/SettingsPage.php:300
+msgid "Delete cart data after"
+msgstr "Видаляти дані кошиків через"
+
+#: includes/Admin/SettingsPage.php:302
+msgid "Set to 0 to keep the data indefinitely (not recommended)."
+msgstr "0 — зберігати дані безстроково (не рекомендується)."
+
+#: includes/Admin/SettingsPage.php:313
+msgid "Pro licence"
+msgstr "Pro-ліцензія"
+
+#: includes/Admin/SettingsPage.php:316
+msgid "Licence key"
+msgstr "Ліцензійний ключ"
+
+#: includes/Admin/SettingsPage.php:321
+msgid "Licence active — all Pro features are unlocked."
+msgstr "Ліцензія активна — усі Pro-функції відкрито."
+
+#. translators: %d: number of days left in the free Pro trial.
+#: includes/Admin/SettingsPage.php:326
+#, php-format
+msgid "Free Pro trial: %d days left."
+msgstr "Безкоштовний Pro-тріал: залишилось %d дн."
+
+#: includes/Admin/SettingsPage.php:330
+msgid "After the trial the free tier keeps working and the Pro features need a licence."
+msgstr "Після тріалу базовий режим працює далі, а Pro-функції потребують ліцензії."
+
+#: includes/Admin/SettingsPage.php:332
+msgid "The free Pro trial has ended. Enter a licence key to unlock the e-mail chain, coupons, Telegram notifications and CSV export."
+msgstr "Безкоштовний Pro-тріал завершено. Введіть ліцензійний ключ, щоб відкрити ланцюжок листів, купони, сповіщення в Telegram та експорт CSV."
+
+#: includes/Admin/SettingsPage.php:359 includes/Pro/Export.php:22
+msgid "Insufficient permissions."
+msgstr "Недостатньо прав."
+
+#: includes/Admin/SettingsPage.php:416
+msgid "Settings saved."
+msgstr "Налаштування збережено."
+
+#: includes/Core/Cron.php:39
+msgid "Every 15 minutes (CatCode Abandoned Cart)"
+msgstr "Кожні 15 хвилин (CatCode Кинуті кошики)"
+
+#: includes/Core/Mailer.php:113
+msgid "there"
+msgstr "вітаємо"
+
+#. translators: 1: product name, 2: quantity, 3: line total.
+#: includes/Core/Mailer.php:137
+#, php-format
+msgid "%1$s — %2$d pcs — %3$s"
+msgstr "%1$s — %2$d шт. — %3$s"
+
+#. translators: %d: number of days left in the free Pro trial.
+#: includes/Core/Plugin.php:168
+#, php-format
+msgid "<strong>Abandoned Cart Recovery:</strong> all Pro features (up to three reminder e-mails, personal coupons, Telegram notifications, CSV export) are unlocked <strong>free for %d more days</strong>. When the trial ends the free tier keeps working and Pro stays available with a licence."
+msgstr "<strong>Кинуті кошики:</strong> усі Pro-функції (до трьох листів-нагадувань, персональні купони, сповіщення в Telegram, експорт CSV) відкрито <strong>безкоштовно ще %d дн.</strong> Після тріалу базовий режим працює далі, а Pro лишиться з ліцензією."
+
+#: includes/Core/Plugin.php:173
+msgid "<strong>Abandoned Cart Recovery:</strong> the free Pro trial has ended — the free tier keeps working. Activate a licence to bring the Pro features back."
+msgstr "<strong>Кинуті кошики:</strong> безкоштовний Pro-тріал завершено — базовий режим працює далі. Активуйте ліцензію, щоб повернути Pro-функції."
+
+#: includes/Core/Plugin.php:182
+msgid "Get a Pro licence →"
+msgstr "Купити Pro-ліцензію →"
+
+#: includes/Core/Plugin.php:205
+msgid "Carts"
+msgstr "Кошики"
+
+#: includes/Core/Privacy.php:34 includes/Core/Privacy.php:49
+msgid "Abandoned carts (CatCode)"
+msgstr "Кинуті кошики (CatCode)"
+
+#: includes/Core/Privacy.php:76
+msgid "Abandoned carts"
+msgstr "Кинуті кошики"
+
+#: includes/Core/Privacy.php:80
+msgid "E-mail"
+msgstr "E-mail"
+
+#: includes/Core/Privacy.php:84
+msgid "Name"
+msgstr "Ім'я"
+
+#: includes/Core/Privacy.php:88
+msgid "Cart contents"
+msgstr "Вміст кошика"
+
+#: includes/Core/Privacy.php:92
+msgid "Cart total"
+msgstr "Сума кошика"
+
+#: includes/Core/Privacy.php:100
+msgid "Reminders sent"
+msgstr "Надіслано нагадувань"
+
+#: includes/Core/Privacy.php:104
+msgid "Captured on"
+msgstr "Захоплено"
+
+#: includes/Core/Privacy.php:143
+msgid "When you add products to your cart and enter your e-mail address at checkout, this store saves your e-mail address, your name, the contents of your cart and its total so that it can send you a reminder if you do not complete the order."
+msgstr "Коли ви додаєте товари до кошика та вводите e-mail на сторінці оформлення, магазин зберігає вашу адресу, ім'я, вміст кошика та його суму, щоб надіслати нагадування, якщо ви не завершите замовлення."
+
+#. translators: %d: number of days cart data is retained.
+#: includes/Core/Privacy.php:147
+#, php-format
+msgid "This data is stored in the store database and is automatically deleted %d days after the cart was last updated. It is never sent to any third party."
+msgstr "Ці дані зберігаються в базі магазину й автоматично видаляються через %d дн. після останнього оновлення кошика. Вони не передаються третім сторонам."
+
+#: includes/Core/Recovery.php:46
+msgid "This recovery link is no longer valid."
+msgstr "Це посилання відновлення більше не дійсне."
+
+#: includes/Core/Recovery.php:61
+msgid "This recovery link has expired."
+msgstr "Термін дії посилання відновлення минув."
+
+#: includes/Core/Recovery.php:80
+msgid "Welcome back — your cart has been restored."
+msgstr "З поверненням — ваш кошик відновлено."
+
+#: includes/Core/Recovery.php:89
+msgid "Sorry, the products from that cart are no longer available."
+msgstr "На жаль, товарів із того кошика вже немає в наявності."
+
+#: includes/Core/Rest.php:58
+msgid "Invalid security token."
+msgstr "Недійсний токен безпеки."
+
+#: includes/Core/Rest.php:67
+msgid "A valid e-mail address is required."
+msgstr "Потрібна коректна e-mail адреса."
+
+#. translators: %s: customer e-mail address.
+#: includes/Pro/Coupons.php:74
+#, php-format
+msgid "Abandoned cart recovery coupon for %s"
+msgstr "Купон відновлення кинутого кошика для %s"
+
+#. translators: 1: discount value, 2: coupon code, 3: number of days the coupon stays valid.
+#: includes/Pro/Coupons.php:110
+#, php-format
+msgid "Here is %1$s off with the code %2$s — it is valid for %3$d days."
+msgstr "Ось знижка %1$s за кодом %2$s — вона діє %3$d дн."
+
+#: includes/Pro/Export.php:27
+msgid "CSV export is a Pro feature."
+msgstr "Експорт CSV — це Pro-функція."
+
+#: includes/Pro/Export.php:41
+msgid "Could not open the output stream."
+msgstr "Не вдалося відкрити потік виводу."
+
+#: includes/Pro/Telegram.php:97
+msgid "Enter the bot token first, then connect the bot."
+msgstr "Спочатку введіть токен бота, потім підключайте його."
+
+#: includes/Pro/Telegram.php:105
+msgid "Telegram only delivers webhooks to HTTPS addresses. Enable HTTPS on the store and try again."
+msgstr "Telegram надсилає вебхуки лише на HTTPS-адреси. Увімкніть HTTPS на сайті та спробуйте знову."
+
+#. translators: %s: error description returned by Telegram.
+#: includes/Pro/Telegram.php:130
+#, php-format
+msgid "Telegram refused the connection: %s"
+msgstr "Telegram відхилив підключення: %s"
+
+#: includes/Pro/Telegram.php:140
+msgid "Bot connected. Open the chat with the bot (or add it to a group) and send /start — the chat ID will be filled in automatically."
+msgstr "Бот підключений. Відкрийте чат із ботом (або додайте його в групу) та надішліть /start — chat ID заповниться автоматично."
+
+#. translators: %s: error description returned by Telegram.
+#: includes/Pro/Telegram.php:170
+#, php-format
+msgid "The webhook was cleared locally, but Telegram reported: %s"
+msgstr "Вебхук очищено локально, але Telegram повідомив: %s"
+
+#: includes/Pro/Telegram.php:178
+msgid "Bot disconnected. Telegram will no longer send updates to this store."
+msgstr "Бота відключено. Telegram більше не надсилатиме оновлення в цей магазин."
+
+#: includes/Pro/Telegram.php:196
+msgid "Invalid webhook secret."
+msgstr "Невірний секрет вебхука."
+
+#. translators: %s: Telegram chat id.
+#: includes/Pro/Telegram.php:240
+#, php-format
+msgid "Your chat ID is %s. It has been saved in your store settings — abandoned cart notifications will arrive here."
+msgstr "Ваш chat ID: %s. Його вже збережено в налаштуваннях магазину — сповіщення про кинуті кошики надходитимуть сюди."
+
+#. translators: %s: Telegram chat id.
+#: includes/Pro/Telegram.php:249
+#, php-format
+msgid "Your chat ID is %s. Another chat is already saved in the store settings — send /start to move the notifications here."
+msgstr "Ваш chat ID: %s. У налаштуваннях магазину вже збережено інший чат — надішліть /start, щоб перенести сповіщення сюди."
+
+#: includes/Pro/Telegram.php:284
+msgid "Abandoned cart"
+msgstr "Кинутий кошик"
+
+#: includes/Pro/Telegram.php:285
+msgid "E-mail:"
+msgstr "E-mail:"
+
+#: includes/Pro/Telegram.php:286
+msgid "Total:"
+msgstr "Сума:"
+
+#: includes/Pro/Telegram.php:289
+msgid "Customer:"
+msgstr "Покупець:"
