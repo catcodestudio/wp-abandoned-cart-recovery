@@ -1,13 +1,11 @@
 <?php
 /**
- * Activation / deactivation: table, defaults, cron schedule, Pro trial.
+ * Activation / deactivation: table, defaults, cron schedule.
  *
  * @package CatCodeAbandonedCart
  */
 
 namespace CatCode\AbandonedCart\Core;
-
-use CatCode\AbandonedCart\Pro\License;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,10 +18,8 @@ class Installer {
 			add_option( Settings::OPTION, Settings::defaults(), '', false );
 		}
 
-		// Start the 7-day Pro free trial on first activation.
-		if ( ! get_option( License::TRIAL_OPTION, 0 ) ) {
-			update_option( License::TRIAL_OPTION, time(), false );
-		}
+		// Nothing Pro is switched on here: a fresh install is the free tier
+		// until the owner explicitly starts the trial or activates a key.
 
 		Cron::schedule();
 

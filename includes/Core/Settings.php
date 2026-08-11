@@ -52,8 +52,15 @@ class Settings {
 			'telegram_bot_token' => '',
 			'telegram_chat_id'   => '',
 
-			// Licensing.
+			// Licensing (see Pro\License — the CatCode licence-server client).
 			'license_key'        => '',
+			'license_status'     => '',
+			'license_checked_at' => '',
+			'license_expires_at' => '',
+			'license_data'       => '',
+			// 0 = the owner has never started the trial. Nothing but an explicit
+			// click on "Try for 7 days" may ever write this.
+			'trial_started'      => 0,
 		);
 	}
 
@@ -115,8 +122,32 @@ class Settings {
 		return 'yes' === self::get( $key, 'no' );
 	}
 
+	/**
+	 * Save the values a form submitted. Anything the form does not carry keeps
+	 * its stored value — the licence fields live in the same option and must
+	 * survive a plain "Save settings".
+	 *
+	 * @param array<string,mixed> $values Posted values.
+	 */
 	public static function save( array $values ): void {
-		update_option( self::OPTION, wp_parse_args( $values, self::defaults() ), false );
+		self::update( $values );
+	}
+
+	/**
+	 * Write a few keys without touching the rest — the licence client stores its
+	 * key, status and trial marker in one go, and must never clobber the
+	 * settings the owner is editing in another tab.
+	 *
+	 * @param array<string,mixed> $patch Keys to overwrite.
+	 */
+	public static function update( array $patch ): void {
+		// Read straight from the option, not from the static cache: the cache may
+		// predate a write made earlier in this same request.
+		$raw = get_option( self::OPTION, array() );
+		if ( ! is_array( $raw ) ) {
+			$raw = array();
+		}
+		update_option( self::OPTION, wp_parse_args( $patch, wp_parse_args( $raw, self::defaults() ) ), false );
 		self::$cache = null;
 	}
 

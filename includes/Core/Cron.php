@@ -7,6 +7,7 @@
 
 namespace CatCode\AbandonedCart\Core;
 
+use CatCode\AbandonedCart\Pro\License;
 use CatCode\AbandonedCart\Pro\Telegram;
 
 defined( 'ABSPATH' ) || exit;
@@ -15,12 +16,14 @@ class Cron {
 
 	public const SCAN_HOOK    = 'catcode_abandoned_cart_scan';
 	public const CLEANUP_HOOK = 'catcode_abandoned_cart_cleanup';
+	public const LICENSE_HOOK = 'catcode_abandoned_cart_license_check';
 	public const SCHEDULE     = 'catcode_abandoned_cart_15min';
 
 	public function register(): void {
 		add_filter( 'cron_schedules', array( $this, 'add_schedule' ) ); // phpcs:ignore WordPress.WP.CronInterval.ChangeDetected -- 15 min is the documented scan cadence.
 		add_action( self::SCAN_HOOK, array( $this, 'scan' ) );
 		add_action( self::CLEANUP_HOOK, array( $this, 'cleanup' ) );
+		add_action( self::LICENSE_HOOK, array( $this, 'check_license' ) );
 
 		// Self-heal if the events were lost (e.g. a database restore).
 		add_action( 'init', array( __CLASS__, 'schedule' ) );
@@ -48,6 +51,9 @@ class Cron {
 		if ( ! wp_next_scheduled( self::CLEANUP_HOOK ) ) {
 			wp_schedule_event( time() + 600, 'daily', self::CLEANUP_HOOK );
 		}
+		if ( ! wp_next_scheduled( self::LICENSE_HOOK ) ) {
+			wp_schedule_event( time() + 900, 'daily', self::LICENSE_HOOK );
+		}
 	}
 
 	public static function unschedule(): void {
@@ -59,6 +65,21 @@ class Cron {
 		if ( $cleanup ) {
 			wp_unschedule_event( $cleanup, self::CLEANUP_HOOK );
 		}
+		$license = wp_next_scheduled( self::LICENSE_HOOK );
+		if ( $license ) {
+			wp_unschedule_event( $license, self::LICENSE_HOOK );
+		}
+	}
+
+	/**
+	 * Daily licence re-check. No key stored → nothing to do, and no request is
+	 * made: a free install never talks to our server.
+	 */
+	public function check_license(): void {
+		if ( ! License::has_license() ) {
+			return;
+		}
+		License::verify();
 	}
 
 	/**

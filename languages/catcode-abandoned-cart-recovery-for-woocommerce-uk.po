@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: CatCode Abandoned Cart Recovery for WooCommerce 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/catcode-abandoned-cart-recovery-for-woocommerce\n"
 "PO-Revision-Date: 2026-07-20 16:00+0300\n"
-"Last-Translator: CatCode Studio <dev@catcode.com.ua>\n"
-"Language-Team: Ukrainian <dev@catcode.com.ua>\n"
+"Last-Translator: CatCode <info@catcode.com.ua>\n"
+"Language-Team: Ukrainian <info@catcode.com.ua>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -566,3 +566,170 @@ msgstr "Сума:"
 #: includes/Pro/Telegram.php:289
 msgid "Customer:"
 msgstr "Покупець:"
+
+# --- 1.1.0: PRO-UX (licence client, trial on request, single notice) ---
+
+msgid "Licence released from this site — the key can now be used on another store."
+msgstr "Ліцензію відвʼязано від цього сайту — ключ можна використати на іншому магазині."
+
+msgid "Licence active — the Pro features are unlocked."
+msgstr "Ліцензія активна — Pro-можливості увімкнено."
+
+msgid "Trial started — Pro works until %s. The key has also been e-mailed to you."
+msgstr "Пробний період увімкнено — Pro працює до %s. Ключ також надіслано вам на пошту."
+
+msgid "Trial started. The key has also been e-mailed to you."
+msgstr "Пробний період увімкнено. Ключ також надіслано вам на пошту."
+
+msgid "Pro: download every captured cart with e-mails and totals for your mailing tool."
+msgstr "Pro: вивантажити всі зафіксовані кошики з e-mail і сумами — для вашої розсилки."
+
+msgid "Abandoned Cart Recovery is working."
+msgstr "Відновлення кинутих кошиків працює."
+
+msgid "Pro adds a chain of up to three reminders, a personal discount coupon per cart, a Telegram alert the moment a cart is abandoned and CSV export. You can try it for 7 days, no card required."
+msgstr "Pro додає ланцюжок до трьох нагадувань, персональний купон-знижку на кожен кошик, сповіщення в Telegram щойно кошик покинуто і експорт у CSV. Можна спробувати 7 днів, без картки."
+
+msgid "Try Pro for 7 days"
+msgstr "Спробувати Pro 7 днів"
+
+msgid "If it suits you, please leave a review — it helps us keep the module going."
+msgstr "Якщо все влаштовує — залиште, будь ласка, відгук: це допомагає нам розвивати модуль."
+
+msgid "Leave a review"
+msgstr "Залишити відгук"
+
+msgid "Could not reach the server. Try again in a moment."
+msgstr "Не вдалося звʼязатися з сервером. Спробуйте ще раз за хвилину."
+
+msgid "Release the licence from this site? The Pro features switch off here and the key becomes free for another store."
+msgstr "Відвʼязати ліцензію від цього сайту? Pro-можливості тут вимкнуться, а ключ звільниться для іншого магазину."
+
+msgid "Pro: a second and third nudge win back the shoppers who ignored the first one — the free tier sends reminder 1 only."
+msgstr "Pro: друге і третє нагадування повертають тих, хто проігнорував перше — безкоштовна версія надсилає лише перший лист."
+
+msgid "Pro: a discount that belongs to one shopper and expires on its own — the usual reason a hesitating cart finally converts."
+msgstr "Pro: знижка, яка належить одному покупцю і згорає сама — саме це найчастіше дотискає кошик, з яким вагаються."
+
+msgid "Pro: you hear about an abandoned cart while the shopper is still around, and can call them back the same hour."
+msgstr "Pro: ви дізнаєтесь про кинутий кошик, поки покупець ще поруч, і можете передзвонити тієї ж години."
+
+msgid "Pro is on — trial."
+msgstr "Pro увімкнено — пробний період."
+
+msgid "Pro is on — licence active."
+msgstr "Pro увімкнено — ліцензія активна."
+
+msgid "Free version."
+msgstr "Безкоштовна версія."
+
+msgid "The first reminder, the cart list and the statistics work without a licence. Pro adds reminders 2 and 3, personal coupons, Telegram alerts and CSV export."
+msgstr "Перше нагадування, список кошиків і статистика працюють без ліцензії. Pro додає листи 2 і 3, персональні купони, сповіщення в Telegram і експорт CSV."
+
+msgid "Status: %s."
+msgstr "Стан: %s."
+
+msgid "Valid until %s."
+msgstr "Діє до %s."
+
+msgid "Activate key"
+msgstr "Активувати ключ"
+
+msgid "Release licence"
+msgstr "Відвʼязати ліцензію"
+
+msgid "The key arrives by e-mail after purchase. It is checked against catcode.com.ua and re-checked once a day; if our server is unreachable, Pro keeps working for another 14 days."
+msgstr "Ключ приходить на пошту після оплати. Він перевіряється на catcode.com.ua і переперевіряється раз на добу; якщо наш сервер недоступний, Pro працює ще 14 днів."
+
+msgid "No licence yet?"
+msgstr "Ще немає ліцензії?"
+
+msgid "Buy a licence"
+msgstr "Придбати ліцензію"
+
+msgid "The trial issues a real 7-day key to your e-mail. No card, nothing is charged, and it never starts by itself."
+msgstr "Пробний період видає справжній 7-денний ключ на вашу пошту. Без картки, нічого не списується, і він ніколи не стартує сам."
+
+msgid "The trial has already been used on this site — one per install."
+msgstr "Пробний період на цьому сайті вже використано — він один на встановлення."
+
+msgid "Reminders 2 and 3, personal coupons, Telegram alerts and CSV export — free for 7 days. We e-mail you the key and switch Pro on right away."
+msgstr "Листи 2 і 3, персональні купони, сповіщення в Telegram і експорт CSV — безкоштовно 7 днів. Ключ надішлемо на пошту і одразу увімкнемо Pro."
+
+msgid "Your e-mail"
+msgstr "Ваш e-mail"
+
+msgid "Get the key"
+msgstr "Отримати ключ"
+
+msgid "Cancel"
+msgstr "Скасувати"
+
+msgid "Your key:"
+msgstr "Ваш ключ:"
+
+msgid "not checked"
+msgstr "не перевірено"
+
+msgid "trial active"
+msgstr "пробний період активний"
+
+msgid "valid (not re-checked yet)"
+msgstr "дійсна (ще не перевірялася повторно)"
+
+msgid "valid (checked %1$d days ago, %2$d days of grace left)"
+msgstr "дійсна (перевірена %1$d дн. тому, ще %2$d дн. пільгового періоду)"
+
+msgid "valid (grace period over — waiting for a re-check)"
+msgstr "дійсна (пільговий період минув — очікує повторної перевірки)"
+
+msgid "invalid (last checked %s)"
+msgstr "недійсна (остання перевірка %s)"
+
+msgid "Key not found. Check that you copied it in full, with no stray spaces."
+msgstr "Ключ не знайдено. Перевірте, чи скопіювали його повністю — без зайвих пробілів."
+
+msgid "This key is no longer valid (refunded). Contact support if that is a mistake."
+msgstr "Ключ більше недійсний (повернення коштів). Звʼяжіться з підтримкою, якщо це помилка."
+
+msgid "The licence has expired. Renew it on catcode.com.ua to keep the Pro features."
+msgstr "Термін дії ліцензії закінчився. Поновіть її на catcode.com.ua, щоб і далі користуватися Pro."
+
+msgid "This key is already in use on another store. Deactivate it there first."
+msgstr "Ключ уже використаний на іншому магазині. Спочатку відвʼяжіть його там."
+
+msgid "This key belongs to a different CatCode product, not to Abandoned Cart Recovery."
+msgstr "Цей ключ — від іншого продукту CatCode, не від Abandoned Cart Recovery."
+
+msgid "Could not reach our licence server. We will retry automatically in a few hours."
+msgstr "Не вдалось перевірити ліцензію — наш сервер не відповідає. Спробуємо ще раз автоматично за кілька годин."
+
+msgid "Enter a licence key."
+msgstr "Введіть ключ ліцензії."
+
+msgid "No licence key is stored yet."
+msgstr "Ключ ліцензії ще не збережено."
+
+msgid "Enter a valid e-mail address — the key will be sent there."
+msgstr "Введіть коректну адресу e-mail — на неї прийде ключ."
+
+msgid "A trial has already been issued for this e-mail address."
+msgstr "Пробний період для цього e-mail уже видавався."
+
+msgid "A trial has already been issued for this site."
+msgstr "Пробний період для цього сайту вже видавався."
+
+msgid "Too many attempts. Try again in an hour."
+msgstr "Забагато спроб. Спробуйте ще раз за годину."
+
+msgid "The server answered with something we could not read. Try again in a few minutes."
+msgstr "Сервер відповів незрозуміло. Спробуйте ще раз за кілька хвилин."
+
+msgid "This key does not fit."
+msgstr "Ключ не підходить."
+
+msgid "trial — %d day left"
+msgid_plural "trial — %d days left"
+msgstr[0] "пробний період — залишився %d день"
+msgstr[1] "пробний період — залишилось %d дні"
+msgstr[2] "пробний період — залишилось %d днів"

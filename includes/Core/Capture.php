@@ -224,14 +224,25 @@ class Capture {
 			if ( ! $product ) {
 				continue;
 			}
+
+			$quantity = max( 1, (int) ( $item['quantity'] ?? 1 ) );
+			$line     = (float) ( $item['line_total'] ?? 0 ) + (float) ( $item['line_tax'] ?? 0 );
+			if ( $line <= 0 ) {
+				// WooCommerce fills line_total only in calculate_totals(), which
+				// runs after woocommerce_add_to_cart — so a row written straight
+				// from that hook prices the line the shopper just added at zero,
+				// and the reminder quotes a total lower than the real cart.
+				$line = (float) $product->get_price() * $quantity;
+			}
+
 			$out[] = array(
 				'product_id'   => (int) ( $item['product_id'] ?? 0 ),
 				'variation_id' => (int) ( $item['variation_id'] ?? 0 ),
 				'variation'    => isset( $item['variation'] ) && is_array( $item['variation'] ) ? $item['variation'] : array(),
-				'quantity'     => (int) ( $item['quantity'] ?? 1 ),
+				'quantity'     => $quantity,
 				'name'         => $product->get_name(),
 				'price'        => (float) $product->get_price(),
-				'line_total'   => (float) ( $item['line_total'] ?? 0 ) + (float) ( $item['line_tax'] ?? 0 ),
+				'line_total'   => $line,
 			);
 		}
 

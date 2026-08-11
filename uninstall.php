@@ -18,10 +18,14 @@ $wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $catcode_abandoned_cart
 
 delete_option( 'catcode_abandoned_cart_settings' );
 delete_option( 'catcode_abandoned_cart_version' );
-delete_option( 'catcode_abandoned_cart_trial_started' );
 delete_option( 'catcode_abandoned_cart_telegram_webhook_secret' );
+delete_option( 'catcode_abandoned_cart_first_success' );
+// Left behind by 1.0.0, which started the trial by itself.
+delete_option( 'catcode_abandoned_cart_trial_started' );
 
+delete_metadata( 'user', 0, 'catcode_abandoned_cart_notice_dismissed', '', true );
 delete_metadata( 'user', 0, 'catcode_abandoned_cart_trial_notice_off', '', true );
 
 wp_clear_scheduled_hook( 'catcode_abandoned_cart_scan' );
 wp_clear_scheduled_hook( 'catcode_abandoned_cart_cleanup' );
+wp_clear_scheduled_hook( 'catcode_abandoned_cart_license_check' );

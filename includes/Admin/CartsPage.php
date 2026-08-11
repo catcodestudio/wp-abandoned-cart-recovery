@@ -62,6 +62,14 @@ class CartsPage {
 			wp_nonce_field( 'catcode_abandoned_cart_export' );
 			submit_button( __( 'Export CSV', 'catcode-abandoned-cart-recovery-for-woocommerce' ), 'secondary', 'submit', false );
 			echo '</form>';
+		} else {
+			// The button stays where it will be once Pro is on — greyed out and
+			// labelled, rather than missing without explanation.
+			echo '<div class="catcode-abandoned-cart-export catcode-abandoned-cart-export--locked">';
+			echo '<button type="button" class="button" disabled>' . esc_html__( 'Export CSV', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</button>';
+			echo '<span class="catcode-abandoned-cart-badge">PRO</span>';
+			echo '<p class="catcode-abandoned-cart-why">' . esc_html__( 'Pro: download every captured cart with e-mails and totals for your mailing tool.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+			echo '</div>';
 		}
 
 		$table->views();
@@ -118,6 +126,18 @@ class CartsPage {
 .catcode-abandoned-cart-wrap .catcode-abandoned-cart-status--wait{color:#8a4b08}
 .catcode-abandoned-cart-wrap textarea{width:100%;max-width:640px;font-family:Consolas,Monaco,monospace;font-size:12px}
 .catcode-abandoned-cart-wrap .catcode-abandoned-cart-tokens code{background:#f0f0f1;padding:1px 5px;border-radius:3px}
+.catcode-abandoned-cart-wrap .catcode-abandoned-cart-why{margin:2px 0 0;color:#50575e;font-style:italic}
+.catcode-abandoned-cart-msg{margin:8px 0 0;font-weight:600;min-height:1em}
+.catcode-abandoned-cart-msg--ok{color:#1a7f37}
+.catcode-abandoned-cart-msg--error{color:#b32d2e}
+.catcode-abandoned-cart-busy{opacity:.6;pointer-events:none}
+.catcode-acr-modal{position:fixed;inset:0;z-index:100200;display:flex;align-items:center;justify-content:center}
+.catcode-acr-modal[hidden]{display:none}
+.catcode-acr-modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.catcode-acr-modal__box{position:relative;background:#fff;border-radius:8px;padding:18px 24px 22px;width:min(520px,92vw);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.catcode-acr-modal__box h2{margin-top:6px}
+.catcode-acr-modal__key code{background:#f0f0f1;padding:3px 8px;border-radius:4px;font-size:14px}
+.catcode-abandoned-cart-export--locked{opacity:.65}
 ';
 	}
 }

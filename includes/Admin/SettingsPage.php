@@ -47,6 +47,27 @@ class SettingsPage {
 		wp_register_style( 'catcode-abandoned-cart-admin', false, array(), CATCODE_ABANDONED_CART_VERSION );
 		wp_enqueue_style( 'catcode-abandoned-cart-admin' );
 		wp_add_inline_style( 'catcode-abandoned-cart-admin', CartsPage::css() );
+
+		wp_enqueue_script(
+			'catcode-abandoned-cart-license',
+			CATCODE_ABANDONED_CART_URL . 'assets/js/admin-license.js',
+			array(),
+			CATCODE_ABANDONED_CART_VERSION,
+			true
+		);
+		wp_localize_script(
+			'catcode-abandoned-cart-license',
+			'catcodeAbandonedCartLicense',
+			array(
+				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+				'nonce'       => wp_create_nonce( Ajax::NONCE ),
+				'settingsUrl' => admin_url( 'admin.php?page=' . self::SLUG ),
+				'i18n'        => array(
+					'network'           => __( 'Could not reach the server. Try again in a moment.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+					'confirmDeactivate' => __( 'Release the licence from this site? The Pro features switch off here and the key becomes free for another store.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+				),
+			)
+		);
 	}
 
 	public function render(): void {
@@ -148,7 +169,9 @@ class SettingsPage {
 		echo '</h2>';
 
 		if ( $n > 1 && ! $available ) {
-			echo '<p class="description">' . esc_html__( 'The e-mail chain is a Pro feature. The free tier sends the first reminder only.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+			echo '<p class="catcode-abandoned-cart-why">'
+				. esc_html__( 'Pro: a second and third nudge win back the shoppers who ignored the first one — the free tier sends reminder 1 only.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+				. '</p>';
 		}
 
 		echo '<table class="form-table" role="presentation">';
@@ -194,6 +217,11 @@ class SettingsPage {
 		echo '<div class="catcode-abandoned-cart-card' . ( $available ? '' : ' catcode-abandoned-cart-locked' ) . '">';
 		echo '<h2>' . esc_html__( 'Personal discount coupon', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '<span class="catcode-abandoned-cart-badge">PRO</span></h2>';
 		echo '<p class="description">' . esc_html__( 'A single-use WooCommerce coupon is generated per cart, restricted to the shopper e-mail address, and inserted through the {coupon} placeholder.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		if ( ! $available ) {
+			echo '<p class="catcode-abandoned-cart-why">'
+				. esc_html__( 'Pro: a discount that belongs to one shopper and expires on its own — the usual reason a hesitating cart finally converts.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+				. '</p>';
+		}
 		echo '<table class="form-table" role="presentation">';
 
 		echo '<tr><th scope="row">' . esc_html__( 'Enabled', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</th><td>';
@@ -221,6 +249,11 @@ class SettingsPage {
 		echo '<div class="catcode-abandoned-cart-card' . ( $available ? '' : ' catcode-abandoned-cart-locked' ) . '">';
 		echo '<h2>' . esc_html__( 'Telegram notification', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '<span class="catcode-abandoned-cart-badge">PRO</span></h2>';
 		echo '<p class="description">' . esc_html__( 'Sends you a message the moment a cart is marked as abandoned. This is the only external service the plugin contacts.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		if ( ! $available ) {
+			echo '<p class="catcode-abandoned-cart-why">'
+				. esc_html__( 'Pro: you hear about an abandoned cart while the shopper is still around, and can call them back the same hour.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+				. '</p>';
+		}
 		echo '<table class="form-table" role="presentation">';
 
 		echo '<tr><th scope="row">' . esc_html__( 'Enabled', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</th><td>';
@@ -309,32 +342,119 @@ class SettingsPage {
 	 * @param array<string,mixed> $cfg Settings.
 	 */
 	private function section_license( array $cfg ): void {
+		$is_pro    = License::is_pro();
+		$on_trial  = License::on_trial();
+		$can_trial = License::trial_available();
+		$key       = (string) $cfg['license_key'];
+
 		echo '<div class="catcode-abandoned-cart-card">';
 		echo '<h2>' . esc_html__( 'Pro licence', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</h2>';
+
+		echo '<p class="description">';
+		if ( $is_pro ) {
+			echo '<span class="catcode-abandoned-cart-hint">'
+				. esc_html(
+					$on_trial
+						? __( 'Pro is on — trial.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+						: __( 'Pro is on — licence active.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+				)
+				. '</span> ';
+		} else {
+			echo '<span class="catcode-abandoned-cart-status catcode-abandoned-cart-status--off">'
+				. esc_html__( 'Free version.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+				. '</span> ';
+			echo esc_html__( 'The first reminder, the cart list and the statistics work without a licence. Pro adds reminders 2 and 3, personal coupons, Telegram alerts and CSV export.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' ';
+		}
+		echo esc_html(
+			sprintf(
+				/* translators: %s: human-readable licence status. */
+				__( 'Status: %s.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+				License::describe()
+			)
+		);
+		$expires = License::expires_at();
+		if ( '' !== $expires ) {
+			echo ' ' . esc_html(
+				sprintf(
+					/* translators: %s: expiry date, YYYY-MM-DD. */
+					__( 'Valid until %s.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+					$expires
+				)
+			);
+		}
+		echo '</p>';
+
 		echo '<table class="form-table" role="presentation">';
 
 		echo '<tr><th scope="row"><label for="catcode-abandoned-cart-license">' . esc_html__( 'Licence key', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label></th><td>';
-		echo '<input type="text" class="regular-text" id="catcode-abandoned-cart-license" name="license_key" value="' . esc_attr( (string) $cfg['license_key'] ) . '" autocomplete="off"/>';
+		echo '<input type="text" class="regular-text" id="catcode-abandoned-cart-license" value="' . esc_attr( $key ) . '" autocomplete="off" spellcheck="false"/> ';
 
-		echo '<p class="description">';
-		if ( License::has_license() ) {
-			echo '<span class="catcode-abandoned-cart-hint">' . esc_html__( 'Licence active — all Pro features are unlocked.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</span>';
-		} elseif ( License::trial_active() ) {
-			echo '<span class="catcode-abandoned-cart-hint">' . esc_html(
-				sprintf(
-					/* translators: %d: number of days left in the free Pro trial. */
-					__( 'Free Pro trial: %d days left.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
-					License::trial_days_left()
-				)
-			) . '</span> ';
-			echo esc_html__( 'After the trial the free tier keeps working and the Pro features need a licence.', 'catcode-abandoned-cart-recovery-for-woocommerce' );
-		} else {
-			echo esc_html__( 'The free Pro trial has ended. Enter a licence key to unlock the e-mail chain, coupons, Telegram notifications and CSV export.', 'catcode-abandoned-cart-recovery-for-woocommerce' );
+		// AJAX buttons, never submits: the key must not ride along with a plain
+		// "Save settings", otherwise a stale form could wipe an active licence.
+		echo '<button type="button" class="button button-secondary" id="catcode-acr-activate">'
+			. esc_html__( 'Activate key', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</button> ';
+
+		if ( '' !== $key ) {
+			echo '<button type="button" class="button" id="catcode-acr-deactivate">'
+				. esc_html__( 'Release licence', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</button>';
 		}
-		echo '</p>';
+
+		echo '<p class="description">'
+			. esc_html__( 'The key arrives by e-mail after purchase. It is checked against catcode.com.ua and re-checked once a day; if our server is unreachable, Pro keeps working for another 14 days.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+			. '</p>';
+		echo '<p id="catcode-acr-license-msg" class="catcode-abandoned-cart-msg"></p>';
 		echo '</td></tr>';
 
-		echo '</table></div>';
+		echo '<tr><th scope="row">' . esc_html__( 'No licence yet?', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</th><td>';
+		if ( $can_trial ) {
+			echo '<button type="button" class="button button-primary" id="catcode-acr-trial-open">'
+				. esc_html__( 'Try Pro for 7 days', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</button> ';
+			echo '<a class="button" href="' . esc_url( License::MODULE_URL ) . '" target="_blank" rel="noopener">'
+				. esc_html__( 'Buy a licence', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</a>';
+			echo '<p class="description">'
+				. esc_html__( 'The trial issues a real 7-day key to your e-mail. No card, nothing is charged, and it never starts by itself.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+				. '</p>';
+		} else {
+			echo '<a class="button" href="' . esc_url( License::MODULE_URL ) . '" target="_blank" rel="noopener">'
+				. esc_html__( 'Buy a licence', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</a>';
+			echo '<p class="description">'
+				. esc_html__( 'The trial has already been used on this site — one per install.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+				. '</p>';
+		}
+		echo '</td></tr>';
+
+		echo '</table>';
+
+		if ( $can_trial ) {
+			$this->trial_modal();
+		}
+
+		echo '</div>';
+	}
+
+	/**
+	 * Trial dialog: one e-mail field. The key is shown right here as well as
+	 * mailed, so nobody has to dig through an inbox to carry on working.
+	 */
+	private function trial_modal(): void {
+		$user  = wp_get_current_user();
+		$email = ( $user && ! empty( $user->user_email ) ) ? (string) $user->user_email : '';
+
+		echo '<div class="catcode-acr-modal" id="catcode-acr-modal" hidden>';
+		echo '<div class="catcode-acr-modal__backdrop catcode-acr-modal-close"></div>';
+		echo '<div class="catcode-acr-modal__box" role="dialog" aria-modal="true" aria-labelledby="catcode-acr-modal-title">';
+		echo '<h2 id="catcode-acr-modal-title">' . esc_html__( 'Try Pro for 7 days', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</h2>';
+		echo '<p>' . esc_html__( 'Reminders 2 and 3, personal coupons, Telegram alerts and CSV export — free for 7 days. We e-mail you the key and switch Pro on right away.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		echo '<p><label for="catcode-acr-trial-email">' . esc_html__( 'Your e-mail', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label><br/>';
+		echo '<input type="email" class="regular-text" id="catcode-acr-trial-email" value="' . esc_attr( $email ) . '" autocomplete="email"/></p>';
+		echo '<p><button type="button" class="button button-primary" id="catcode-acr-trial-start">'
+			. esc_html__( 'Get the key', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</button> ';
+		echo '<button type="button" class="button catcode-acr-modal-close">'
+			. esc_html__( 'Cancel', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</button></p>';
+		echo '<p id="catcode-acr-trial-msg" class="catcode-abandoned-cart-msg"></p>';
+		echo '<p id="catcode-acr-trial-key" class="catcode-acr-modal__key" hidden>'
+			. esc_html__( 'Your key:', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' <code></code></p>';
+		echo '</div></div>';
 	}
 
 	/**
@@ -368,7 +488,6 @@ class SettingsPage {
 			'token_lifetime' => $this->post_int( 'token_lifetime', (int) $current['token_lifetime'], 1 ),
 			'email_cooldown' => $this->post_int( 'email_cooldown', (int) $current['email_cooldown'], 0 ),
 			'retention_days' => $this->post_int( 'retention_days', (int) $current['retention_days'], 0 ),
-			'license_key'    => $this->post_text( 'license_key', (string) $current['license_key'] ),
 		);
 
 		// Reminder 1 is always editable; 2 and 3 only while Pro is unlocked, so a

@@ -4,7 +4,7 @@ Tags: woocommerce, abandoned cart, cart recovery, email, ecommerce
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,11 +41,11 @@ Most shoppers who fill a cart never reach the "thank you" page. This plugin reco
 * Telegram notification to the shop owner the moment a cart is abandoned
 * CSV export of the captured carts
 
-Every install gets all Pro features free for 7 days after activation. When the trial ends the free tier keeps working exactly as before; the Pro features unlock again with a licence key.
+Pro never switches itself on. A fresh install is the free version: the Pro settings are visible in their own places, greyed out and labelled, so you can see exactly where the line is. If you want to try them, the settings screen has a "Try Pro for 7 days" button — you enter an email, we issue a real 7-day key and unlock Pro right away. When the trial or the licence ends the free tier keeps working exactly as before, and your settings stay where they were.
 
 = Requirements =
 
-* WooCommerce 7.0 or newer
+* WooCommerce 6.0 or newer
 * PHP 7.4+
 * Working WP-Cron (or a real system cron calling `wp-cron.php`)
 
@@ -75,6 +75,10 @@ Every 15 minutes, through WP-Cron (`catcode_abandoned_cart_scan`). A second dail
 = Is the recovery link safe to email? =
 
 The link carries a 32-character random token. Only its SHA-256 hash is stored in the database, the comparison is done with `hash_equals()`, the token is single-use, and it is stripped from the address bar right after the cart is restored.
+
+= How do I start the Pro trial? =
+
+WooCommerce → Abandoned Cart Settings → Pro licence → "Try Pro for 7 days". Enter your email and the key is issued and activated immediately, and also emailed to you. Nothing is charged and no card is asked for. The trial never starts by itself, and it is one per site.
 
 = What happens when the Pro trial ends? =
 
@@ -117,11 +121,21 @@ This service is provided by Telegram: [terms of service](https://telegram.org/to
 
 == Changelog ==
 
+= 1.1.0 =
+* Pro no longer switches itself on: a fresh install is the free version until you start the trial or activate a key.
+* New "Try Pro for 7 days" button on the settings screen — it issues a real 7-day licence key by email, on request only.
+* Licence keys are now checked against the CatCode licence server (activate / daily re-check / release), with a 14-day grace period if the server is unreachable.
+* Pro settings stay visible where they belong, greyed out, with a Pro badge and one line explaining what each one gives you.
+* One dismissible notice, shown only after the plugin has actually captured a cart or sent a reminder — dismissed once, never shown again.
+
 = 1.0.0 =
 * First release: cart capture for customers and guests, abandonment scan, reminder email with a one-time recovery link, cart list with statistics, retention cleanup and privacy tools.
 * Pro: chain of up to three reminders, personal discount coupons, Telegram notifications, CSV export.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+The automatic 7-day Pro trial is gone. If you were inside it, the Pro features switch off on update and the free tier keeps running; start the trial yourself, or activate a licence key, from the settings screen.
 
 = 1.0.0 =
 First public release.

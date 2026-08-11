@@ -7,10 +7,11 @@
 
 namespace CatCode\AbandonedCart\Core;
 
+use CatCode\AbandonedCart\Admin\Ajax;
 use CatCode\AbandonedCart\Admin\CartsPage;
+use CatCode\AbandonedCart\Admin\Notice;
 use CatCode\AbandonedCart\Admin\SettingsPage;
 use CatCode\AbandonedCart\Pro\Export;
-use CatCode\AbandonedCart\Pro\License;
 use CatCode\AbandonedCart\Pro\Telegram;
 
 defined( 'ABSPATH' ) || exit;
@@ -57,6 +58,10 @@ final class Plugin {
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_assets' ) );
 		add_action( 'init', array( $this, 'maybe_upgrade' ), 5 );
 
+		// The notice listens for the plugin's first successful action, which can
+		// happen during a cron run — so it is registered outside is_admin().
+		Notice::register();
+
 		if ( is_admin() ) {
 			$this->carts_page = new CartsPage();
 			$this->carts_page->register();
@@ -65,11 +70,9 @@ final class Plugin {
 			$this->settings_page->register();
 
 			( new Export() )->register();
+			Ajax::register();
 
 			add_filter( 'plugin_action_links_' . CATCODE_ABANDONED_CART_BASENAME, array( $this, 'action_links' ) );
-			add_action( 'admin_notices', array( $this, 'trial_notice' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_assets' ) );
-			add_action( 'wp_ajax_catcode_abandoned_cart_dismiss_trial', array( $this, 'dismiss_trial_notice' ) );
 		}
 	}
 
@@ -112,83 +115,6 @@ final class Plugin {
 				'nonce'    => wp_create_nonce( 'wp_rest' ),
 			)
 		);
-	}
-
-	/**
-	 * Script that persists the dismissal of the trial notice.
-	 */
-	public function admin_assets(): void {
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			return;
-		}
-
-		wp_enqueue_script(
-			'catcode-abandoned-cart-admin-notice',
-			CATCODE_ABANDONED_CART_URL . 'assets/js/admin-notice.js',
-			array(),
-			CATCODE_ABANDONED_CART_VERSION,
-			true
-		);
-		wp_localize_script(
-			'catcode-abandoned-cart-admin-notice',
-			'catcodeAbandonedCartNotice',
-			array(
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'catcode_abandoned_cart_dismiss_trial' ),
-			)
-		);
-	}
-
-	/**
-	 * Admin notice announcing the automatic 7-day Pro free trial.
-	 */
-	public function trial_notice(): void {
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			return;
-		}
-
-		// Only on this plugin's own screens, so the notice never stacks on
-		// unrelated admin pages.
-		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
-		$id     = $screen ? (string) $screen->id : '';
-		if ( false === strpos( $id, CartsPage::SLUG ) && false === strpos( $id, SettingsPage::SLUG ) ) {
-			return;
-		}
-
-		if ( License::has_license() ) {
-			return;
-		}
-		if ( get_user_meta( get_current_user_id(), 'catcode_abandoned_cart_trial_notice_off', true ) ) {
-			return;
-		}
-
-		if ( License::trial_active() ) {
-			$message = sprintf(
-				/* translators: %d: number of days left in the free Pro trial. */
-				__( '<strong>Abandoned Cart Recovery:</strong> all Pro features (up to three reminder e-mails, personal coupons, Telegram notifications, CSV export) are unlocked <strong>free for %d more days</strong>. When the trial ends the free tier keeps working and Pro stays available with a licence.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
-				License::trial_days_left()
-			);
-			$class = 'notice-info';
-		} else {
-			$message = __( '<strong>Abandoned Cart Recovery:</strong> the free Pro trial has ended — the free tier keeps working. Activate a licence to bring the Pro features back.', 'catcode-abandoned-cart-recovery-for-woocommerce' );
-			$class   = 'notice-warning';
-		}
-
-		$buy = 'https://catcode.com.ua/modules/catcode-abandoned-cart-recovery-for-woocommerce/';
-
-		echo '<div class="notice ' . esc_attr( $class ) . ' is-dismissible" data-catcode-abandoned-cart-trial="1"><p>'
-			. wp_kses_post( $message )
-			. ' <a href="' . esc_url( $buy ) . '" target="_blank" rel="noopener">'
-			. esc_html__( 'Get a Pro licence →', 'catcode-abandoned-cart-recovery-for-woocommerce' )
-			. '</a></p></div>';
-	}
-
-	public function dismiss_trial_notice(): void {
-		check_ajax_referer( 'catcode_abandoned_cart_dismiss_trial' );
-		if ( current_user_can( 'manage_woocommerce' ) ) {
-			update_user_meta( get_current_user_id(), 'catcode_abandoned_cart_trial_notice_off', 1 );
-		}
-		wp_die();
 	}
 
 	/**
