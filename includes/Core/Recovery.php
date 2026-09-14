@@ -42,7 +42,7 @@ class Recovery {
 		$hash = hash( 'sha256', $token );
 		$row  = Repository::find_by_token_hash( $hash );
 
-		if ( ! $row || ! hash_equals( (string) $row['token_hash'], $hash ) ) {
+		if ( ! $row || ! ( hash_equals( (string) $row['token_hash'], $hash ) || hash_equals( (string) $row['msg_token_hash'], $hash ) ) ) {
 			self::notice( __( 'This recovery link is no longer valid.', 'catcode-abandoned-cart-recovery-for-woocommerce' ), 'error' );
 			self::redirect_clean();
 			return;
@@ -50,14 +50,7 @@ class Recovery {
 
 		$expires = (string) $row['token_expires_at'];
 		if ( '' === $expires || strtotime( $expires ) < Repository::now() ) {
-			Repository::update(
-				(int) $row['id'],
-				array(
-					'token_hash'       => '',
-					'token_expires_at' => null,
-				),
-				array( '%s', '%s' )
-			);
+			self::burn_tokens( (int) $row['id'] );
 			self::notice( __( 'This recovery link has expired.', 'catcode-abandoned-cart-recovery-for-woocommerce' ), 'error' );
 			self::redirect_clean();
 			return;
@@ -65,15 +58,9 @@ class Recovery {
 
 		$restored = self::restore_cart( $row );
 
-		// One-time token: burn it whether or not every line item survived.
-		Repository::update(
-			(int) $row['id'],
-			array(
-				'token_hash'       => '',
-				'token_expires_at' => null,
-			),
-			array( '%s', '%s' )
-		);
+		// One-time token: burn it (and its e-mail / message twin) whether or not
+		// every line item survived.
+		self::burn_tokens( (int) $row['id'] );
 
 		if ( $restored > 0 ) {
 			self::adopt_identity( $row );
@@ -140,21 +127,47 @@ class Recovery {
 	 *
 	 * @param array<string,mixed> $row Cart row.
 	 */
+	private static function burn_tokens( int $id ): void {
+		Repository::update(
+			$id,
+			array(
+				'token_hash'       => '',
+				'msg_token_hash'   => '',
+				'token_expires_at' => null,
+			),
+			array( '%s', '%s', '%s' )
+		);
+	}
+
 	private static function adopt_identity( array $row ): void {
 		$email = sanitize_email( (string) $row['email'] );
-		if ( '' === $email || ! is_email( $email ) ) {
+		$email = ( '' !== $email && is_email( $email ) ) ? $email : '';
+		$phone = (string) ( $row['phone'] ?? '' );
+		if ( '' === $email && '' === $phone ) {
 			return;
 		}
 
 		if ( WC()->session ) {
-			WC()->session->set( Capture::SESSION_EMAIL, $email );
+			if ( '' !== $email ) {
+				WC()->session->set( Capture::SESSION_EMAIL, $email );
+			}
+			if ( '' !== $phone ) {
+				WC()->session->set( Capture::SESSION_PHONE, $phone );
+			}
 			if ( '' !== (string) $row['customer_name'] ) {
 				WC()->session->set( Capture::SESSION_NAME, (string) $row['customer_name'] );
 			}
 		}
 
 		if ( WC()->customer && ! is_user_logged_in() ) {
-			WC()->customer->set_billing_email( $email );
+			if ( '' !== $email ) {
+				WC()->customer->set_billing_email( $email );
+			}
+			if ( '' !== $phone ) {
+				// The block checkout shows the phone inside the shipping address.
+				WC()->customer->set_billing_phone( '+' . $phone );
+				WC()->customer->set_shipping_phone( '+' . $phone );
+			}
 
 			$name = trim( (string) $row['customer_name'] );
 			if ( '' !== $name ) {

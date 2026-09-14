@@ -282,9 +282,14 @@ class Telegram {
 
 		$lines = array(
 			'🛒 <b>' . esc_html__( 'Abandoned cart', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</b>',
-			esc_html__( 'E-mail:', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' ' . $cart['email'],
-			esc_html__( 'Total:', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' ' . $cart['cart_total'] . ' ' . $cart['currency'],
 		);
+		if ( '' !== (string) $cart['email'] ) {
+			$lines[] = esc_html__( 'E-mail:', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' ' . esc_html( (string) $cart['email'] );
+		}
+		if ( ! empty( $cart['phone'] ) ) {
+			$lines[] = esc_html__( 'Phone:', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' +' . esc_html( (string) $cart['phone'] );
+		}
+		$lines[] = esc_html__( 'Total:', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' ' . $cart['cart_total'] . ' ' . $cart['currency'];
 		if ( '' !== (string) $cart['customer_name'] ) {
 			$lines[] = esc_html__( 'Customer:', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' ' . $cart['customer_name'];
 		}

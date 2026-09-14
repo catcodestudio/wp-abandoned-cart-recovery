@@ -21,6 +21,7 @@ Records carts that never became an order and brings the shopper back with a remi
 
 - Chain of up to **three reminder e-mails**, each with its own delay, subject and body.
 - **Personal discount coupon** — a real single-use WooCommerce coupon limited to the shopper's e-mail, percentage or fixed, with its own expiry.
+- **Viber / SMS reminder** through TurboSMS: one message per cart with its own recovery link, also for guests who left only a phone; Viber with SMS fallback, quiet hours, balance check and test message.
 - **Telegram notification** the moment a cart is marked abandoned. "Connect bot" registers a Telegram webhook with a `secret_token`; the shop owner sends `/start` and the chat ID is saved by itself.
 - **CSV export** of the cart list.
 
@@ -32,7 +33,7 @@ WooCommerce 7.0+, WordPress 6.2+, PHP 7.4+, and a working WP-Cron (or a system c
 
 ## External services
 
-None in the free tier. With Telegram notifications enabled the plugin talks to `api.telegram.org` and nothing else.
+None in the free tier. With Telegram notifications enabled the plugin talks to `api.telegram.org`; with the Viber/SMS reminder enabled, to `api.turbosms.ua`. Nothing else.
 
 ## Licence
 

@@ -13,6 +13,9 @@
 
 namespace CatCode\AbandonedCart\Core;
 
+use CatCode\AbandonedCart\Pro\Messenger;
+use CatCode\AbandonedCart\Pro\TurboSms;
+
 defined( 'ABSPATH' ) || exit;
 
 class Capture {
@@ -20,6 +23,9 @@ class Capture {
 	/** WooCommerce session key holding the e-mail a guest typed at checkout. */
 	public const SESSION_EMAIL = 'catcode_abandoned_cart_email';
 	public const SESSION_NAME = 'catcode_abandoned_cart_name';
+
+	/** The phone a guest typed — only kept while the Pro Viber/SMS reminder is on. */
+	public const SESSION_PHONE = 'catcode_abandoned_cart_phone';
 
 	/** Throttle marker for the idle-browsing refresh. */
 	public const SESSION_TOUCHED = 'catcode_abandoned_cart_touched';
@@ -80,6 +86,29 @@ class Capture {
 		self::store();
 	}
 
+	/**
+	 * Remember the phone a shopper typed, then persist the cart.
+	 *
+	 * Ignored unless the Viber/SMS reminder is switched on: a phone we would
+	 * never text is personal data with no purpose.
+	 */
+	public static function remember_phone( string $phone, string $name = '' ): void {
+		if ( ! Messenger::is_enabled() ) {
+			return;
+		}
+		$phone = TurboSms::normalise_phone( $phone );
+		if ( '' === $phone ) {
+			return;
+		}
+		if ( function_exists( 'WC' ) && WC()->session ) {
+			WC()->session->set( self::SESSION_PHONE, $phone );
+			if ( '' !== $name ) {
+				WC()->session->set( self::SESSION_NAME, sanitize_text_field( $name ) );
+			}
+		}
+		self::store();
+	}
+
 	public function on_order_review( $post_data ): void {
 		if ( ! is_string( $post_data ) ) {
 			return;
@@ -87,15 +116,25 @@ class Capture {
 		$parsed = array();
 		parse_str( $post_data, $parsed );
 
+		$first = isset( $parsed['billing_first_name'] ) ? sanitize_text_field( (string) $parsed['billing_first_name'] ) : '';
+		$last  = isset( $parsed['billing_last_name'] ) ? sanitize_text_field( (string) $parsed['billing_last_name'] ) : '';
+		$name  = trim( $first . ' ' . $last );
+
+		$phone = isset( $parsed['billing_phone'] ) ? sanitize_text_field( (string) $parsed['billing_phone'] ) : '';
+		if ( '' !== $phone && Messenger::is_enabled() && '' !== TurboSms::normalise_phone( $phone ) && function_exists( 'WC' ) && WC()->session ) {
+			// Only set here; remember_email() / store() below writes the row once.
+			WC()->session->set( self::SESSION_PHONE, TurboSms::normalise_phone( $phone ) );
+		}
+
 		$email = isset( $parsed['billing_email'] ) ? sanitize_email( (string) $parsed['billing_email'] ) : '';
 		if ( '' === $email || ! is_email( $email ) ) {
+			if ( '' !== $phone ) {
+				self::remember_phone( $phone, $name );
+			}
 			return;
 		}
 
-		$first = isset( $parsed['billing_first_name'] ) ? sanitize_text_field( (string) $parsed['billing_first_name'] ) : '';
-		$last  = isset( $parsed['billing_last_name'] ) ? sanitize_text_field( (string) $parsed['billing_last_name'] ) : '';
-
-		self::remember_email( $email, trim( $first . ' ' . $last ) );
+		self::remember_email( $email, $name );
 	}
 
 	public function sync(): void {
@@ -161,9 +200,17 @@ class Capture {
 			$name = $session_name;
 		}
 
-		// Guests without an e-mail are not recorded at all — nothing to store,
-		// nothing to recover, no personal data collected.
-		if ( '' === $email ) {
+		$phone = '';
+		if ( Messenger::is_enabled() ) {
+			$phone = (string) $wc->session->get( self::SESSION_PHONE, '' );
+			if ( '' === $phone && $user_id > 0 ) {
+				$phone = TurboSms::normalise_phone( (string) get_user_meta( $user_id, 'billing_phone', true ) );
+			}
+		}
+
+		// Guests without an e-mail or (with Viber/SMS on) a phone are not recorded
+		// at all — nothing to store, nothing to recover, no personal data collected.
+		if ( '' === $email && '' === $phone ) {
 			return;
 		}
 
@@ -191,6 +238,7 @@ class Capture {
 				'user_id'       => $user_id,
 				'email'         => $email,
 				'customer_name' => $name,
+				'phone'         => $phone,
 				'cart_contents' => wp_json_encode( $items ),
 				'cart_total'    => $total,
 				'currency'      => get_woocommerce_currency(),
@@ -283,12 +331,13 @@ class Capture {
 		}
 
 		$email   = sanitize_email( (string) $order->get_billing_email() );
+		$phone   = TurboSms::normalise_phone( (string) $order->get_billing_phone() );
 		$user_id = (int) $order->get_customer_id();
-		if ( '' === $email && $user_id < 1 ) {
+		if ( '' === $email && '' === $phone && $user_id < 1 ) {
 			return;
 		}
 
-		foreach ( Repository::open_for_customer( $email, $user_id ) as $row ) {
+		foreach ( Repository::open_for_customer( $email, $user_id, $phone ) as $row ) {
 			Repository::update(
 				(int) $row['id'],
 				array(
@@ -297,9 +346,10 @@ class Capture {
 					'recovered_total'    => (float) $order->get_total(),
 					'recovered_at'       => current_time( 'mysql' ),
 					'token_hash'         => '',
+					'msg_token_hash'     => '',
 					'token_expires_at'   => null,
 				),
-				array( '%s', '%d', '%f', '%s', '%s', '%s' )
+				array( '%s', '%d', '%f', '%s', '%s', '%s', '%s' )
 			);
 
 			/**
@@ -315,6 +365,7 @@ class Capture {
 		if ( function_exists( 'WC' ) && WC()->session ) {
 			WC()->session->set( self::SESSION_EMAIL, '' );
 			WC()->session->set( self::SESSION_NAME, '' );
+			WC()->session->set( self::SESSION_PHONE, '' );
 		}
 	}
 }

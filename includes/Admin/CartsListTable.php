@@ -133,7 +133,10 @@ class CartsListTable extends \WP_List_Table {
 	 */
 	public function column_email( $item ): string {
 		$name = trim( (string) $item['customer_name'] );
-		$out  = '<strong>' . esc_html( (string) $item['email'] ) . '</strong>';
+		$out  = '<strong>' . esc_html( '' !== (string) $item['email'] ? (string) $item['email'] : '—' ) . '</strong>';
+		if ( ! empty( $item['phone'] ) ) {
+			$out .= '<br>+' . esc_html( (string) $item['phone'] );
+		}
 		if ( '' !== $name ) {
 			$out .= '<br><span class="description">' . esc_html( $name ) . '</span>';
 		}
@@ -215,6 +218,9 @@ class CartsListTable extends \WP_List_Table {
 		}
 		if ( ! empty( $item['coupon_code'] ) ) {
 			$out .= '<br><code>' . esc_html( (string) $item['coupon_code'] ) . '</code>';
+		}
+		if ( ! empty( $item['msg_status'] ) ) {
+			$out .= '<br><span class="description">Viber/SMS: ' . esc_html( (string) $item['msg_status'] ) . '</span>';
 		}
 		return $out;
 	}

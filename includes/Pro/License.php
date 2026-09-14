@@ -110,6 +110,12 @@ class License {
 
 	/** Valid licence (or still inside the offline grace period)? */
 	public static function is_pro(): bool {
+		// A purchase, once confirmed, is confirmed for good. The flag is only ever
+		// written after the server blessed a non-trial key, and only cleared when the
+		// owner detaches the licence themselves.
+		if ( self::is_owned() ) {
+			return true;
+		}
 		if ( 'valid' !== (string) Settings::get( 'license_status', '' ) ) {
 			return false;
 		}
@@ -117,10 +123,45 @@ class License {
 		if ( '' === $checked_at ) {
 			return false;
 		}
+		// A trial also has to be inside its own window: the grace period below is for
+		// paying customers, not for a trial stretched by cutting off the network.
+		if ( self::is_trial_key() && self::days_left() < 1 ) {
+			return false;
+		}
 		// Both sides in UTC: checked_at is written with gmdate(), so comparing
 		// against time() cannot drift by the site's timezone offset.
 		$delta = ( time() - (int) strtotime( $checked_at . ' UTC' ) ) / DAY_IN_SECONDS;
 		return $delta <= self::GRACE_DAYS;
+	}
+
+	/** A confirmed purchase — the features stay on even after the term lapses. */
+	public static function is_owned(): bool {
+		return '1' === (string) Settings::get( 'license_owned', '' );
+	}
+
+	/** The stored key came from the trial endpoint rather than from a purchase. */
+	public static function is_trial_key(): bool {
+		return 'trial' === (string) Settings::get( 'license_kind', '' );
+	}
+
+	/**
+	 * Are updates and support still covered?
+	 *
+	 * Separate from is_pro() on purpose: after an annual term ends the plugin keeps
+	 * working, but the shop is no longer entitled to new versions.
+	 */
+	public static function updates_active(): bool {
+		if ( self::is_trial_key() ) {
+			return self::days_left() > 0;
+		}
+		if ( ! self::has_license() ) {
+			return false;
+		}
+		$expires = (string) Settings::get( 'license_expires_at', '' );
+		if ( '' === $expires ) {
+			return 'valid' === (string) Settings::get( 'license_status', '' );
+		}
+		return (int) strtotime( $expires . ' UTC' ) >= time();
 	}
 
 	/** Status line for the settings screen. */

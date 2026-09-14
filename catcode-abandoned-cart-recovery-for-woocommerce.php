@@ -3,7 +3,7 @@
  * Plugin Name: CatCode Abandoned Cart Recovery for WooCommerce
  * Plugin URI: https://catcode.com.ua/modules/catcode-abandoned-cart-recovery-for-woocommerce/
  * Description: Captures abandoned WooCommerce carts and wins them back with a reminder email containing a one-click recovery link. Cart list with statistics, configurable timings and templates.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Requires at least: 6.2
  * Requires PHP: 7.4
  * Requires Plugins: woocommerce
@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 // Per-constant guards keep WP's activation sandbox-scrape (which includes this
 // file twice) from emitting "already defined" warnings — without ever skipping
 // the include/hook registration below.
-defined( 'CATCODE_ABANDONED_CART_VERSION' ) || define( 'CATCODE_ABANDONED_CART_VERSION', '1.1.0' );
+defined( 'CATCODE_ABANDONED_CART_VERSION' ) || define( 'CATCODE_ABANDONED_CART_VERSION', '1.2.0' );
 defined( 'CATCODE_ABANDONED_CART_FILE' ) || define( 'CATCODE_ABANDONED_CART_FILE', __FILE__ );
 defined( 'CATCODE_ABANDONED_CART_DIR' ) || define( 'CATCODE_ABANDONED_CART_DIR', plugin_dir_path( __FILE__ ) );
 defined( 'CATCODE_ABANDONED_CART_URL' ) || define( 'CATCODE_ABANDONED_CART_URL', plugin_dir_url( __FILE__ ) );
@@ -42,6 +42,8 @@ foreach (
 		'includes/Pro/Telegram.php',
 		'includes/Pro/Coupons.php',
 		'includes/Pro/Export.php',
+		'includes/Pro/TurboSms.php',
+		'includes/Pro/Messenger.php',
 		'includes/Core/Capture.php',
 		'includes/Core/Mailer.php',
 		'includes/Core/Recovery.php',

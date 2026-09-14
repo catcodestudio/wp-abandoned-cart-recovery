@@ -8,6 +8,7 @@
 namespace CatCode\AbandonedCart\Core;
 
 use CatCode\AbandonedCart\Pro\License;
+use CatCode\AbandonedCart\Pro\Messenger;
 use CatCode\AbandonedCart\Pro\Telegram;
 
 defined( 'ABSPATH' ) || exit;
@@ -88,6 +89,7 @@ class Cron {
 	public function scan(): void {
 		$this->promote_idle();
 		$this->send_due();
+		Messenger::send_due();
 	}
 
 	private function promote_idle(): void {

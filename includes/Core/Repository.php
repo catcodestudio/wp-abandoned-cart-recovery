@@ -50,21 +50,25 @@ class Repository {
 			'user_id'       => isset( $data['user_id'] ) ? (int) $data['user_id'] : 0,
 			'email'         => isset( $data['email'] ) ? (string) $data['email'] : '',
 			'customer_name' => isset( $data['customer_name'] ) ? (string) $data['customer_name'] : '',
+			'phone'         => isset( $data['phone'] ) ? (string) $data['phone'] : '',
 			'cart_contents' => isset( $data['cart_contents'] ) ? (string) $data['cart_contents'] : '',
 			'cart_total'    => isset( $data['cart_total'] ) ? (float) $data['cart_total'] : 0,
 			'currency'      => isset( $data['currency'] ) ? (string) $data['currency'] : '',
 			'item_count'    => isset( $data['item_count'] ) ? (int) $data['item_count'] : 0,
 			'updated_at'    => $now,
 		);
-		$formats = array( '%d', '%s', '%s', '%s', '%f', '%s', '%d', '%s' );
+		$formats = array( '%d', '%s', '%s', '%s', '%s', '%f', '%s', '%d', '%s' );
 
 		if ( $row ) {
-			// Never overwrite a known e-mail with an empty one.
+			// Never overwrite a known e-mail, name or phone with an empty one.
 			if ( '' === $fields['email'] ) {
 				$fields['email'] = (string) $row['email'];
 			}
 			if ( '' === $fields['customer_name'] ) {
 				$fields['customer_name'] = (string) $row['customer_name'];
+			}
+			if ( '' === $fields['phone'] ) {
+				$fields['phone'] = (string) $row['phone'];
 			}
 			// A shopper who is active again leaves the abandoned queue.
 			if ( self::STATUS_ABANDONED === $row['status'] ) {
@@ -118,15 +122,19 @@ class Repository {
 	}
 
 	/**
-	 * Look the cart up by the hash of a recovery token.
+	 * Look the cart up by the hash of a recovery token — the e-mail one or the
+	 * one issued for the Viber/SMS message.
 	 *
 	 * @return array<string,mixed>|null
 	 */
 	public static function find_by_token_hash( string $hash ): ?array {
+		if ( '' === $hash ) {
+			return null;
+		}
 		global $wpdb;
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table.
 		$row = $wpdb->get_row(
-			$wpdb->prepare( 'SELECT * FROM %i WHERE token_hash = %s LIMIT 1', self::table(), $hash ),
+			$wpdb->prepare( 'SELECT * FROM %i WHERE token_hash = %s OR msg_token_hash = %s LIMIT 1', self::table(), $hash, $hash ),
 			ARRAY_A
 		);
 		return is_array( $row ) ? $row : null;
@@ -162,9 +170,10 @@ class Repository {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table.
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT * FROM %i WHERE status = %s AND email <> %s AND updated_at < %s ORDER BY updated_at ASC LIMIT %d',
+				'SELECT * FROM %i WHERE status = %s AND ( email <> %s OR phone <> %s ) AND updated_at < %s ORDER BY updated_at ASC LIMIT %d',
 				self::table(),
 				self::STATUS_ACTIVE,
+				'',
 				'',
 				$cutoff,
 				max( 1, $limit )
@@ -197,6 +206,47 @@ class Repository {
 	}
 
 	/**
+	 * Abandoned carts with a phone that have not had their Viber/SMS reminder yet.
+	 *
+	 * @return array<int,array<string,mixed>>
+	 */
+	public static function pending_messages( int $limit = 50 ): array {
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table.
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT * FROM %i WHERE status = %s AND phone <> %s AND msg_sent = 0 AND abandoned_at IS NOT NULL ORDER BY abandoned_at ASC LIMIT %d',
+				self::table(),
+				self::STATUS_ABANDONED,
+				'',
+				max( 1, $limit )
+			),
+			ARRAY_A
+		);
+		return is_array( $rows ) ? $rows : array();
+	}
+
+	/** Throttle for texts: was this number messaged within the last $days days? */
+	public static function messaged_recently( string $phone, int $days, int $exclude_id = 0 ): bool {
+		if ( $days < 1 || '' === $phone ) {
+			return false;
+		}
+		global $wpdb;
+		$cutoff = gmdate( 'Y-m-d H:i:s', self::now() - ( $days * DAY_IN_SECONDS ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table.
+		$found = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT COUNT(*) FROM %i WHERE phone = %s AND id <> %d AND last_msg_at IS NOT NULL AND last_msg_at > %s',
+				self::table(),
+				$phone,
+				$exclude_id,
+				$cutoff
+			)
+		);
+		return $found > 0;
+	}
+
+	/**
 	 * Has this address been mailed by us within the last $days days?
 	 *
 	 * Guards against spamming a shopper who abandons repeatedly.
@@ -226,19 +276,22 @@ class Repository {
 	 *
 	 * @return array<int,array<string,mixed>>
 	 */
-	public static function open_for_customer( string $email, int $user_id ): array {
+	public static function open_for_customer( string $email, int $user_id, string $phone = '' ): array {
 		global $wpdb;
 		$statuses = array( self::STATUS_ACTIVE, self::STATUS_ABANDONED );
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table.
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT * FROM %i WHERE status IN ( %s, %s ) AND ( ( %s <> %s AND email = %s ) OR ( %d > 0 AND user_id = %d ) ) LIMIT 50',
+				'SELECT * FROM %i WHERE status IN ( %s, %s ) AND ( ( %s <> %s AND email = %s ) OR ( %s <> %s AND phone = %s ) OR ( %d > 0 AND user_id = %d ) ) LIMIT 50',
 				self::table(),
 				$statuses[0],
 				$statuses[1],
 				$email,
 				'',
 				$email,
+				$phone,
+				'',
+				$phone,
 				$user_id,
 				$user_id
 			),
@@ -270,7 +323,8 @@ class Repository {
 			$params[] = $status;
 		}
 		if ( '' !== $search ) {
-			$where   .= ' AND email LIKE %s';
+			$where   .= ' AND ( email LIKE %s OR phone LIKE %s )';
+			$params[] = '%' . $wpdb->esc_like( $search ) . '%';
 			$params[] = '%' . $wpdb->esc_like( $search ) . '%';
 		}
 
@@ -363,9 +417,10 @@ class Repository {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table.
 		return (int) $wpdb->query(
 			$wpdb->prepare(
-				'UPDATE %i SET status = %s, token_hash = %s, token_expires_at = NULL WHERE status = %s AND abandoned_at IS NOT NULL AND abandoned_at < %s',
+				'UPDATE %i SET status = %s, token_hash = %s, msg_token_hash = %s, token_expires_at = NULL WHERE status = %s AND abandoned_at IS NOT NULL AND abandoned_at < %s',
 				self::table(),
 				self::STATUS_LOST,
+				'',
 				'',
 				self::STATUS_ABANDONED,
 				$cutoff
@@ -423,6 +478,26 @@ class Repository {
 			$id,
 			array(
 				'token_hash'       => hash( 'sha256', $token ),
+				'token_expires_at' => gmdate( 'Y-m-d H:i:s', self::now() + ( max( 1, $lifetime_days ) * DAY_IN_SECONDS ) ),
+			),
+			array( '%s', '%s' )
+		);
+		return $token;
+	}
+
+	/**
+	 * Token for the Viber/SMS link. Stored apart from the e-mail token so a later
+	 * reminder e-mail does not kill the link already sitting in the messenger;
+	 * 24 hex characters keep the SMS short.
+	 *
+	 * @return string Plaintext token.
+	 */
+	public static function issue_message_token( int $id, int $lifetime_days ): string {
+		$token = bin2hex( random_bytes( 12 ) );
+		self::update(
+			$id,
+			array(
+				'msg_token_hash'   => hash( 'sha256', $token ),
 				'token_expires_at' => gmdate( 'Y-m-d H:i:s', self::now() + ( max( 1, $lifetime_days ) * DAY_IN_SECONDS ) ),
 			),
 			array( '%s', '%s' )

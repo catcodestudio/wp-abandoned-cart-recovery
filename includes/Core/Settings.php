@@ -52,6 +52,17 @@ class Settings {
 			'telegram_bot_token' => '',
 			'telegram_chat_id'   => '',
 
+			// Pro: one Viber / SMS reminder through TurboSMS for shoppers who left a phone.
+			'sms_enabled'        => 'no',
+			'turbosms_token'     => '',
+			'sms_channel'        => 'viber_sms', // viber_sms (Viber, SMS fallback) | viber | sms.
+			'sms_sender'         => '',
+			'viber_sender'       => '',
+			'sms_delay'          => 30,    // Minutes after abandonment.
+			'sms_text'           => '',    // Empty = Pro\Messenger::default_text().
+			'sms_quiet_from'     => 21,    // No texts from this hour…
+			'sms_quiet_to'       => 9,     // …until this hour (site timezone).
+
 			// Licensing (see Pro\License — the CatCode licence-server client).
 			'license_key'        => '',
 			'license_status'     => '',

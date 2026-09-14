@@ -12,6 +12,7 @@ use CatCode\AbandonedCart\Admin\CartsPage;
 use CatCode\AbandonedCart\Admin\Notice;
 use CatCode\AbandonedCart\Admin\SettingsPage;
 use CatCode\AbandonedCart\Pro\Export;
+use CatCode\AbandonedCart\Pro\Messenger;
 use CatCode\AbandonedCart\Pro\Telegram;
 
 defined( 'ABSPATH' ) || exit;
@@ -113,6 +114,8 @@ final class Plugin {
 			array(
 				'endpoint' => esc_url_raw( rest_url( Rest::REST_NAMESPACE . '/capture' ) ),
 				'nonce'    => wp_create_nonce( 'wp_rest' ),
+				// Phones are watched only while the Pro Viber/SMS reminder is on.
+				'phone'    => Messenger::is_enabled() ? '1' : '',
 			)
 		);
 	}

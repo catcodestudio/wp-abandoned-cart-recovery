@@ -32,9 +32,14 @@ class Rest {
 				'permission_callback' => '__return_true',
 				'args'                => array(
 					'email' => array(
-						'required'          => true,
+						'required'          => false,
 						'type'              => 'string',
 						'sanitize_callback' => 'sanitize_email',
+					),
+					'phone' => array(
+						'required'          => false,
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
 					),
 					'name'  => array(
 						'required'          => false,
@@ -61,7 +66,10 @@ class Rest {
 		}
 
 		$email = sanitize_email( (string) $request->get_param( 'email' ) );
-		if ( '' === $email || ! is_email( $email ) ) {
+		$email = ( '' !== $email && is_email( $email ) ) ? $email : '';
+		$phone = sanitize_text_field( (string) $request->get_param( 'phone' ) );
+
+		if ( '' === $email && '' === $phone ) {
 			return new \WP_Error(
 				'catcode_abandoned_cart_bad_email',
 				__( 'A valid e-mail address is required.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
@@ -77,7 +85,12 @@ class Rest {
 			wc_load_cart();
 		}
 
-		Capture::remember_email( $email, $name );
+		if ( '' !== $phone ) {
+			Capture::remember_phone( $phone, $name );
+		}
+		if ( '' !== $email ) {
+			Capture::remember_email( $email, $name );
+		}
 
 		return new \WP_REST_Response( array( 'captured' => true ), 200 );
 	}

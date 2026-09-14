@@ -4,7 +4,7 @@ Tags: woocommerce, abandoned cart, cart recovery, email, ecommerce
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,7 @@ Most shoppers who fill a cart never reach the "thank you" page. This plugin reco
 
 * A chain of up to three reminder emails, each with its own delay, subject and body
 * Automatic personal discount coupon inserted into the second and third emails — a single-use WooCommerce coupon restricted to the shopper's email address, percentage or fixed amount, with its own expiry
+* Viber or SMS reminder through TurboSMS (turbosms.ua) — one short message with the recovery link, also for shoppers who typed only a phone number at checkout; Viber with SMS fallback, quiet hours, balance check and a test message in the settings
 * Telegram notification to the shop owner the moment a cart is abandoned
 * CSV export of the captured carts
 
@@ -82,7 +83,11 @@ WooCommerce → Abandoned Cart Settings → Pro licence → "Try Pro for 7 days"
 
 = What happens when the Pro trial ends? =
 
-Nothing breaks. Cart capture, the first reminder email, recovery links, the cart list and the statistics keep working. Only the second and third emails, coupons, Telegram notifications and CSV export need a licence.
+Nothing breaks. Cart capture, the first reminder email, recovery links, the cart list and the statistics keep working. Only the second and third emails, coupons, Viber/SMS reminders, Telegram notifications and CSV export need a licence.
+
+= Can the reminder go to Viber instead of email? =
+
+Yes, in Pro. Connect a TurboSMS account (API token plus approved Viber and SMS sender names) under Abandoned Cart Settings → Viber / SMS reminder. The shopper gets exactly one message per cart, never at night (quiet hours are configurable), with a link that restores the cart. While the feature is off the plugin does not store phone numbers at all.
 
 = Will a customer receive several reminders for several carts? =
 
@@ -92,7 +97,7 @@ No. The "do not email the same address more often than once every N days" settin
 
 This plugin stores personal data of shoppers who did not complete an order, because a reminder cannot be sent without it.
 
-**What is stored:** the email address, the customer name (when known), the WordPress user id for logged-in customers, a snapshot of the cart contents (product name, quantity, price), the cart total and currency, the cart status, how many reminders were sent and when, and — with the Pro coupon feature — the generated coupon code. Recovery tokens are stored only as a SHA-256 hash.
+**What is stored:** the email address, the customer name (when known), the WordPress user id for logged-in customers, a snapshot of the cart contents (product name, quantity, price), the cart total and currency, the cart status, how many reminders were sent and when, — with the Pro coupon feature — the generated coupon code, and — only while the Pro Viber/SMS reminder is enabled — the phone number and the delivery status of that one message. Recovery tokens are stored only as a SHA-256 hash.
 
 **Where it is stored:** in the `{prefix}catcode_abandoned_carts` table in your own WordPress database. Nothing is sent to CatCode or to any other third party.
 
@@ -104,13 +109,22 @@ This plugin stores personal data of shoppers who did not complete an order, beca
 
 The free tier of this plugin contacts no external service whatsoever. All processing — capture, scanning, email sending through your own site's `wp_mail()` — happens on your server.
 
-The single optional exception is the Pro Telegram notification feature. When you enable it and enter a bot token and chat id, the plugin sends one request per abandoned cart to the Telegram Bot API:
+There are two optional exceptions, both Pro features that do nothing until you enable them and enter credentials.
+
+**Telegram notification.** When you enable it and enter a bot token and chat id, the plugin sends one request per abandoned cart to the Telegram Bot API:
 
 * `POST https://api.telegram.org/bot<token>/sendMessage` — fired when a cart is marked as abandoned by the scan.
 
 What is sent: your bot token and chat id, plus the abandoned cart summary — the shopper's email address, their name (when known), the product names and quantities in the cart, and the cart total and currency. Nothing is sent unless you explicitly enable the feature and supply the credentials; with the feature off, the plugin makes no outbound requests at all.
 
 This service is provided by Telegram: [terms of service](https://telegram.org/tos), [privacy policy](https://telegram.org/privacy).
+
+**Viber / SMS reminder.** When you enable it and enter a TurboSMS API token, the plugin talks to the TurboSMS API:
+
+* `POST https://api.turbosms.ua/message/send.json` — once per abandoned cart that has a phone number, after the delay you set, and when you press "Send test message".
+* `POST https://api.turbosms.ua/user/balance.json` — only when you press "Check connection and balance".
+
+What is sent: your API token, the sender names, the shopper's phone number and the message text (store name, cart total, item count, customer name if used in your template, and the recovery link). This service is provided by TurboSMS: [terms](https://turbosms.ua/rules.html), [privacy policy](https://turbosms.ua/privacy.html).
 
 == Screenshots ==
 
@@ -120,6 +134,10 @@ This service is provided by Telegram: [terms of service](https://telegram.org/to
 4. Settings: Pro coupon and Telegram notification sections
 
 == Changelog ==
+
+= 1.2.0 =
+* Pro: Viber / SMS reminder through TurboSMS. Shoppers who typed only a phone number at checkout are captured too (only while the feature is on); one message per cart with its own recovery link, Viber with SMS fallback, quiet hours, per-number cooldown, balance check and test message in the settings.
+* The cart list, CSV export and Telegram notification show the phone and the message status.
 
 = 1.1.0 =
 * Pro no longer switches itself on: a fresh install is the free version until you start the trial or activate a key.
@@ -133,6 +151,9 @@ This service is provided by Telegram: [terms of service](https://telegram.org/to
 * Pro: chain of up to three reminders, personal discount coupons, Telegram notifications, CSV export.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Adds the Pro Viber / SMS reminder. The database table gets five new columns automatically on update; nothing changes until you enable the feature.
 
 = 1.1.0 =
 The automatic 7-day Pro trial is gone. If you were inside it, the Pro features switch off on update and the free tier keeps running; start the trial yourself, or activate a licence key, from the settings screen.

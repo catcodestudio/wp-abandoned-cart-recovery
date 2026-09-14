@@ -9,7 +9,9 @@ namespace CatCode\AbandonedCart\Admin;
 
 use CatCode\AbandonedCart\Core\Settings;
 use CatCode\AbandonedCart\Pro\License;
+use CatCode\AbandonedCart\Pro\Messenger;
 use CatCode\AbandonedCart\Pro\Telegram;
+use CatCode\AbandonedCart\Pro\TurboSms;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -107,6 +109,7 @@ class SettingsPage {
 		$this->section_email( 2, $cfg, $is_pro );
 		$this->section_email( 3, $cfg, $is_pro );
 		$this->section_coupon( $cfg, $is_pro );
+		$this->section_sms( $cfg, $is_pro );
 		$this->section_telegram( $cfg, $is_pro );
 		$this->section_privacy( $cfg );
 		$this->section_license( $cfg );
@@ -243,12 +246,88 @@ class SettingsPage {
 	}
 
 	/**
+	 * Viber / SMS reminder through TurboSMS.
+	 *
+	 * @param array<string,mixed> $cfg Settings.
+	 */
+	private function section_sms( array $cfg, bool $available ): void {
+		$off = disabled( $available, false, false );
+
+		echo '<div class="catcode-abandoned-cart-card' . ( $available ? '' : ' catcode-abandoned-cart-locked' ) . '">';
+		echo '<h2>' . esc_html__( 'Viber / SMS reminder', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '<span class="catcode-abandoned-cart-badge">PRO</span></h2>';
+		echo '<p class="description">' . esc_html__( 'One short message with the recovery link through TurboSMS (turbosms.ua) — also for shoppers who typed only a phone number at checkout. One message per cart, never a chain; the e-mail reminders keep working as before.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		if ( ! $available ) {
+			echo '<p class="catcode-abandoned-cart-why">'
+				. esc_html__( 'Pro: many shoppers leave a phone and no e-mail — a Viber message reaches them where they actually read.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+				. '</p>';
+		}
+		echo '<table class="form-table" role="presentation">';
+
+		echo '<tr><th scope="row">' . esc_html__( 'Enabled', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</th><td>';
+		echo '<label><input type="checkbox" name="sms_enabled" value="yes"' . checked( 'yes' === $cfg['sms_enabled'], true, false ) . $off . '/> ';
+		echo esc_html__( 'Send a Viber / SMS reminder', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label>';
+		echo '<p class="description">' . esc_html__( 'While this is off the plugin does not store shoppers\' phone numbers at all.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		echo '</td></tr>';
+
+		echo '<tr><th scope="row"><label for="catcode-abandoned-cart-turbosms-token">' . esc_html__( 'TurboSMS API token', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label></th><td>';
+		echo '<input type="password" class="regular-text" id="catcode-abandoned-cart-turbosms-token" name="turbosms_token" value="' . esc_attr( (string) $cfg['turbosms_token'] ) . '" autocomplete="new-password"' . $off . '/>';
+		echo '<p class="description">' . esc_html__( 'TurboSMS cabinet → Settings → API (HTTP). Viber and SMS sender names are registered in the same cabinet.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		echo '</td></tr>';
+
+		$channels = array(
+			TurboSms::CHANNEL_HYBRID => __( 'Viber, SMS if Viber is not delivered', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+			TurboSms::CHANNEL_VIBER  => __( 'Viber only', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+			TurboSms::CHANNEL_SMS    => __( 'SMS only', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+		);
+		echo '<tr><th scope="row"><label for="catcode-abandoned-cart-sms-channel">' . esc_html__( 'Channel', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label></th><td>';
+		echo '<select id="catcode-abandoned-cart-sms-channel" name="sms_channel"' . $off . '>';
+		foreach ( $channels as $value => $label ) {
+			echo '<option value="' . esc_attr( $value ) . '"' . selected( $value, (string) $cfg['sms_channel'], false ) . '>' . esc_html( $label ) . '</option>';
+		}
+		echo '</select></td></tr>';
+
+		echo '<tr><th scope="row"><label for="catcode-abandoned-cart-viber-sender">' . esc_html__( 'Viber sender', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label></th><td>';
+		echo '<input type="text" class="regular-text" id="catcode-abandoned-cart-viber-sender" name="viber_sender" value="' . esc_attr( (string) $cfg['viber_sender'] ) . '"' . $off . '/>';
+		echo '</td></tr>';
+
+		echo '<tr><th scope="row"><label for="catcode-abandoned-cart-sms-sender">' . esc_html__( 'SMS sender (alpha name)', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label></th><td>';
+		echo '<input type="text" class="regular-text" id="catcode-abandoned-cart-sms-sender" name="sms_sender" value="' . esc_attr( (string) $cfg['sms_sender'] ) . '" maxlength="11"' . $off . '/>';
+		echo '</td></tr>';
+
+		$this->number_row( 'sms_delay', __( 'Send after abandonment', 'catcode-abandoned-cart-recovery-for-woocommerce' ), (int) $cfg['sms_delay'], '', __( 'minutes', 'catcode-abandoned-cart-recovery-for-woocommerce' ), ! $available );
+
+		echo '<tr><th scope="row">' . esc_html__( 'Quiet hours', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</th><td>';
+		echo esc_html__( 'from', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' <input type="number" class="small-text" name="sms_quiet_from" value="' . esc_attr( (string) (int) $cfg['sms_quiet_from'] ) . '" min="0" max="23" step="1"' . $off . '/> ';
+		echo esc_html__( 'to', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' <input type="number" class="small-text" name="sms_quiet_to" value="' . esc_attr( (string) (int) $cfg['sms_quiet_to'] ) . '" min="0" max="23" step="1"' . $off . '/>';
+		echo '<p class="description">' . esc_html__( 'Hours in the site timezone. Messages that fall due at night wait for the morning. Equal values switch the window off.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		echo '</td></tr>';
+
+		echo '<tr><th scope="row"><label for="catcode-abandoned-cart-sms-text">' . esc_html__( 'Message', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label></th><td>';
+		echo '<textarea id="catcode-abandoned-cart-sms-text" name="sms_text" rows="4" placeholder="' . esc_attr( Messenger::default_text() ) . '"' . $off . '>' . esc_textarea( (string) $cfg['sms_text'] ) . '</textarea>';
+		echo '<p class="description catcode-abandoned-cart-tokens">' . esc_html__( 'Placeholders:', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+			. ' <code>{customer_name}</code> <code>{store_name}</code> <code>{cart_total}</code> <code>{item_count}</code> <code>{recovery_link}</code></p>';
+		echo '<p class="description">' . esc_html__( 'Keep it short: every 70 Cyrillic characters is one more paid SMS part. Leave empty for the default text.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		echo '</td></tr>';
+
+		echo '<tr><th scope="row"><label for="catcode-abandoned-cart-sms-test-phone">' . esc_html__( 'Check', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label></th><td>';
+		echo '<button type="submit" class="button button-secondary" name="catcode_abandoned_cart_sms_action" value="balance"' . disabled( ! $available, true, false ) . '>'
+			. esc_html__( 'Check connection and balance', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</button>';
+		echo '<p><input type="tel" class="regular-text" id="catcode-abandoned-cart-sms-test-phone" name="catcode_abandoned_cart_sms_test_phone" placeholder="380XXXXXXXXX" autocomplete="off"' . $off . '/> ';
+		echo '<button type="submit" class="button button-secondary" name="catcode_abandoned_cart_sms_action" value="test"' . disabled( ! $available, true, false ) . '>'
+			. esc_html__( 'Send test message', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</button></p>';
+		echo '<p class="description">' . esc_html__( 'Both buttons save the settings first. The test message is a real, paid message.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		echo '</td></tr>';
+
+		echo '</table></div>';
+	}
+
+	/**
 	 * @param array<string,mixed> $cfg Settings.
 	 */
 	private function section_telegram( array $cfg, bool $available ): void {
 		echo '<div class="catcode-abandoned-cart-card' . ( $available ? '' : ' catcode-abandoned-cart-locked' ) . '">';
 		echo '<h2>' . esc_html__( 'Telegram notification', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '<span class="catcode-abandoned-cart-badge">PRO</span></h2>';
-		echo '<p class="description">' . esc_html__( 'Sends you a message the moment a cart is marked as abandoned. This is the only external service the plugin contacts.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Sends you a message the moment a cart is marked as abandoned.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
 		if ( ! $available ) {
 			echo '<p class="catcode-abandoned-cart-why">'
 				. esc_html__( 'Pro: you hear about an abandoned cart while the shopper is still around, and can call them back the same hour.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
@@ -326,7 +405,7 @@ class SettingsPage {
 	private function section_privacy( array $cfg ): void {
 		echo '<div class="catcode-abandoned-cart-card">';
 		echo '<h2>' . esc_html__( 'Data retention', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</h2>';
-		echo '<p class="description">' . esc_html__( 'The plugin stores the e-mail address, the name and the cart contents of shoppers who did not complete an order. Rows are deleted automatically once they are older than the retention period.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'The plugin stores the e-mail address (and, with the Viber/SMS reminder on, the phone), the name and the cart contents of shoppers who did not complete an order. Rows are deleted automatically once they are older than the retention period.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
 		echo '<table class="form-table" role="presentation">';
 		$this->number_row(
 			'retention_days',
@@ -363,7 +442,7 @@ class SettingsPage {
 			echo '<span class="catcode-abandoned-cart-status catcode-abandoned-cart-status--off">'
 				. esc_html__( 'Free version.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
 				. '</span> ';
-			echo esc_html__( 'The first reminder, the cart list and the statistics work without a licence. Pro adds reminders 2 and 3, personal coupons, Telegram alerts and CSV export.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' ';
+			echo esc_html__( 'The first reminder, the cart list and the statistics work without a licence. Pro adds reminders 2 and 3, personal coupons, Viber/SMS reminders, Telegram alerts and CSV export.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' ';
 		}
 		echo esc_html(
 			sprintf(
@@ -444,7 +523,7 @@ class SettingsPage {
 		echo '<div class="catcode-acr-modal__backdrop catcode-acr-modal-close"></div>';
 		echo '<div class="catcode-acr-modal__box" role="dialog" aria-modal="true" aria-labelledby="catcode-acr-modal-title">';
 		echo '<h2 id="catcode-acr-modal-title">' . esc_html__( 'Try Pro for 7 days', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</h2>';
-		echo '<p>' . esc_html__( 'Reminders 2 and 3, personal coupons, Telegram alerts and CSV export — free for 7 days. We e-mail you the key and switch Pro on right away.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		echo '<p>' . esc_html__( 'Reminders 2 and 3, personal coupons, Viber/SMS reminders, Telegram alerts and CSV export — free for 7 days. We e-mail you the key and switch Pro on right away.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
 		echo '<p><label for="catcode-acr-trial-email">' . esc_html__( 'Your e-mail', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label><br/>';
 		echo '<input type="email" class="regular-text" id="catcode-acr-trial-email" value="' . esc_attr( $email ) . '" autocomplete="email"/></p>';
 		echo '<p><button type="button" class="button button-primary" id="catcode-acr-trial-start">'
@@ -528,8 +607,20 @@ class SettingsPage {
 			$values['telegram_chat_id'] = ( '' === trim( $posted_chat ) && '' !== trim( (string) $current['telegram_chat_id'] ) )
 				? (string) $current['telegram_chat_id']
 				: $posted_chat;
+
+			$channel = isset( $_POST['sms_channel'] ) ? sanitize_key( wp_unslash( (string) $_POST['sms_channel'] ) ) : TurboSms::CHANNEL_HYBRID;
+
+			$values['sms_enabled']    = isset( $_POST['sms_enabled'] ) ? 'yes' : 'no';
+			$values['turbosms_token'] = trim( $this->post_text( 'turbosms_token', (string) $current['turbosms_token'] ) );
+			$values['sms_channel']    = in_array( $channel, TurboSms::channels(), true ) ? $channel : TurboSms::CHANNEL_HYBRID;
+			$values['sms_sender']     = trim( $this->post_text( 'sms_sender', (string) $current['sms_sender'] ) );
+			$values['viber_sender']   = trim( $this->post_text( 'viber_sender', (string) $current['viber_sender'] ) );
+			$values['sms_delay']      = $this->post_int( 'sms_delay', (int) $current['sms_delay'], 1 );
+			$values['sms_quiet_from'] = min( 23, $this->post_int( 'sms_quiet_from', (int) $current['sms_quiet_from'], 0 ) );
+			$values['sms_quiet_to']   = min( 23, $this->post_int( 'sms_quiet_to', (int) $current['sms_quiet_to'], 0 ) );
+			$values['sms_text']       = trim( $this->post_textarea( 'sms_text', (string) $current['sms_text'] ) );
 		} else {
-			foreach ( array( 'coupon_enabled', 'coupon_type', 'coupon_amount', 'coupon_from_email', 'coupon_expiry_days', 'telegram_enabled', 'telegram_bot_token', 'telegram_chat_id' ) as $key ) {
+			foreach ( array( 'coupon_enabled', 'coupon_type', 'coupon_amount', 'coupon_from_email', 'coupon_expiry_days', 'telegram_enabled', 'telegram_bot_token', 'telegram_chat_id', 'sms_enabled', 'turbosms_token', 'sms_channel', 'sms_sender', 'viber_sender', 'sms_delay', 'sms_quiet_from', 'sms_quiet_to', 'sms_text' ) as $key ) {
 				$values[ $key ] = $current[ $key ];
 			}
 		}
@@ -553,6 +644,16 @@ class SettingsPage {
 			$message = $result['message'];
 		}
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified by check_admin_referer() above.
+		$sms_action = isset( $_POST['catcode_abandoned_cart_sms_action'] )
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			? sanitize_key( wp_unslash( (string) $_POST['catcode_abandoned_cart_sms_action'] ) )
+			: '';
+
+		if ( $is_pro && in_array( $sms_action, array( 'balance', 'test' ), true ) ) {
+			list( $status, $message ) = 'balance' === $sms_action ? $this->sms_balance() : $this->sms_test();
+		}
+
 		wp_safe_redirect(
 			add_query_arg(
 				array(
@@ -566,6 +667,86 @@ class SettingsPage {
 			)
 		);
 		exit;
+	}
+
+	/** @return array{0:string,1:string} Status and message for the flash notice. */
+	private function sms_balance(): array {
+		$api    = new TurboSms( (string) Settings::get( 'turbosms_token', '' ) );
+		$result = $api->balance();
+
+		if ( ! $result['ok'] ) {
+			return array(
+				'error',
+				sprintf(
+					/* translators: 1: TurboSMS status code, 2: status text. */
+					__( 'TurboSMS refused the connection: %1$d %2$s. Check the API token.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+					$result['code'],
+					$result['status']
+				),
+			);
+		}
+
+		return array(
+			'ok',
+			sprintf(
+				/* translators: %s: account balance. */
+				__( 'TurboSMS connected. Balance: %s UAH.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+				number_format_i18n( $result['balance'], 2 )
+			),
+		);
+	}
+
+	/** @return array{0:string,1:string} Status and message for the flash notice. */
+	private function sms_test(): array {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified in handle_save().
+		$raw   = isset( $_POST['catcode_abandoned_cart_sms_test_phone'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['catcode_abandoned_cart_sms_test_phone'] ) ) : '';
+		$phone = TurboSms::normalise_phone( $raw );
+		if ( '' === $phone ) {
+			return array( 'error', __( 'Enter a Ukrainian phone number for the test message, e.g. 380XXXXXXXXX.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) );
+		}
+
+		$template = trim( (string) Settings::get( 'sms_text', '' ) );
+		$text     = strtr(
+			'' !== $template ? $template : Messenger::default_text(),
+			array(
+				'{customer_name}' => __( 'Test', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+				'{store_name}'    => wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
+				'{cart_total}'    => html_entity_decode( wp_strip_all_tags( wc_price( 1000 ) ), ENT_QUOTES, 'UTF-8' ),
+				'{item_count}'    => '2',
+				'{recovery_link}' => function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/' ),
+				'{coupon_code}'   => '',
+			)
+		);
+
+		$api    = new TurboSms( (string) Settings::get( 'turbosms_token', '' ) );
+		$result = $api->send(
+			$phone,
+			$text,
+			Messenger::channel(),
+			trim( (string) Settings::get( 'sms_sender', '' ) ),
+			trim( (string) Settings::get( 'viber_sender', '' ) )
+		);
+
+		if ( ! $result['ok'] ) {
+			return array(
+				'error',
+				sprintf(
+					/* translators: 1: TurboSMS status code, 2: status text. */
+					__( 'The test message was not accepted: %1$d %2$s. Codes 400–401 usually mean the sender name is not approved for this account.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+					$result['code'],
+					$result['status']
+				),
+			);
+		}
+
+		return array(
+			'ok',
+			sprintf(
+				/* translators: %s: TurboSMS message id. */
+				__( 'Test message accepted by TurboSMS (id %s).', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+				$result['message_id']
+			),
+		);
 	}
 
 	private function post_int( string $key, int $fallback, int $min ): int {

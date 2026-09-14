@@ -45,6 +45,7 @@ class Installer {
 			user_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
 			email VARCHAR(190) NOT NULL DEFAULT '',
 			customer_name VARCHAR(190) NOT NULL DEFAULT '',
+			phone VARCHAR(32) NOT NULL DEFAULT '',
 			cart_contents LONGTEXT NULL,
 			cart_total DECIMAL(18,4) NOT NULL DEFAULT 0,
 			currency VARCHAR(10) NOT NULL DEFAULT '',
@@ -54,6 +55,10 @@ class Installer {
 			token_expires_at DATETIME NULL DEFAULT NULL,
 			emails_sent TINYINT UNSIGNED NOT NULL DEFAULT 0,
 			last_email_at DATETIME NULL DEFAULT NULL,
+			msg_token_hash VARCHAR(64) NOT NULL DEFAULT '',
+			msg_sent TINYINT UNSIGNED NOT NULL DEFAULT 0,
+			msg_status VARCHAR(40) NOT NULL DEFAULT '',
+			last_msg_at DATETIME NULL DEFAULT NULL,
 			coupon_code VARCHAR(64) NOT NULL DEFAULT '',
 			recovered_order_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
 			recovered_total DECIMAL(18,4) NOT NULL DEFAULT 0,
@@ -64,8 +69,10 @@ class Installer {
 			PRIMARY KEY (id),
 			UNIQUE KEY session_key (session_key),
 			KEY email (email),
+			KEY phone (phone),
 			KEY status (status),
 			KEY token_hash (token_hash),
+			KEY msg_token_hash (msg_token_hash),
 			KEY updated_at (updated_at)
 		) {$charset};";
 

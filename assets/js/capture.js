@@ -1,10 +1,12 @@
 /**
- * Hands the shopper's e-mail address to the plugin as soon as it is typed on
- * the checkout, so a guest cart can be recovered later.
+ * Hands the shopper's e-mail address (and, when the Pro Viber/SMS reminder is
+ * on, the phone) to the plugin as soon as it is typed on the checkout, so a
+ * guest cart can be recovered later.
  *
- * Works on both checkouts: the block checkout renders #email, the classic one
- * #billing_email (which is also covered server-side by the update_order_review
- * AJAX call — this script simply makes capture immediate).
+ * Works on both checkouts: the block checkout renders #email / #billing-phone,
+ * the classic one #billing_email / #billing_phone (which are also covered
+ * server-side by the update_order_review AJAX call — this script simply makes
+ * capture immediate).
  */
 ( function () {
 	'use strict';
@@ -15,14 +17,20 @@
 
 	const config = window.catcodeAbandonedCart;
 	const emailSelector = '#email, #billing_email, input[type="email"][id$="-email"], input[autocomplete="email"]';
+	const phoneSelector = '#billing_phone, #billing-phone, #shipping-phone, #phone, input[type="tel"], input[autocomplete="tel"]';
 	const firstNameSelector = '#billing_first_name, input[id$="-first_name"]';
 	const lastNameSelector = '#billing_last_name, input[id$="-last_name"]';
 
-	let lastSent = '';
-	let timer = null;
+	const lastSent = { email: '', phone: '' };
+	const timers = { email: null, phone: null };
 
 	const isEmail = function ( value ) {
 		return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test( value );
+	};
+
+	// Server-side normalisation decides; this only avoids posting half-typed numbers.
+	const isPhone = function ( value ) {
+		return value.replace( /\D+/g, '' ).length >= 9;
 	};
 
 	const readName = function () {
@@ -34,11 +42,14 @@
 		].join( ' ' ).trim();
 	};
 
-	const push = function ( email ) {
-		if ( email === lastSent ) {
+	const push = function ( kind, value ) {
+		if ( value === lastSent[ kind ] ) {
 			return;
 		}
-		lastSent = email;
+		lastSent[ kind ] = value;
+
+		const body = { name: readName() };
+		body[ kind ] = value;
 
 		fetch( config.endpoint, {
 			method: 'POST',
@@ -47,44 +58,44 @@
 				'Content-Type': 'application/json',
 				'X-WP-Nonce': config.nonce,
 			},
-			body: JSON.stringify( { email: email, name: readName() } ),
+			body: JSON.stringify( body ),
 		} ).catch( function () {
 			// A failed capture must never disturb the checkout.
-			lastSent = '';
+			lastSent[ kind ] = '';
 		} );
 	};
 
 	const maybeCapture = function ( element ) {
-		if ( ! element || ! element.value ) {
+		if ( ! element || ! element.value || ! element.matches ) {
 			return;
 		}
-		const email = element.value.trim();
-		if ( ! isEmail( email ) ) {
+
+		let kind = '';
+		if ( element.matches( emailSelector ) ) {
+			kind = 'email';
+		} else if ( config.phone && element.matches( phoneSelector ) ) {
+			kind = 'phone';
+		}
+		if ( ! kind ) {
 			return;
 		}
-		window.clearTimeout( timer );
-		timer = window.setTimeout( function () {
-			push( email );
+
+		const value = element.value.trim();
+		if ( ( 'email' === kind && ! isEmail( value ) ) || ( 'phone' === kind && ! isPhone( value ) ) ) {
+			return;
+		}
+
+		window.clearTimeout( timers[ kind ] );
+		timers[ kind ] = window.setTimeout( function () {
+			push( kind, value );
 		}, 800 );
 	};
 
 	// Delegated: the block checkout mounts its fields asynchronously, so binding
 	// on the document survives re-renders without any MutationObserver.
-	document.addEventListener( 'change', function ( event ) {
-		if ( event.target && event.target.matches && event.target.matches( emailSelector ) ) {
+	[ 'change', 'blur', 'input' ].forEach( function ( type ) {
+		document.addEventListener( type, function ( event ) {
 			maybeCapture( event.target );
-		}
-	}, true );
-
-	document.addEventListener( 'blur', function ( event ) {
-		if ( event.target && event.target.matches && event.target.matches( emailSelector ) ) {
-			maybeCapture( event.target );
-		}
-	}, true );
-
-	document.addEventListener( 'input', function ( event ) {
-		if ( event.target && event.target.matches && event.target.matches( emailSelector ) ) {
-			maybeCapture( event.target );
-		}
-	}, true );
+		}, true );
+	} );
 }() );
