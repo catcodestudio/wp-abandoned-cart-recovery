@@ -124,7 +124,7 @@ This service is provided by Telegram: [terms of service](https://telegram.org/to
 * `POST https://api.turbosms.ua/message/send.json` — once per abandoned cart that has a phone number, after the delay you set, and when you press "Send test message".
 * `POST https://api.turbosms.ua/user/balance.json` — only when you press "Check connection and balance".
 
-What is sent: your API token, the sender names, the shopper's phone number and the message text (store name, cart total, item count, customer name if used in your template, and the recovery link). This service is provided by TurboSMS: [terms](https://turbosms.ua/rules.html), [privacy policy](https://turbosms.ua/privacy.html).
+What is sent: your API token, the sender names, the shopper's phone number and the message text (store name, cart total, item count, customer name if used in your template, and the recovery link). This service is provided by TurboSMS: [website and terms](https://turbosms.ua/), [privacy policy](https://turbosms.ua/privacy.html).
 
 == Screenshots ==
 
