@@ -17,7 +17,7 @@
  *    support, not for the right to use what was already paid for. Once the
  *    server has confirmed a non-trial key, `license_owned` latches and Pro stays
  *    on after the term ends and while the server is unreachable. Only releasing
- *    the licence (moving it to another domain) or a refund clears the latch.
+ *    the licence (moving it to another domain) clears the latch.
  *  - `license_kind` (trial | purchase) comes from the server's `trial` flag and
  *    is set explicitly when this install mints a trial itself.
  *
@@ -245,7 +245,7 @@ class License {
 	public static function error_message( string $code ): string {
 		$map = array(
 			'invalid_key'      => __( 'Key not found. Check that you copied it in full, with no stray spaces.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
-			'revoked'          => __( 'This key is no longer valid (refunded). Contact support if that is a mistake.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+			'revoked'          => __( 'This key is no longer valid. Contact support if that is a mistake.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
 			// Only a trial is ever refused as expired: a purchased key keeps working
 			// after its term, the server just stops offering updates for it.
 			'expired'          => __( 'The 7-day trial is over. Buy a licence on catcode.com.ua to switch the Pro features back on.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
@@ -570,12 +570,10 @@ class License {
 			$patch['license_owned'] = '1';
 		}
 
-		// A refund is the one server verdict that takes a purchase back. Any other
-		// refusal (key not found, wrong product) may be a hiccup on our side, and a
-		// paying shop must not lose Pro over it.
-		if ( isset( $result['error'] ) && 'revoked' === $result['error'] ) {
-			$patch['license_owned'] = '';
-		}
+		// No server verdict ever takes a purchase back: modules are not refunded
+		// (that is what the 7-day trial is for), and a refusal may be a hiccup on
+		// our side. Only the owner releasing the key or entering another one clears
+		// the latch.
 
 		foreach ( $extra as $field => $value ) {
 			$patch[ $field ] = $value;

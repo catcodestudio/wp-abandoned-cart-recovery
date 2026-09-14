@@ -142,7 +142,7 @@ What is sent: your API token, the sender names, the shopper's phone number and t
 = 1.2.1 =
 * A purchased licence now stays yours: once our server confirms a paid key, the Pro features keep working after the licence term ends and while the server is unreachable. The term covers updates and support, and the settings screen shows its end date and a renewal link.
 * A trial is still a trial: when its 7 days are over, Pro switches off. A shop that tried Pro and then bought a key is no longer shown as being on a trial.
-* Releasing the licence (to move it to another store) or a refund switches Pro off on this site.
+* Releasing the licence (to move it to another store) switches Pro off on this site.
 
 = 1.2.0 =
 * Pro: Viber / SMS reminder through TurboSMS. Shoppers who typed only a phone number at checkout are captured too (only while the feature is on); one message per cart with its own recovery link, Viber with SMS fallback, quiet hours, per-number cooldown, balance check and test message in the settings.
