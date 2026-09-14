@@ -87,6 +87,12 @@ final class Plugin {
 		}
 		Installer::create_table();
 		Cron::schedule();
+		// 1.2.0 and older stored a key without its kind, so a purchase could not be
+		// told from a trial. Ask the server once, shortly, instead of waiting for
+		// the daily check — until then such a key is treated with caution.
+		if ( \CatCode\AbandonedCart\Pro\License::has_license() && '' === (string) Settings::get( 'license_kind', '' ) ) {
+			wp_schedule_single_event( time() + MINUTE_IN_SECONDS, Cron::LICENSE_HOOK );
+		}
 		update_option( 'catcode_abandoned_cart_version', CATCODE_ABANDONED_CART_VERSION, false );
 	}
 

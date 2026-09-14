@@ -4,7 +4,7 @@ Tags: woocommerce, abandoned cart, cart recovery, email, ecommerce
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,7 +42,7 @@ Most shoppers who fill a cart never reach the "thank you" page. This plugin reco
 * Telegram notification to the shop owner the moment a cart is abandoned
 * CSV export of the captured carts
 
-Pro never switches itself on. A fresh install is the free version: the Pro settings are visible in their own places, greyed out and labelled, so you can see exactly where the line is. If you want to try them, the settings screen has a "Try Pro for 7 days" button — you enter an email, we issue a real 7-day key and unlock Pro right away. When the trial or the licence ends the free tier keeps working exactly as before, and your settings stay where they were.
+Pro never switches itself on. A fresh install is the free version: the Pro settings are visible in their own places, greyed out and labelled, so you can see exactly where the line is. If you want to try them, the settings screen has a "Try Pro for 7 days" button — you enter an email, we issue a real 7-day key and unlock Pro right away. When the trial ends the free tier keeps working exactly as before, and your settings stay where they were. A purchased licence is different: once the key is confirmed, Pro stays on for good — the licence term pays for updates and support, not for the right to keep using the features.
 
 = Requirements =
 
@@ -80,6 +80,10 @@ The link carries a 32-character random token. Only its SHA-256 hash is stored in
 = How do I start the Pro trial? =
 
 WooCommerce → Abandoned Cart Settings → Pro licence → "Try Pro for 7 days". Enter your email and the key is issued and activated immediately, and also emailed to you. Nothing is charged and no card is asked for. The trial never starts by itself, and it is one per site.
+
+= What happens when a purchased licence term ends? =
+
+The Pro features keep working. The term (1 to 5 years) covers updates and support: when it ends, the settings screen says so and offers a renewal, and the store simply stops receiving new versions until you renew. Releasing the licence to move it to another store switches Pro off on this one.
 
 = What happens when the Pro trial ends? =
 
@@ -135,6 +139,11 @@ What is sent: your API token, the sender names, the shopper's phone number and t
 
 == Changelog ==
 
+= 1.2.1 =
+* A purchased licence now stays yours: once our server confirms a paid key, the Pro features keep working after the licence term ends and while the server is unreachable. The term covers updates and support, and the settings screen shows its end date and a renewal link.
+* A trial is still a trial: when its 7 days are over, Pro switches off. A shop that tried Pro and then bought a key is no longer shown as being on a trial.
+* Releasing the licence (to move it to another store) or a refund switches Pro off on this site.
+
 = 1.2.0 =
 * Pro: Viber / SMS reminder through TurboSMS. Shoppers who typed only a phone number at checkout are captured too (only while the feature is on); one message per cart with its own recovery link, Viber with SMS fallback, quiet hours, per-number cooldown, balance check and test message in the settings.
 * The cart list, CSV export and Telegram notification show the phone and the message status.
@@ -151,6 +160,9 @@ What is sent: your API token, the sender names, the shopper's phone number and t
 * Pro: chain of up to three reminders, personal discount coupons, Telegram notifications, CSV export.
 
 == Upgrade Notice ==
+
+= 1.2.1 =
+Purchased licences keep the Pro features after the term ends. An existing key is re-checked with the licence server a minute after the update to learn whether it is a purchase or a trial.
 
 = 1.2.0 =
 Adds the Pro Viber / SMS reminder. The database table gets five new columns automatically on update; nothing changes until you enable the feature.

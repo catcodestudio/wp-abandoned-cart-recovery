@@ -11,6 +11,16 @@
  *  - is_pro() reads that cache: valid (or still within GRACE_DAYS of the last
  *    successful check) → the Pro features are unlocked.
  *
+ * Trial and purchase behave differently on purpose:
+ *  - a trial is a loan — when its 7 days are over, Pro goes off;
+ *  - a purchase is a purchase — the 1–5 year term pays for updates and
+ *    support, not for the right to use what was already paid for. Once the
+ *    server has confirmed a non-trial key, `license_owned` latches and Pro stays
+ *    on after the term ends and while the server is unreachable. Only releasing
+ *    the licence (moving it to another domain) or a refund clears the latch.
+ *  - `license_kind` (trial | purchase) comes from the server's `trial` flag and
+ *    is set explicitly when this install mints a trial itself.
+ *
  * Product binding: the server returns product_slug; a present but different
  * value is a hard refusal, so a key for another CatCode module cannot unlock
  * Pro here.
@@ -80,9 +90,15 @@ class License {
 		return self::trial_started() <= 0 && ! self::has_license();
 	}
 
-	/** Pro is on, and it is the trial rather than a purchase. */
+	/**
+	 * Pro is on, and it is the trial rather than a purchase.
+	 *
+	 * Keyed on the licence kind, not on trial_started: a shop that tried Pro and
+	 * then bought a key still has trial_started set, and must not be shown as
+	 * being on a trial.
+	 */
 	public static function on_trial(): bool {
-		return self::trial_started() > 0 && self::is_pro();
+		return self::is_trial_key() && self::is_pro();
 	}
 
 	/** Expiry date as returned by the server ('' when perpetual). */
@@ -136,12 +152,19 @@ class License {
 
 	/** A confirmed purchase — the features stay on even after the term lapses. */
 	public static function is_owned(): bool {
-		return '1' === (string) Settings::get( 'license_owned', '' );
+		return self::has_license() && '1' === (string) Settings::get( 'license_owned', '' );
 	}
 
 	/** The stored key came from the trial endpoint rather than from a purchase. */
 	public static function is_trial_key(): bool {
-		return 'trial' === (string) Settings::get( 'license_kind', '' );
+		$kind = (string) Settings::get( 'license_kind', '' );
+		if ( '' !== $kind ) {
+			return 'trial' === $kind;
+		}
+		// 1.2.0 and older never recorded the kind. Until the first server answer
+		// fills it in, a key on an install that did start the trial is read as that
+		// trial — the cautious reading, which can only delay Pro, never hand it out.
+		return self::has_license() && self::trial_started() > 0;
 	}
 
 	/**
@@ -171,6 +194,12 @@ class License {
 
 		if ( '' === $status ) {
 			return __( 'not checked', 'catcode-abandoned-cart-recovery-for-woocommerce' );
+		}
+
+		if ( self::is_owned() ) {
+			return self::updates_active()
+				? __( 'purchased — the Pro features are yours for good', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+				: __( 'purchased — the Pro features are yours for good; the updates and support term has ended', 'catcode-abandoned-cart-recovery-for-woocommerce' );
 		}
 
 		if ( 'valid' === $status ) {
@@ -217,7 +246,9 @@ class License {
 		$map = array(
 			'invalid_key'      => __( 'Key not found. Check that you copied it in full, with no stray spaces.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
 			'revoked'          => __( 'This key is no longer valid (refunded). Contact support if that is a mistake.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
-			'expired'          => __( 'The licence has expired. Renew it on catcode.com.ua to keep the Pro features.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+			// Only a trial is ever refused as expired: a purchased key keeps working
+			// after its term, the server just stops offering updates for it.
+			'expired'          => __( 'The 7-day trial is over. Buy a licence on catcode.com.ua to switch the Pro features back on.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
 			'limit_reached'    => __( 'This key is already in use on another store. Deactivate it there first.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
 			'wrong_product'    => __( 'This key belongs to a different CatCode product, not to Abandoned Cart Recovery.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
 			'network'          => __( 'Could not reach our licence server. We will retry automatically in a few hours.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
@@ -305,7 +336,16 @@ class License {
 		$activation = self::call( $key, 'activate' );
 		// trial_started is written in the same transaction as the key: a failure
 		// between two writes would otherwise leave a key with no trial marker.
-		self::store( $key, $activation, array( 'trial_started' => time() ) );
+		// license_kind is passed explicitly: this is the one moment we know for
+		// certain the key is a trial, whatever the activation answer carried.
+		self::store(
+			$key,
+			$activation,
+			array(
+				'trial_started' => time(),
+				'license_kind'  => 'trial',
+			)
+		);
 
 		$activation['key']        = $key;
 		$activation['expires_at'] = (string) ( isset( $response['expires_at'] ) ? $response['expires_at'] : ( isset( $activation['expires_at'] ) ? $activation['expires_at'] : '' ) );
@@ -353,6 +393,11 @@ class License {
 				'license_checked_at' => '',
 				'license_expires_at' => '',
 				'license_data'       => '',
+				// The purchase latch goes with the key: releasing is how a shop moves
+				// its licence to another domain, and leaving Pro on here would hand
+				// out a second copy on every move.
+				'license_kind'       => '',
+				'license_owned'      => '',
 				// trial_started stays on purpose: one trial per install, and
 				// removing a key must not hand out a second one.
 			)
@@ -475,6 +520,14 @@ class License {
 	private static function store( string $key, array $result, array $extra = array() ): void {
 		$patch = array( 'license_key' => $key );
 
+		// A different key starts from a clean slate: the kind and the purchase
+		// latch belong to the key that earned them, never to whatever is pasted
+		// over it later.
+		if ( self::key() !== $key ) {
+			$patch['license_kind']  = '';
+			$patch['license_owned'] = '';
+		}
+
 		// "We could not ask" — not "the key is bad". A throttled or unreachable
 		// server must leave the cached verdict alone; 429 in particular is easy
 		// to hit from a shared IP, and treating it as a refusal would switch Pro
@@ -504,10 +557,54 @@ class License {
 			$patch['license_expires_at'] = (string) $result['expires_at'];
 		}
 
+		$kind = self::kind_of( $result, $extra );
+		if ( '' !== $kind ) {
+			$patch['license_kind'] = $kind;
+		}
+
+		// The latch is what lets a purchase outlive its own term — so it is set only
+		// from an answer that actually said yes to a key the server itself calls
+		// a purchase. A trial, a refused key or a server that did not say which
+		// kind it is never sets it.
+		if ( 'purchase' === $kind && ! empty( $result['ok'] ) ) {
+			$patch['license_owned'] = '1';
+		}
+
+		// A refund is the one server verdict that takes a purchase back. Any other
+		// refusal (key not found, wrong product) may be a hiccup on our side, and a
+		// paying shop must not lose Pro over it.
+		if ( isset( $result['error'] ) && 'revoked' === $result['error'] ) {
+			$patch['license_owned'] = '';
+		}
+
 		foreach ( $extra as $field => $value ) {
 			$patch[ $field ] = $value;
 		}
 
 		Settings::update( $patch );
+	}
+
+	/**
+	 * Trial or purchase, as far as this answer tells.
+	 *
+	 * The server is the only side that knows how a key was minted, and it sends a
+	 * boolean `trial` with every answer about a key it found. An answer without
+	 * it (a refusal, an older server) says nothing, and '' keeps the stored kind.
+	 *
+	 * @param array<string,mixed> $result Server response.
+	 * @param array<string,mixed> $extra  Fields the caller writes explicitly.
+	 */
+	private static function kind_of( array $result, array $extra ): string {
+		if ( isset( $extra['license_kind'] ) ) {
+			return (string) $extra['license_kind'];
+		}
+		if ( array_key_exists( 'trial', $result ) ) {
+			return ! empty( $result['trial'] ) ? 'trial' : 'purchase';
+		}
+		if ( ! empty( $result['is_trial'] ) ) {
+			return 'trial';
+		}
+
+		return '';
 	}
 }

@@ -25,7 +25,7 @@ Records carts that never became an order and brings the shopper back with a remi
 - **Telegram notification** the moment a cart is marked abandoned. "Connect bot" registers a Telegram webhook with a `secret_token`; the shop owner sends `/start` and the chat ID is saved by itself.
 - **CSV export** of the cart list.
 
-All Pro features are unlocked for a 7-day trial after activation; the free tier keeps working afterwards.
+Pro is unlocked by a licence key or by a 7-day trial the owner starts from the settings screen. A trial switches Pro off when it ends; a purchased key, once confirmed by the licence server, keeps Pro on for good — the 1–5 year term covers updates and support. The free tier keeps working in every case.
 
 ## Requirements
 

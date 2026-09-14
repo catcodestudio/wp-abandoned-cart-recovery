@@ -69,6 +69,10 @@ class Settings {
 			'license_checked_at' => '',
 			'license_expires_at' => '',
 			'license_data'       => '',
+			// trial | purchase — written from the server's answer (see Pro\License::store()).
+			'license_kind'       => '',
+			// '1' once the server confirmed a purchased key: Pro then outlives the term.
+			'license_owned'      => '',
 			// 0 = the owner has never started the trial. Nothing but an explicit
 			// click on "Try for 7 days" may ever write this.
 			'trial_started'      => 0,

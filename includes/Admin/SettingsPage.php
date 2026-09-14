@@ -424,6 +424,8 @@ class SettingsPage {
 		$is_pro    = License::is_pro();
 		$on_trial  = License::on_trial();
 		$can_trial = License::trial_available();
+		$owned     = License::is_owned();
+		$updates   = License::updates_active();
 		$key       = (string) $cfg['license_key'];
 
 		echo '<div class="catcode-abandoned-cart-card">';
@@ -431,13 +433,14 @@ class SettingsPage {
 
 		echo '<p class="description">';
 		if ( $is_pro ) {
-			echo '<span class="catcode-abandoned-cart-hint">'
-				. esc_html(
-					$on_trial
-						? __( 'Pro is on — trial.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
-						: __( 'Pro is on — licence active.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
-				)
-				. '</span> ';
+			if ( $on_trial ) {
+				$line = __( 'Pro is on — trial.', 'catcode-abandoned-cart-recovery-for-woocommerce' );
+			} elseif ( $owned ) {
+				$line = __( 'Pro is on — licence purchased, the features stay on for good.', 'catcode-abandoned-cart-recovery-for-woocommerce' );
+			} else {
+				$line = __( 'Pro is on — licence active.', 'catcode-abandoned-cart-recovery-for-woocommerce' );
+			}
+			echo '<span class="catcode-abandoned-cart-hint">' . esc_html( $line ) . '</span> ';
 		} else {
 			echo '<span class="catcode-abandoned-cart-status catcode-abandoned-cart-status--off">'
 				. esc_html__( 'Free version.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
@@ -452,7 +455,26 @@ class SettingsPage {
 			)
 		);
 		$expires = License::expires_at();
-		if ( '' !== $expires ) {
+		if ( '' !== $expires && $owned ) {
+			// A purchase: the date is the end of updates and support, not of Pro.
+			echo '</p><p class="description">' . esc_html(
+				$updates
+					? sprintf(
+						/* translators: %s: date the updates and support term ends, YYYY-MM-DD. */
+						__( 'Updates and support until %s.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+						$expires
+					)
+					: sprintf(
+						/* translators: %s: date the updates and support term ended, YYYY-MM-DD. */
+						__( 'The updates and support term ended on %s. Renew the licence to keep receiving new versions — the Pro features keep working either way.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+						$expires
+					)
+			);
+			if ( ! $updates ) {
+				echo ' <a class="button button-small" href="' . esc_url( License::MODULE_URL ) . '" target="_blank" rel="noopener">'
+					. esc_html__( 'Renew the licence', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</a>';
+			}
+		} elseif ( '' !== $expires ) {
 			echo ' ' . esc_html(
 				sprintf(
 					/* translators: %s: expiry date, YYYY-MM-DD. */
@@ -479,10 +501,17 @@ class SettingsPage {
 		}
 
 		echo '<p class="description">'
-			. esc_html__( 'The key arrives by e-mail after purchase. It is checked against catcode.com.ua and re-checked once a day; if our server is unreachable, Pro keeps working for another 14 days.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+			. esc_html__( 'The key arrives by e-mail after purchase and is checked against catcode.com.ua. Once a purchased key is confirmed, Pro stays on for good — the licence term covers updates and support. A trial key switches Pro off when its 7 days are over.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
 			. '</p>';
 		echo '<p id="catcode-acr-license-msg" class="catcode-abandoned-cart-msg"></p>';
 		echo '</td></tr>';
+
+		if ( $owned ) {
+			// Nothing left to try or to buy on this site.
+			echo '</table>';
+			echo '</div>';
+			return;
+		}
 
 		echo '<tr><th scope="row">' . esc_html__( 'No licence yet?', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</th><td>';
 		if ( $can_trial ) {
