@@ -447,13 +447,17 @@ class SettingsPage {
 				. '</span> ';
 			echo esc_html__( 'The first reminder, the cart list and the statistics work without a licence. Pro adds reminders 2 and 3, personal coupons, Viber/SMS reminders, Telegram alerts and CSV export.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . ' ';
 		}
-		echo esc_html(
-			sprintf(
-				/* translators: %s: human-readable licence status. */
-				__( 'Status: %s.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
-				License::describe()
-			)
-		);
+		// For a purchase the line above already says it all; the status would only
+		// repeat it.
+		if ( ! $owned ) {
+			echo esc_html(
+				sprintf(
+					/* translators: %s: human-readable licence status. */
+					__( 'Status: %s.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
+					License::describe()
+				)
+			);
+		}
 		$expires = License::expires_at();
 		if ( '' !== $expires && $owned ) {
 			// A purchase: the date is the end of updates and support, not of Pro.
