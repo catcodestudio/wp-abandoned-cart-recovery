@@ -4,7 +4,7 @@ Tags: woocommerce, abandoned cart, cart recovery, email, ecommerce
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,6 +138,9 @@ What is sent: your API token, the sender names, the shopper's phone number and t
 4. Settings: Pro coupon and Telegram notification sections
 
 == Changelog ==
+
+= 1.2.2 =
+* Updates for this Pro build no longer come from wordpress.org. The free copy there shares the plugin folder name, so WordPress could offer it as an "update" and replace the Pro build with the free one.
 
 = 1.2.1 =
 * A purchased licence now stays yours: once our server confirms a paid key, the Pro features keep working after the licence term ends and while the server is unreachable. The term covers updates and support, and the settings screen shows its end date and a renewal link.

@@ -2,8 +2,9 @@
 /**
  * Plugin Name: CatCode Abandoned Cart Recovery for WooCommerce
  * Plugin URI: https://catcode.com.ua/modules/catcode-abandoned-cart-recovery-for-woocommerce/
+ * Update URI: https://catcode.com.ua/modules/catcode-abandoned-cart-recovery-for-woocommerce/
  * Description: Captures abandoned WooCommerce carts and wins them back with a reminder email containing a one-click recovery link. Cart list with statistics, configurable timings and templates.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Requires at least: 6.2
  * Requires PHP: 7.4
  * Requires Plugins: woocommerce
@@ -21,10 +22,26 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/*
+ * This build is sold on catcode.com.ua and shares its slug with the free copy on wordpress.org.
+ * The Update URI header keeps wordpress.org from offering that free copy as an "update";
+ * the filter below drops such an offer if it still arrives.
+ */
+add_filter(
+	'site_transient_update_plugins',
+	static function ( $value ) {
+		$file = plugin_basename( __FILE__ );
+		if ( is_object( $value ) && isset( $value->response[ $file ]->package ) && false !== strpos( (string) $value->response[ $file ]->package, 'downloads.wordpress.org' ) ) {
+			unset( $value->response[ $file ] );
+		}
+		return $value;
+	}
+);
+
 // Per-constant guards keep WP's activation sandbox-scrape (which includes this
 // file twice) from emitting "already defined" warnings — without ever skipping
 // the include/hook registration below.
-defined( 'CATCODE_ABANDONED_CART_VERSION' ) || define( 'CATCODE_ABANDONED_CART_VERSION', '1.2.1' );
+defined( 'CATCODE_ABANDONED_CART_VERSION' ) || define( 'CATCODE_ABANDONED_CART_VERSION', '1.2.2' );
 defined( 'CATCODE_ABANDONED_CART_FILE' ) || define( 'CATCODE_ABANDONED_CART_FILE', __FILE__ );
 defined( 'CATCODE_ABANDONED_CART_DIR' ) || define( 'CATCODE_ABANDONED_CART_DIR', plugin_dir_path( __FILE__ ) );
 defined( 'CATCODE_ABANDONED_CART_URL' ) || define( 'CATCODE_ABANDONED_CART_URL', plugin_dir_url( __FILE__ ) );
