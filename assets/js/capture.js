@@ -194,7 +194,12 @@
 			if ( ! text ) {
 				return;
 			}
-			const holder = node.closest( '.wc-block-components-text-input, .wc-block-components-combobox, .wc-block-components-checkbox, .wc-block-components-address-form__field, div' );
+			// A bare 'div' in this list used to win first (the error's own wrapper
+			// holds no input), so the field name was always empty.
+			let holder = node.closest( '.wc-block-components-text-input, .wc-block-components-combobox, .wc-block-components-checkbox, .wc-block-components-address-form__field, .wc-block-components-select-input, .wc-blocks-components-select' );
+			if ( ! holder && node.parentElement ) {
+				holder = node.parentElement.parentElement || node.parentElement;
+			}
 			const input = holder ? holder.querySelector( 'input, select, textarea' ) : null;
 			report( {
 				kind: 'validation',
