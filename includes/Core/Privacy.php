@@ -120,7 +120,17 @@ class Privacy {
 	 * @return array{items_removed:bool,items_retained:bool,messages:array,done:bool}
 	 */
 	public function erase( $email_address, $page = 1 ) {
-		$removed = Repository::delete_by_email( sanitize_email( (string) $email_address ) );
+		$email = sanitize_email( (string) $email_address );
+
+		// Checkout errors carry no address themselves; drop the ones logged in
+		// the sessions of this shopper's carts before the carts disappear.
+		$sessions = array();
+		foreach ( Repository::find_by_email( $email ) as $row ) {
+			$sessions[] = (string) $row['session_key'];
+		}
+		$errors = ErrorLog::delete_for_sessions( $sessions );
+
+		$removed = Repository::delete_by_email( $email ) + $errors;
 
 		return array(
 			'items_removed'  => $removed > 0,
@@ -147,7 +157,8 @@ class Privacy {
 					__( 'This data is stored in the store database and is automatically deleted %d days after the cart was last updated. It is never sent to any third party.', 'catcode-abandoned-cart-recovery-for-woocommerce' ),
 					$retention
 				)
-			) . '</p>';
+			) . '</p>'
+			. '<p>' . esc_html__( 'If an error prevents you from placing an order, the store records the error message, the checkout page address without its parameters, your browser name and version, and whether an order followed in the same session. This record does not include your name, e-mail address or phone number.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
 
 		wp_add_privacy_policy_content(
 			__( 'CatCode Abandoned Cart Recovery for WooCommerce', 'catcode-abandoned-cart-recovery-for-woocommerce' ),

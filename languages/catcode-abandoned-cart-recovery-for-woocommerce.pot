@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: CatCode Abandoned Cart Recovery for WooCommerce 1.2.1\n"
+"Project-Id-Version: CatCode Abandoned Cart Recovery for WooCommerce 1.3.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/catcode-abandoned-cart-recovery-for-woocommerce\n"
-"POT-Creation-Date: 2026-08-11T13:28:37+00:00\n"
+"POT-Creation-Date: 2026-09-16T13:10:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: catcode-abandoned-cart-recovery-for-woocommerce.php
-#: includes/Core/Privacy.php:153
+#: includes/Core/Privacy.php:164
 msgid "CatCode Abandoned Cart Recovery for WooCommerce"
 msgstr ""
 
@@ -31,8 +31,8 @@ msgstr ""
 #: catcode-abandoned-cart-recovery-for-woocommerce.php
 msgid ""
 "Captures abandoned WooCommerce carts and wins them back with a reminder "
-"email containing a one-click recovery link. Cart list with statistics, "
-"configurable timings and templates."
+"email containing a one-click recovery link. Cart list with statistics, a "
+"checkout error log, configurable timings and templates."
 msgstr ""
 
 #. Author of the plugin
@@ -45,14 +45,14 @@ msgstr ""
 msgid "https://catcode.com.ua"
 msgstr ""
 
-#: catcode-abandoned-cart-recovery-for-woocommerce.php:95
+#: catcode-abandoned-cart-recovery-for-woocommerce.php:117
 msgid ""
 "CatCode Abandoned Cart Recovery for WooCommerce requires an active "
 "WooCommerce installation."
 msgstr ""
 
-#: includes/Admin/Ajax.php:30 includes/Admin/SettingsPage.php:479
-#: includes/Pro/Export.php:22
+#: includes/Admin/Ajax.php:30 includes/Admin/ErrorsPage.php:295
+#: includes/Admin/SettingsPage.php:616 includes/Pro/Export.php:22
 msgid "Insufficient permissions."
 msgstr ""
 
@@ -100,23 +100,23 @@ msgstr ""
 msgid "Captured"
 msgstr ""
 
-#: includes/Admin/CartsListTable.php:71
+#: includes/Admin/CartsListTable.php:71 includes/Admin/ErrorsPage.php:161
 msgid "All"
 msgstr ""
 
-#: includes/Admin/CartsListTable.php:72 includes/Admin/CartsListTable.php:197
+#: includes/Admin/CartsListTable.php:72 includes/Admin/CartsListTable.php:200
 msgid "Active"
 msgstr ""
 
-#: includes/Admin/CartsListTable.php:73 includes/Admin/CartsListTable.php:198
+#: includes/Admin/CartsListTable.php:73 includes/Admin/CartsListTable.php:201
 msgid "Abandoned"
 msgstr ""
 
-#: includes/Admin/CartsListTable.php:74 includes/Admin/CartsListTable.php:199
+#: includes/Admin/CartsListTable.php:74 includes/Admin/CartsListTable.php:202
 msgid "Recovered"
 msgstr ""
 
-#: includes/Admin/CartsListTable.php:75 includes/Admin/CartsListTable.php:200
+#: includes/Admin/CartsListTable.php:75 includes/Admin/CartsListTable.php:203
 msgid "Lost"
 msgstr ""
 
@@ -124,35 +124,35 @@ msgstr ""
 msgid "No carts captured yet."
 msgstr ""
 
-#: includes/Admin/CartsListTable.php:141
+#: includes/Admin/CartsListTable.php:144
 msgid "Registered customer"
 msgstr ""
 
 #. translators: %d: number of additional products not shown.
-#: includes/Admin/CartsListTable.php:166
+#: includes/Admin/CartsListTable.php:169
 #, php-format
 msgid "+%d more"
 msgstr ""
 
 #. translators: %s: date and time the cart was marked as abandoned.
-#: includes/Admin/CartsListTable.php:231
+#: includes/Admin/CartsListTable.php:237
 #, php-format
 msgid "abandoned: %s"
 msgstr ""
 
-#: includes/Admin/CartsListTable.php:250
+#: includes/Admin/CartsListTable.php:256
 msgid "Carts abandoned"
 msgstr ""
 
-#: includes/Admin/CartsListTable.php:251
+#: includes/Admin/CartsListTable.php:257
 msgid "Carts recovered"
 msgstr ""
 
-#: includes/Admin/CartsListTable.php:252
+#: includes/Admin/CartsListTable.php:258
 msgid "Revenue recovered"
 msgstr ""
 
-#: includes/Admin/CartsListTable.php:253
+#: includes/Admin/CartsListTable.php:259
 msgid "Recovery rate"
 msgstr ""
 
@@ -161,11 +161,13 @@ msgstr ""
 msgid "Abandoned Carts"
 msgstr ""
 
-#: includes/Admin/CartsPage.php:51 includes/Core/Plugin.php:129
+#: includes/Admin/CartsPage.php:51 includes/Admin/ErrorsPage.php:98
+#: includes/Core/Plugin.php:145
 msgid "Settings"
 msgstr ""
 
 #: includes/Admin/CartsPage.php:63 includes/Admin/CartsPage.php:69
+#: includes/Admin/ErrorsPage.php:176 includes/Admin/ErrorsPage.php:180
 msgid "Export CSV"
 msgstr ""
 
@@ -179,6 +181,158 @@ msgstr ""
 msgid "Search by e-mail"
 msgstr ""
 
+#: includes/Admin/ErrorsPage.php:38 includes/Admin/ErrorsPage.php:39
+#: includes/Admin/ErrorsPage.php:96
+msgid "Checkout Errors"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:97 includes/Admin/SettingsPage.php:85
+msgid "Cart list"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:101
+msgid ""
+"What stopped shoppers on the checkout: form validation messages, payment "
+"failures and JavaScript errors, with the number of shoppers who then left "
+"without placing an order."
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:104
+msgid "The checkout error log is switched off. Nothing new is being recorded."
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:105
+msgid "Turn it on in the settings"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:113
+msgid "Errors shown to shoppers"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:114
+msgid "Shoppers who hit an error"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:115
+msgid "Of them left without an order"
+msgstr ""
+
+#. translators: %d: minutes.
+#: includes/Admin/ErrorsPage.php:133
+#, php-format
+msgid ""
+"A shopper counts as \"left without an order\" when no order was placed in "
+"the same browser session and at least %d minutes have passed since the "
+"error."
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:145
+msgid "Period"
+msgstr ""
+
+#. translators: %d: number of days.
+#: includes/Admin/ErrorsPage.php:150
+#, php-format
+msgid "Last %d day"
+msgid_plural "Last %d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/Admin/ErrorsPage.php:160 includes/Admin/ErrorsPage.php:198
+msgid "Type"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:167
+msgid "Show"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:182
+msgid ""
+"Pro: 30 and 90-day reports, every occurrence with its cart, CSV export."
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:190
+msgid "Most frequent errors"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:192
+msgid "No checkout errors recorded in this period."
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:199 includes/Admin/SettingsPage.php:208
+#: includes/Admin/SettingsPage.php:306
+msgid "Message"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:200
+msgid "Field / payment method"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:201
+msgid "Times"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:202
+msgid "Shoppers"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:203
+msgid "Left without an order"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:204
+msgid "Last seen"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:230 includes/Admin/ErrorsPage.php:232
+#: includes/Admin/ErrorsPage.php:259
+msgid "Details"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:247
+msgid "Latest occurrences"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:249
+msgid "No occurrences in this period."
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:256
+msgid "Time"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:257
+msgid "Page"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:258
+msgid "Browser"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:260
+msgid "Cart"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:261
+msgid "Order placed"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:287
+msgid "Yes"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:287
+msgid "No"
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:300 includes/Pro/Export.php:27
+msgid "CSV export is a Pro feature."
+msgstr ""
+
+#: includes/Admin/ErrorsPage.php:312 includes/Pro/Export.php:41
+msgid "Could not open the output stream."
+msgstr ""
+
 #: includes/Admin/Notice.php:66
 msgid "Abandoned Cart Recovery is working."
 msgstr ""
@@ -190,8 +344,8 @@ msgid ""
 "can try it for 7 days, no card required."
 msgstr ""
 
-#: includes/Admin/Notice.php:72 includes/Admin/SettingsPage.php:411
-#: includes/Admin/SettingsPage.php:446
+#: includes/Admin/Notice.php:72 includes/Admin/SettingsPage.php:548
+#: includes/Admin/SettingsPage.php:583
 msgid "Try Pro for 7 days"
 msgstr ""
 
@@ -204,366 +358,589 @@ msgstr ""
 msgid "Leave a review"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:32 includes/Admin/SettingsPage.php:33
-#: includes/Admin/SettingsPage.php:82
+#: includes/Admin/SettingsPage.php:34 includes/Admin/SettingsPage.php:35
+#: includes/Admin/SettingsPage.php:84
 msgid "Abandoned Cart Settings"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:66
+#: includes/Admin/SettingsPage.php:68
 msgid "Could not reach the server. Try again in a moment."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:67
+#: includes/Admin/SettingsPage.php:69
 msgid ""
 "Release the licence from this site? The Pro features switch off here and the"
 " key becomes free for another store."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:83
-msgid "Cart list"
-msgstr ""
-
-#: includes/Admin/SettingsPage.php:103 includes/Admin/SettingsPage.php:114
+#: includes/Admin/SettingsPage.php:105 includes/Admin/SettingsPage.php:118
 msgid "Save settings"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:124
+#: includes/Admin/SettingsPage.php:128
 msgid "Timing"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:129
+#: includes/Admin/SettingsPage.php:133
 msgid "Mark as abandoned after"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:131
+#: includes/Admin/SettingsPage.php:135
 msgid ""
 "Minutes of inactivity before a cart is considered abandoned. The scan runs "
 "every 15 minutes."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:132 includes/Admin/SettingsPage.php:194
+#: includes/Admin/SettingsPage.php:136 includes/Admin/SettingsPage.php:198
+#: includes/Admin/SettingsPage.php:298
 msgid "minutes"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:137
+#: includes/Admin/SettingsPage.php:141
 msgid "Recovery link lifetime"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:139
+#: includes/Admin/SettingsPage.php:143
 msgid ""
 "How long a recovery link stays valid. Afterwards the cart is marked as lost."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:140 includes/Admin/SettingsPage.php:148
-#: includes/Admin/SettingsPage.php:240 includes/Admin/SettingsPage.php:336
+#: includes/Admin/SettingsPage.php:144 includes/Admin/SettingsPage.php:152
+#: includes/Admin/SettingsPage.php:244 includes/Admin/SettingsPage.php:440
 msgid "days"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:145
+#: includes/Admin/SettingsPage.php:149
 msgid "Do not e-mail the same address more often than once every"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:147
+#: includes/Admin/SettingsPage.php:151
 msgid ""
 "Protects frequent shoppers from repeated reminders. Set to 0 to disable."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:159
+#: includes/Admin/SettingsPage.php:163
 msgid "Reminder e-mail 1"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:160
+#: includes/Admin/SettingsPage.php:164
 msgid "Reminder e-mail 2"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:161
+#: includes/Admin/SettingsPage.php:165
 msgid "Reminder e-mail 3"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:173
+#: includes/Admin/SettingsPage.php:177
 msgid ""
 "Pro: a second and third nudge win back the shoppers who ignored the first "
 "one — the free tier sends reminder 1 only."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:181 includes/Admin/SettingsPage.php:227
-#: includes/Admin/SettingsPage.php:259
+#: includes/Admin/SettingsPage.php:185 includes/Admin/SettingsPage.php:231
+#: includes/Admin/SettingsPage.php:267 includes/Admin/SettingsPage.php:339
 msgid "Enabled"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:183
+#: includes/Admin/SettingsPage.php:187
 msgid "Send this reminder"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:190
+#: includes/Admin/SettingsPage.php:194 includes/Admin/SettingsPage.php:298
 msgid "Send after abandonment"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:191
+#: includes/Admin/SettingsPage.php:195
 msgid "Send after the previous reminder"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:199
+#: includes/Admin/SettingsPage.php:203
 msgid "Subject"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:204
-msgid "Message"
-msgstr ""
-
-#: includes/Admin/SettingsPage.php:206
+#: includes/Admin/SettingsPage.php:210 includes/Admin/SettingsPage.php:308
 msgid "Placeholders:"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:218
+#: includes/Admin/SettingsPage.php:222
 msgid "Personal discount coupon"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:219
+#: includes/Admin/SettingsPage.php:223
 msgid ""
 "A single-use WooCommerce coupon is generated per cart, restricted to the "
 "shopper e-mail address, and inserted through the {coupon} placeholder."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:222
+#: includes/Admin/SettingsPage.php:226
 msgid ""
 "Pro: a discount that belongs to one shopper and expires on its own — the "
 "usual reason a hesitating cart finally converts."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:229
+#: includes/Admin/SettingsPage.php:233
 msgid "Attach a personal coupon to the reminders"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:232
+#: includes/Admin/SettingsPage.php:236
 msgid "Discount type"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:234
+#: includes/Admin/SettingsPage.php:238
 msgid "Percentage discount"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:235
+#: includes/Admin/SettingsPage.php:239
 msgid "Fixed cart discount"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:238
+#: includes/Admin/SettingsPage.php:242
 msgid "Discount value"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:239
+#: includes/Admin/SettingsPage.php:243
 msgid "Attach starting from reminder"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:239
+#: includes/Admin/SettingsPage.php:243
 msgid "Reminder number the coupon first appears in (2 by default)."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:240
+#: includes/Admin/SettingsPage.php:244
 msgid "Coupon valid for"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:250
+#: includes/Admin/SettingsPage.php:258
+msgid "Viber / SMS reminder"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:259
+msgid ""
+"One short message with the recovery link through TurboSMS (turbosms.ua) — "
+"also for shoppers who typed only a phone number at checkout. One message per"
+" cart, never a chain; the e-mail reminders keep working as before."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:262
+msgid ""
+"Pro: many shoppers leave a phone and no e-mail — a Viber message reaches "
+"them where they actually read."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:269
+msgid "Send a Viber / SMS reminder"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:270
+msgid ""
+"While this is off the plugin does not store shoppers' phone numbers at all."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:273
+msgid "TurboSMS API token"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:275
+msgid ""
+"TurboSMS cabinet → Settings → API (HTTP). Viber and SMS sender names are "
+"registered in the same cabinet."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:279
+msgid "Viber, SMS if Viber is not delivered"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:280
+msgid "Viber only"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:281
+msgid "SMS only"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:283
+msgid "Channel"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:290
+msgid "Viber sender"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:294
+msgid "SMS sender (alpha name)"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:300
+msgid "Quiet hours"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:301
+msgid "from"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:302
+msgid "to"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:303
+msgid ""
+"Hours in the site timezone. Messages that fall due at night wait for the "
+"morning. Equal values switch the window off."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:310
+msgid ""
+"Keep it short: every 70 Cyrillic characters is one more paid SMS part. Leave"
+" empty for the default text."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:313
+msgid "Check"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:315
+msgid "Check connection and balance"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:318
+msgid "Send test message"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:319
+msgid ""
+"Both buttons save the settings first. The test message is a real, paid "
+"message."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:330
 msgid "Telegram notification"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:251
-msgid ""
-"Sends you a message the moment a cart is marked as abandoned. This is the "
-"only external service the plugin contacts."
+#: includes/Admin/SettingsPage.php:331
+msgid "Sends you a message the moment a cart is marked as abandoned."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:254
+#: includes/Admin/SettingsPage.php:334
 msgid ""
 "Pro: you hear about an abandoned cart while the shopper is still around, and"
 " can call them back the same hour."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:261
+#: includes/Admin/SettingsPage.php:341
 msgid "Notify me in Telegram"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:264
+#: includes/Admin/SettingsPage.php:344
 msgid "Bot token"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:266
+#: includes/Admin/SettingsPage.php:346
 msgid "Create a bot with @BotFather in Telegram and paste the token here."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:271
+#: includes/Admin/SettingsPage.php:351
 msgid "Chat ID"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:273
+#: includes/Admin/SettingsPage.php:353
 msgid ""
 "Filled in automatically once you send /start to the bot — there is no need "
 "to look the number up by hand. A numeric chat id (negative for groups) or "
 "@channelname also works if you prefer to type it."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:291
+#: includes/Admin/SettingsPage.php:371
 msgid "Connection"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:295
+#: includes/Admin/SettingsPage.php:375
 msgid "Bot not connected."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:299
+#: includes/Admin/SettingsPage.php:379
 msgid "Connect bot"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:300
+#: includes/Admin/SettingsPage.php:380
 msgid ""
 "Saves the settings and registers a Telegram webhook pointing at this store. "
 "Afterwards send /start to the bot and the chat ID appears in the field "
 "below."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:304
+#: includes/Admin/SettingsPage.php:384
 msgid "Bot connected — chat ID received."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:308
+#: includes/Admin/SettingsPage.php:388
 msgid "Bot connected — waiting for /start."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:310
+#: includes/Admin/SettingsPage.php:390
 msgid ""
 "Open the chat with your bot (or add it to a group) and send /start. The bot "
 "replies with the chat ID and saves it here — reload this page to see it."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:314
+#: includes/Admin/SettingsPage.php:394
 msgid "Disconnect bot"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:315
+#: includes/Admin/SettingsPage.php:395
 msgid ""
 "Send /start again at any time to move the notifications to a different chat "
 "or group."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:318
+#: includes/Admin/SettingsPage.php:398
 msgid ""
 "Telegram allows a bot either a webhook or getUpdates polling, never both — "
 "so one bot can serve only one store. Create a separate bot for every shop "
 "that uses this feature."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:328
+#: includes/Admin/SettingsPage.php:408
+msgid "Checkout error log"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:409
+msgid ""
+"Shows which checkout errors shoppers see and how many of them leave without "
+"an order. No names, e-mail addresses or phone numbers are stored with an "
+"error."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:410
+msgid "Open the report"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:413
+msgid "Record checkout errors"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:415
+msgid ""
+"Form validation messages and payment failures on the classic and block "
+"checkout"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:418
+msgid "Browser-side errors"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:420
+msgid ""
+"JavaScript errors on the checkout page and block checkout fields that failed"
+" validation before the order was sent"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:421
+msgid "At most 5 reports per page view and 300 per hour for the whole store."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:432
 msgid "Data retention"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:329
+#: includes/Admin/SettingsPage.php:433
 msgid ""
-"The plugin stores the e-mail address, the name and the cart contents of "
-"shoppers who did not complete an order. Rows are deleted automatically once "
-"they are older than the retention period."
+"The plugin stores the e-mail address (and, with the Viber/SMS reminder on, "
+"the phone), the name and the cart contents of shoppers who did not complete "
+"an order. Rows are deleted automatically once they are older than the "
+"retention period."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:333
+#: includes/Admin/SettingsPage.php:437
 msgid "Delete cart data after"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:335
+#: includes/Admin/SettingsPage.php:439
 msgid "Set to 0 to keep the data indefinitely (not recommended)."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:351
+#: includes/Admin/SettingsPage.php:457
 msgid "Pro licence"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:358
+#: includes/Admin/SettingsPage.php:462
 msgid "Pro is on — trial."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:359
+#: includes/Admin/SettingsPage.php:464
+msgid "Pro is on — licence purchased, the features stay on for good."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:466
 msgid "Pro is on — licence active."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:364
+#: includes/Admin/SettingsPage.php:471
 msgid "Free version."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:366
+#: includes/Admin/SettingsPage.php:473
 msgid ""
 "The first reminder, the cart list and the statistics work without a licence."
-" Pro adds reminders 2 and 3, personal coupons, Telegram alerts and CSV "
-"export."
+" Pro adds reminders 2 and 3, personal coupons, Viber/SMS reminders, Telegram"
+" alerts and CSV export."
 msgstr ""
 
 #. translators: %s: human-readable licence status.
-#: includes/Admin/SettingsPage.php:371
+#: includes/Admin/SettingsPage.php:481
 #, php-format
 msgid "Status: %s."
 msgstr ""
 
+#. translators: %s: date the updates and support term ends, YYYY-MM-DD.
+#: includes/Admin/SettingsPage.php:493
+#, php-format
+msgid "Updates and support until %s."
+msgstr ""
+
+#. translators: %s: date the updates and support term ended, YYYY-MM-DD.
+#: includes/Admin/SettingsPage.php:498
+#, php-format
+msgid ""
+"The updates and support term ended on %s. Renew the licence to keep "
+"receiving new versions — the Pro features keep working either way."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:504
+msgid "Renew the licence"
+msgstr ""
+
 #. translators: %s: expiry date, YYYY-MM-DD.
-#: includes/Admin/SettingsPage.php:380
+#: includes/Admin/SettingsPage.php:510
 #, php-format
 msgid "Valid until %s."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:389
+#: includes/Admin/SettingsPage.php:519
 msgid "Licence key"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:395
+#: includes/Admin/SettingsPage.php:525
 msgid "Activate key"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:399
+#: includes/Admin/SettingsPage.php:529
 msgid "Release licence"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:408
+#: includes/Admin/SettingsPage.php:533
+msgid ""
+"The key arrives by e-mail after purchase and is checked against "
+"catcode.com.ua. Once a purchased key is confirmed, Pro stays on for good — "
+"the licence term covers updates and support. A trial key switches Pro off "
+"when its 7 days are over."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:545
 msgid "No licence yet?"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:413 includes/Admin/SettingsPage.php:419
+#: includes/Admin/SettingsPage.php:550 includes/Admin/SettingsPage.php:556
 msgid "Buy a licence"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:415
+#: includes/Admin/SettingsPage.php:552
 msgid ""
 "The trial issues a real 7-day key to your e-mail. No card, nothing is "
 "charged, and it never starts by itself."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:421
+#: includes/Admin/SettingsPage.php:558
 msgid "The trial has already been used on this site — one per install."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:447
+#: includes/Admin/SettingsPage.php:584
 msgid ""
-"Reminders 2 and 3, personal coupons, Telegram alerts and CSV export — free "
-"for 7 days. We e-mail you the key and switch Pro on right away."
+"Reminders 2 and 3, personal coupons, Viber/SMS reminders, Telegram alerts "
+"and CSV export — free for 7 days. We e-mail you the key and switch Pro on "
+"right away."
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:448
+#: includes/Admin/SettingsPage.php:585
 msgid "Your e-mail"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:451
+#: includes/Admin/SettingsPage.php:588
 msgid "Get the key"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:453
+#: includes/Admin/SettingsPage.php:590
 msgid "Cancel"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:456
+#: includes/Admin/SettingsPage.php:593
 msgid "Your key:"
 msgstr ""
 
-#: includes/Admin/SettingsPage.php:540
+#: includes/Admin/SettingsPage.php:693
 msgid "Settings saved."
 msgstr ""
 
-#: includes/Core/Cron.php:42
+#. translators: 1: TurboSMS status code, 2: status text.
+#: includes/Admin/SettingsPage.php:744
+#, php-format
+msgid "TurboSMS refused the connection: %1$d %2$s. Check the API token."
+msgstr ""
+
+#. translators: %s: account balance.
+#: includes/Admin/SettingsPage.php:755
+#, php-format
+msgid "TurboSMS connected. Balance: %s UAH."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:767
+msgid ""
+"Enter a Ukrainian phone number for the test message, e.g. 380XXXXXXXXX."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:774
+msgid "Test"
+msgstr ""
+
+#. translators: 1: TurboSMS status code, 2: status text.
+#: includes/Admin/SettingsPage.php:797
+#, php-format
+msgid ""
+"The test message was not accepted: %1$d %2$s. Codes 400–401 usually mean the"
+" sender name is not approved for this account."
+msgstr ""
+
+#. translators: %s: TurboSMS message id.
+#: includes/Admin/SettingsPage.php:808
+#, php-format
+msgid "Test message accepted by TurboSMS (id %s)."
+msgstr ""
+
+#: includes/Core/Cron.php:43
 msgid "Every 15 minutes (CatCode Abandoned Cart)"
+msgstr ""
+
+#: includes/Core/ErrorLog.php:75
+msgid "Form validation"
+msgstr ""
+
+#: includes/Core/ErrorLog.php:77
+msgid "Payment"
+msgstr ""
+
+#: includes/Core/ErrorLog.php:79
+msgid "JavaScript"
+msgstr ""
+
+#: includes/Core/ErrorLog.php:81
+msgid "Other"
+msgstr ""
+
+#: includes/Core/ErrorLog.php:263
+msgid "The payment method returned a failure without a message."
+msgstr ""
+
+#: includes/Core/ErrorLog.php:329 includes/Core/Rest.php:63
+msgid "Invalid security token."
 msgstr ""
 
 #: includes/Core/Mailer.php:113
@@ -576,8 +953,12 @@ msgstr ""
 msgid "%1$s — %2$d pcs — %3$s"
 msgstr ""
 
-#: includes/Core/Plugin.php:131
+#: includes/Core/Plugin.php:147
 msgid "Carts"
+msgstr ""
+
+#: includes/Core/Plugin.php:150
+msgid "Checkout errors"
 msgstr ""
 
 #: includes/Core/Privacy.php:34 includes/Core/Privacy.php:49
@@ -612,7 +993,7 @@ msgstr ""
 msgid "Captured on"
 msgstr ""
 
-#: includes/Core/Privacy.php:143
+#: includes/Core/Privacy.php:153
 msgid ""
 "When you add products to your cart and enter your e-mail address at "
 "checkout, this store saves your e-mail address, your name, the contents of "
@@ -621,34 +1002,38 @@ msgid ""
 msgstr ""
 
 #. translators: %d: number of days cart data is retained.
-#: includes/Core/Privacy.php:147
+#: includes/Core/Privacy.php:157
 #, php-format
 msgid ""
 "This data is stored in the store database and is automatically deleted %d "
 "days after the cart was last updated. It is never sent to any third party."
 msgstr ""
 
+#: includes/Core/Privacy.php:161
+msgid ""
+"If an error prevents you from placing an order, the store records the error "
+"message, the checkout page address without its parameters, your browser name"
+" and version, and whether an order followed in the same session. This record"
+" does not include your name, e-mail address or phone number."
+msgstr ""
+
 #: includes/Core/Recovery.php:46
 msgid "This recovery link is no longer valid."
 msgstr ""
 
-#: includes/Core/Recovery.php:61
+#: includes/Core/Recovery.php:54
 msgid "This recovery link has expired."
 msgstr ""
 
-#: includes/Core/Recovery.php:80
+#: includes/Core/Recovery.php:67
 msgid "Welcome back — your cart has been restored."
 msgstr ""
 
-#: includes/Core/Recovery.php:89
+#: includes/Core/Recovery.php:76
 msgid "Sorry, the products from that cart are no longer available."
 msgstr ""
 
-#: includes/Core/Rest.php:58
-msgid "Invalid security token."
-msgstr ""
-
-#: includes/Core/Rest.php:67
+#: includes/Core/Rest.php:75
 msgid "A valid e-mail address is required."
 msgstr ""
 
@@ -665,107 +1050,121 @@ msgstr ""
 msgid "Here is %1$s off with the code %2$s — it is valid for %3$d days."
 msgstr ""
 
-#: includes/Pro/Export.php:27
-msgid "CSV export is a Pro feature."
-msgstr ""
-
-#: includes/Pro/Export.php:41
-msgid "Could not open the output stream."
-msgstr ""
-
-#: includes/Pro/License.php:132
+#: includes/Pro/License.php:196
 msgid "not checked"
 msgstr ""
 
+#: includes/Pro/License.php:201
+msgid "purchased — the Pro features are yours for good"
+msgstr ""
+
+#: includes/Pro/License.php:202
+msgid ""
+"purchased — the Pro features are yours for good; the updates and support "
+"term has ended"
+msgstr ""
+
 #. translators: %d: days left in the trial.
-#: includes/Pro/License.php:141
+#: includes/Pro/License.php:211
 #, php-format
 msgid "trial — %d day left"
 msgid_plural "trial — %d days left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Pro/License.php:145
+#: includes/Pro/License.php:215
 msgid "trial active"
 msgstr ""
 
-#: includes/Pro/License.php:148
+#: includes/Pro/License.php:218
 msgid "valid (not re-checked yet)"
 msgstr ""
 
 #. translators: 1: days since the last check, 2: days of grace left.
-#: includes/Pro/License.php:155
+#: includes/Pro/License.php:225
 #, php-format
 msgid "valid (checked %1$d days ago, %2$d days of grace left)"
 msgstr ""
 
-#: includes/Pro/License.php:160
+#: includes/Pro/License.php:230
 msgid "valid (grace period over — waiting for a re-check)"
 msgstr ""
 
 #. translators: %s: date and time of the last check.
-#: includes/Pro/License.php:166
+#: includes/Pro/License.php:236
 #, php-format
 msgid "invalid (last checked %s)"
 msgstr ""
 
-#: includes/Pro/License.php:177
+#: includes/Pro/License.php:247
 msgid "Key not found. Check that you copied it in full, with no stray spaces."
 msgstr ""
 
-#: includes/Pro/License.php:178
+#: includes/Pro/License.php:248
 msgid "This key is no longer valid. Contact support if that is a mistake."
 msgstr ""
 
-#: includes/Pro/License.php:180
+#: includes/Pro/License.php:251
+msgid ""
+"The 7-day trial is over. Buy a licence on catcode.com.ua to switch the Pro "
+"features back on."
+msgstr ""
+
+#: includes/Pro/License.php:252
 msgid ""
 "This key is already in use on another store. Deactivate it there first."
 msgstr ""
 
-#: includes/Pro/License.php:181
+#: includes/Pro/License.php:253
 msgid ""
 "This key belongs to a different CatCode product, not to Abandoned Cart "
 "Recovery."
 msgstr ""
 
-#: includes/Pro/License.php:182
+#: includes/Pro/License.php:254
 msgid ""
 "Could not reach our licence server. We will retry automatically in a few "
 "hours."
 msgstr ""
 
-#: includes/Pro/License.php:183
+#: includes/Pro/License.php:255
 msgid "Enter a licence key."
 msgstr ""
 
-#: includes/Pro/License.php:184
+#: includes/Pro/License.php:256
 msgid "No licence key is stored yet."
 msgstr ""
 
-#: includes/Pro/License.php:185
+#: includes/Pro/License.php:257
 msgid "Enter a valid e-mail address — the key will be sent there."
 msgstr ""
 
-#: includes/Pro/License.php:186
+#: includes/Pro/License.php:258
 msgid "A trial has already been issued for this e-mail address."
 msgstr ""
 
-#: includes/Pro/License.php:187
+#: includes/Pro/License.php:259
 msgid "A trial has already been issued for this site."
 msgstr ""
 
-#: includes/Pro/License.php:188
+#: includes/Pro/License.php:260
 msgid "Too many attempts. Try again in an hour."
 msgstr ""
 
-#: includes/Pro/License.php:189
+#: includes/Pro/License.php:261
 msgid ""
 "The server answered with something we could not read. Try again in a few "
 "minutes."
 msgstr ""
 
-#: includes/Pro/License.php:192
+#: includes/Pro/License.php:264
 msgid "This key does not fit."
+msgstr ""
+
+#: includes/Pro/Messenger.php:27
+msgid ""
+"{store_name}: you left items worth {cart_total} in your cart. It is saved "
+"for you: {recovery_link}"
 msgstr ""
 
 #: includes/Pro/Telegram.php:97
@@ -824,193 +1223,18 @@ msgstr ""
 msgid "Abandoned cart"
 msgstr ""
 
-#: includes/Pro/Telegram.php:285
+#: includes/Pro/Telegram.php:287
 msgid "E-mail:"
 msgstr ""
 
-#: includes/Pro/Telegram.php:286
-msgid "Total:"
-msgstr ""
-
-#: includes/Pro/Telegram.php:289
-msgid "Customer:"
-msgstr ""
-
-msgid "Viber / SMS reminder"
-msgstr ""
-
-msgid ""
-"One short message with the recovery link through TurboSMS (turbosms.ua) — "
-"also for shoppers who typed only a phone number at checkout. One message per"
-" cart, never a chain; the e-mail reminders keep working as before."
-msgstr ""
-
-msgid ""
-"Pro: many shoppers leave a phone and no e-mail — a Viber message reaches "
-"them where they actually read."
-msgstr ""
-
-msgid "Send a Viber / SMS reminder"
-msgstr ""
-
-msgid ""
-"While this is off the plugin does not store shoppers' phone numbers at all."
-msgstr ""
-
-msgid "TurboSMS API token"
-msgstr ""
-
-msgid ""
-"TurboSMS cabinet → Settings → API (HTTP). Viber and SMS sender names are "
-"registered in the same cabinet."
-msgstr ""
-
-msgid "Viber, SMS if Viber is not delivered"
-msgstr ""
-
-msgid "Viber only"
-msgstr ""
-
-msgid "SMS only"
-msgstr ""
-
-msgid "Channel"
-msgstr ""
-
-msgid "Viber sender"
-msgstr ""
-
-msgid "SMS sender (alpha name)"
-msgstr ""
-
-msgid "Quiet hours"
-msgstr ""
-
-msgid "from"
-msgstr ""
-
-msgid "to"
-msgstr ""
-
-msgid ""
-"Hours in the site timezone. Messages that fall due at night wait for the "
-"morning. Equal values switch the window off."
-msgstr ""
-
-msgid ""
-"Keep it short: every 70 Cyrillic characters is one more paid SMS part. Leave"
-" empty for the default text."
-msgstr ""
-
-msgid "Check"
-msgstr ""
-
-msgid "Check connection and balance"
-msgstr ""
-
-msgid "Send test message"
-msgstr ""
-
-msgid ""
-"Both buttons save the settings first. The test message is a real, paid "
-"message."
-msgstr ""
-
-msgid "Sends you a message the moment a cart is marked as abandoned."
-msgstr ""
-
-msgid ""
-"The plugin stores the e-mail address (and, with the Viber/SMS reminder on, "
-"the phone), the name and the cart contents of shoppers who did not complete "
-"an order. Rows are deleted automatically once they are older than the "
-"retention period."
-msgstr ""
-
-msgid ""
-"The first reminder, the cart list and the statistics work without a licence."
-" Pro adds reminders 2 and 3, personal coupons, Viber/SMS reminders, Telegram"
-" alerts and CSV export."
-msgstr ""
-
-msgid ""
-"Reminders 2 and 3, personal coupons, Viber/SMS reminders, Telegram alerts "
-"and CSV export — free for 7 days. We e-mail you the key and switch Pro on "
-"right away."
-msgstr ""
-
-#, php-format
-msgid "TurboSMS refused the connection: %1$d %2$s. Check the API token."
-msgstr ""
-
-#, php-format
-msgid "TurboSMS connected. Balance: %s UAH."
-msgstr ""
-
-msgid ""
-"Enter a Ukrainian phone number for the test message, e.g. 380XXXXXXXXX."
-msgstr ""
-
-msgid "Test"
-msgstr ""
-
-#, php-format
-msgid ""
-"The test message was not accepted: %1$d %2$s. Codes 400–401 usually mean the"
-" sender name is not approved for this account."
-msgstr ""
-
-#, php-format
-msgid "Test message accepted by TurboSMS (id %s)."
-msgstr ""
-
-msgid ""
-"{store_name}: you left items worth {cart_total} in your cart. It is saved "
-"for you: {recovery_link}"
-msgstr ""
-
+#: includes/Pro/Telegram.php:290
 msgid "Phone:"
 msgstr ""
 
-#: includes/Pro/License.php
-msgid "purchased — the Pro features are yours for good"
+#: includes/Pro/Telegram.php:292
+msgid "Total:"
 msgstr ""
 
-#: includes/Pro/License.php
-msgid ""
-"purchased — the Pro features are yours for good; the updates and support "
-"term has ended"
-msgstr ""
-
-#: includes/Pro/License.php
-msgid ""
-"The 7-day trial is over. Buy a licence on catcode.com.ua to switch the Pro "
-"features back on."
-msgstr ""
-
-#: includes/Admin/SettingsPage.php
-msgid "Pro is on — licence purchased, the features stay on for good."
-msgstr ""
-
-#: includes/Admin/SettingsPage.php
-#, php-format
-msgid "Updates and support until %s."
-msgstr ""
-
-#: includes/Admin/SettingsPage.php
-#, php-format
-msgid ""
-"The updates and support term ended on %s. Renew the licence to keep "
-"receiving new versions — the Pro features keep working either way."
-msgstr ""
-
-#: includes/Admin/SettingsPage.php
-msgid "Renew the licence"
-msgstr ""
-
-#: includes/Admin/SettingsPage.php
-msgid ""
-"The key arrives by e-mail after purchase and is checked against "
-"catcode.com.ua. Once a purchased key is confirmed, Pro stays on for good — "
-"the licence term covers updates and support. A trial key switches Pro off "
-"when its 7 days are over."
+#: includes/Pro/Telegram.php:294
+msgid "Customer:"
 msgstr ""

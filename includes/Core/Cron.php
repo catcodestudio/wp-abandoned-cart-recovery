@@ -183,5 +183,9 @@ class Cron {
 		if ( $retention > 0 ) {
 			Repository::purge_old( $retention );
 		}
+
+		// The error log never keeps more than 180 days, even with retention off:
+		// it holds no customer data worth keeping and grows with every visit.
+		ErrorLog::purge_old( $retention > 0 ? min( $retention, 180 ) : 180 );
 	}
 }

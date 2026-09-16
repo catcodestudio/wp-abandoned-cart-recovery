@@ -15,6 +15,7 @@ Records carts that never became an order and brings the shopper back with a remi
 - **Admin list** with status filter, e-mail search and four statistics tiles (abandoned, recovered, recovered revenue, recovery rate).
 - **Anti-spam** — never mails the same address more often than once every N days.
 - **Data hygiene** — automatic clean-up after a retention period, plus WordPress personal-data export and erase integration.
+- **Checkout error log** (WooCommerce → Checkout Errors) — validation messages, payment failures, expired sessions and failed Store API checkouts server-side; JavaScript errors and block-checkout field errors from the page. Grouped by error, with shoppers affected and shoppers who left without an order (last 7 days). No names, e-mails or phones stored.
 - HPOS-compatible.
 
 ## Pro
@@ -24,6 +25,7 @@ Records carts that never became an order and brings the shopper back with a remi
 - **Viber / SMS reminder** through TurboSMS: one message per cart with its own recovery link, also for guests who left only a phone; Viber with SMS fallback, quiet hours, balance check and test message.
 - **Telegram notification** the moment a cart is marked abandoned. "Connect bot" registers a Telegram webhook with a `secret_token`; the shop owner sends `/start` and the chat ID is saved by itself.
 - **CSV export** of the cart list.
+- **Checkout error log**: 30/90-day periods, latest occurrences of an error with page, browser, gateway and cart, CSV export.
 
 Pro is unlocked by a licence key or by a 7-day trial the owner starts from the settings screen. A trial switches Pro off when it ends; a purchased key, once confirmed by the licence server, keeps Pro on for good — the 1–5 year term covers updates and support. The free tier keeps working in every case.
 

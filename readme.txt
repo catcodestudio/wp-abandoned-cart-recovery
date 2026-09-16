@@ -4,7 +4,7 @@ Tags: woocommerce, abandoned cart, cart recovery, email, ecommerce
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,7 @@ Most shoppers who fill a cart never reach the "thank you" page. This plugin reco
 * Admin cart list with a status filter, email search and four statistic tiles: carts abandoned, carts recovered, revenue recovered and recovery rate
 * Anti-spam guard: the same address is not emailed more often than once every N days
 * Automatic data retention cleanup and integration with the WordPress personal data exporter and eraser
+* Checkout error log: which validation messages, payment failures and JavaScript errors shoppers hit on the classic and block checkout, grouped by error, with the number of shoppers who then left without an order (last 7 days)
 * HPOS (custom order tables) compatible, works with the block-based checkout
 
 = Pro features =
@@ -41,6 +42,7 @@ Most shoppers who fill a cart never reach the "thank you" page. This plugin reco
 * Viber or SMS reminder through TurboSMS (turbosms.ua) — one short message with the recovery link, also for shoppers who typed only a phone number at checkout; Viber with SMS fallback, quiet hours, balance check and a test message in the settings
 * Telegram notification to the shop owner the moment a cart is abandoned
 * CSV export of the captured carts
+* Checkout error log: 30 and 90-day reports, the latest occurrences of each error with page, browser, payment method and the cart it belongs to, CSV export
 
 Pro never switches itself on. A fresh install is the free version: the Pro settings are visible in their own places, greyed out and labelled, so you can see exactly where the line is. If you want to try them, the settings screen has a "Try Pro for 7 days" button — you enter an email, we issue a real 7-day key and unlock Pro right away. When the trial ends the free tier keeps working exactly as before, and your settings stay where they were. A purchased licence is different: once the key is confirmed, Pro stays on for good — the licence term pays for updates and support, not for the right to keep using the features.
 
@@ -57,7 +59,7 @@ The plugin interface is fully translated into Ukrainian. / Інтерфейс п
 1. Upload the plugin folder to `/wp-content/plugins/catcode-abandoned-cart-recovery-for-woocommerce/`
 2. Activate it in the "Plugins" menu
 3. Go to WooCommerce → Abandoned Cart Settings and set the timings and the email text
-4. Watch the results under WooCommerce → Abandoned Carts
+4. Watch the results under WooCommerce → Abandoned Carts and WooCommerce → Checkout Errors
 
 == Frequently Asked Questions ==
 
@@ -93,6 +95,14 @@ Nothing breaks. Cart capture, the first reminder email, recovery links, the cart
 
 Yes, in Pro. Connect a TurboSMS account (API token plus approved Viber and SMS sender names) under Abandoned Cart Settings → Viber / SMS reminder. The shopper gets exactly one message per cart, never at night (quiet hours are configurable), with a link that restores the cart. While the feature is off the plugin does not store phone numbers at all.
 
+= What does the checkout error log record? =
+
+Every error a shopper sees while placing an order: required or invalid fields, "invalid payment method", messages returned by the payment gateway, expired sessions, failed Store API checkout requests, and — with the browser option on — JavaScript errors on the checkout page and block checkout fields that failed validation before the order was sent. Errors are grouped, and for each group you see how many shoppers hit it and how many of them did not place an order afterwards in the same browser session.
+
+= Does the error log store personal data? =
+
+No names, e-mail addresses or phone numbers. Messages are stripped of markup, e-mail addresses and long digit sequences; page addresses lose their query string; the browser is kept only as family, major version and platform. Rows are kept for the retention period (at most 180 days) and dropped on uninstall.
+
 = Will a customer receive several reminders for several carts? =
 
 No. The "do not email the same address more often than once every N days" setting throttles reminders per address across all carts.
@@ -103,9 +113,11 @@ This plugin stores personal data of shoppers who did not complete an order, beca
 
 **What is stored:** the email address, the customer name (when known), the WordPress user id for logged-in customers, a snapshot of the cart contents (product name, quantity, price), the cart total and currency, the cart status, how many reminders were sent and when, — with the Pro coupon feature — the generated coupon code, and — only while the Pro Viber/SMS reminder is enabled — the phone number and the delivery status of that one message. Recovery tokens are stored only as a SHA-256 hash.
 
-**Where it is stored:** in the `{prefix}catcode_abandoned_carts` table in your own WordPress database. Nothing is sent to CatCode or to any other third party.
+**Checkout error log:** the error text (with e-mail addresses and long numbers masked), the error code, the field id, the payment method id, the checkout page path without its query string, the browser family and platform, a random session id and whether an order followed in that session. It does not contain names, e-mail addresses or phone numbers. You can switch it off, or switch off only the browser-side reports, on the settings page.
 
-**How long it is kept:** rows are deleted automatically once they are older than the retention period set on the settings page (90 days by default; set it to 0 to keep data indefinitely, which is not recommended). Uninstalling the plugin drops the table entirely.
+**Where it is stored:** in the `{prefix}catcode_abandoned_carts` and `{prefix}catcode_abandoned_cart_errors` tables in your own WordPress database. Nothing is sent to CatCode or to any other third party.
+
+**How long it is kept:** rows are deleted automatically once they are older than the retention period set on the settings page (90 days by default; set it to 0 to keep data indefinitely, which is not recommended). The error log is kept for the same period, but never longer than 180 days. Uninstalling the plugin drops both tables entirely.
 
 **Data subject requests:** the plugin registers a WordPress personal data exporter and eraser, so a shopper's carts are included in the standard Tools → Export Personal Data and Tools → Erase Personal Data flows, keyed by email address. The plugin also contributes suggested wording to the site privacy policy screen.
 
@@ -136,8 +148,14 @@ What is sent: your API token, the sender names, the shopper's phone number and t
 2. Settings: inactivity window, recovery link lifetime and anti-spam throttle
 3. Settings: reminder email template with the available placeholders
 4. Settings: Pro coupon and Telegram notification sections
+5. Checkout errors report: most frequent errors and shoppers who left without an order
 
 == Changelog ==
+
+= 1.3.0 =
+* Checkout error log (WooCommerce → Checkout Errors): validation messages, payment failures, expired sessions and failed block checkout requests are recorded server-side; JavaScript errors and block checkout fields rejected in the browser are reported by the checkout page. The report groups identical errors and shows how many shoppers hit each one and how many left without an order. Free: last 7 days.
+* Pro: 30 and 90-day periods, the latest occurrences of an error with page, browser, payment method and the matching cart, CSV export of the log.
+* The error log stores no names, e-mail addresses or phone numbers, is covered by the retention cleanup, the personal data eraser and the uninstaller, and can be switched off in the settings.
 
 = 1.2.2 =
 * Updates for this Pro build no longer come from wordpress.org. The free copy there shares the plugin folder name, so WordPress could offer it as an "update" and replace the Pro build with the free one.
@@ -163,6 +181,9 @@ What is sent: your API token, the sender names, the shopper's phone number and t
 * Pro: chain of up to three reminders, personal discount coupons, Telegram notifications, CSV export.
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Adds the checkout error log. A new database table is created automatically on update; logging is on by default and can be switched off on the settings page.
 
 = 1.2.1 =
 Purchased licences keep the Pro features after the term ends. An existing key is re-checked with the licence server a minute after the update to learn whether it is a purchase or a trial.

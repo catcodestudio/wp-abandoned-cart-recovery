@@ -9,6 +9,7 @@ namespace CatCode\AbandonedCart\Core;
 
 use CatCode\AbandonedCart\Admin\Ajax;
 use CatCode\AbandonedCart\Admin\CartsPage;
+use CatCode\AbandonedCart\Admin\ErrorsPage;
 use CatCode\AbandonedCart\Admin\Notice;
 use CatCode\AbandonedCart\Admin\SettingsPage;
 use CatCode\AbandonedCart\Pro\Export;
@@ -49,6 +50,7 @@ final class Plugin {
 		( new Cron() )->register();
 		( new Rest() )->register();
 		( new Privacy() )->register();
+		( new ErrorLog() )->register();
 
 		// Telegram owns its webhook route so the whole integration lives in one
 		// file. The route stays registered regardless of the licence state — it
@@ -70,6 +72,8 @@ final class Plugin {
 			$this->settings_page = new SettingsPage();
 			$this->settings_page->register();
 
+			( new ErrorsPage() )->register();
+
 			( new Export() )->register();
 			Ajax::register();
 
@@ -86,6 +90,7 @@ final class Plugin {
 			return;
 		}
 		Installer::create_table();
+		ErrorLog::create_table();
 		Cron::schedule();
 		// 1.2.0 and older stored a key without its kind, so a purchase could not be
 		// told from a trial. Ask the server once, shortly, instead of waiting for
@@ -122,6 +127,8 @@ final class Plugin {
 				'nonce'    => wp_create_nonce( 'wp_rest' ),
 				// Phones are watched only while the Pro Viber/SMS reminder is on.
 				'phone'    => Messenger::is_enabled() ? '1' : '',
+				// Checkout error log: JavaScript errors and block-checkout field errors.
+				'errors'   => ErrorLog::browser_enabled() ? esc_url_raw( rest_url( Rest::REST_NAMESPACE . '/checkout-error' ) ) : '',
 			)
 		);
 	}
@@ -139,7 +146,10 @@ final class Plugin {
 		$carts    = '<a href="' . esc_url( admin_url( 'admin.php?page=' . CartsPage::SLUG ) ) . '">'
 			. esc_html__( 'Carts', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</a>';
 
-		array_unshift( $links, $settings, $carts );
+		$errors   = '<a href="' . esc_url( admin_url( 'admin.php?page=' . ErrorsPage::SLUG ) ) . '">'
+			. esc_html__( 'Checkout errors', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</a>';
+
+		array_unshift( $links, $settings, $carts, $errors );
 		return $links;
 	}
 }

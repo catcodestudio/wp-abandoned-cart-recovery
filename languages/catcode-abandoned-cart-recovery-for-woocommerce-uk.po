@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: CatCode Abandoned Cart Recovery for WooCommerce 1.2.1\n"
+"Project-Id-Version: CatCode Abandoned Cart Recovery for WooCommerce 1.3.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/catcode-abandoned-cart-recovery-for-woocommerce\n"
-"PO-Revision-Date: 2026-09-14 20:30+0300\n"
+"PO-Revision-Date: 2026-09-16 17:00+0300\n"
 "Last-Translator: CatCode <info@catcode.com.ua>\n"
 "Language-Team: Ukrainian <info@catcode.com.ua>\n"
 "Language: uk\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: catcode-abandoned-cart-recovery-for-woocommerce.php
-#: includes/Core/Privacy.php:153
+#: includes/Core/Privacy.php:164
 msgid "CatCode Abandoned Cart Recovery for WooCommerce"
 msgstr "CatCode Abandoned Cart Recovery for WooCommerce"
 
@@ -29,17 +29,6 @@ msgstr ""
 "https://catcode.com.ua/modules/catcode-abandoned-cart-recovery-for-"
 "woocommerce/"
 
-#. Description of the plugin
-#: catcode-abandoned-cart-recovery-for-woocommerce.php
-msgid ""
-"Captures abandoned WooCommerce carts and wins them back with a reminder "
-"email containing a one-click recovery link. Cart list with statistics, "
-"configurable timings and templates."
-msgstr ""
-"Захоплює кинуті кошики WooCommerce і повертає покупців листом-нагадуванням "
-"із посиланням відновлення в один клік. Список кошиків зі статистикою, "
-"налаштовувані таймінги та шаблони."
-
 #. Author of the plugin
 #: catcode-abandoned-cart-recovery-for-woocommerce.php
 msgid "CatCode"
@@ -50,7 +39,7 @@ msgstr "CatCode"
 msgid "https://catcode.com.ua"
 msgstr "https://catcode.com.ua"
 
-#: catcode-abandoned-cart-recovery-for-woocommerce.php:93
+#: catcode-abandoned-cart-recovery-for-woocommerce.php:117
 msgid ""
 "CatCode Abandoned Cart Recovery for WooCommerce requires an active "
 "WooCommerce installation."
@@ -82,23 +71,23 @@ msgstr "Нагадування"
 msgid "Captured"
 msgstr "Захоплено"
 
-#: includes/Admin/CartsListTable.php:71
+#: includes/Admin/CartsListTable.php:71 includes/Admin/ErrorsPage.php:161
 msgid "All"
 msgstr "Усі"
 
-#: includes/Admin/CartsListTable.php:72 includes/Admin/CartsListTable.php:197
+#: includes/Admin/CartsListTable.php:72 includes/Admin/CartsListTable.php:200
 msgid "Active"
 msgstr "Активний"
 
-#: includes/Admin/CartsListTable.php:73 includes/Admin/CartsListTable.php:198
+#: includes/Admin/CartsListTable.php:73 includes/Admin/CartsListTable.php:201
 msgid "Abandoned"
 msgstr "Кинутий"
 
-#: includes/Admin/CartsListTable.php:74 includes/Admin/CartsListTable.php:199
+#: includes/Admin/CartsListTable.php:74 includes/Admin/CartsListTable.php:202
 msgid "Recovered"
 msgstr "Відновлений"
 
-#: includes/Admin/CartsListTable.php:75 includes/Admin/CartsListTable.php:200
+#: includes/Admin/CartsListTable.php:75 includes/Admin/CartsListTable.php:203
 msgid "Lost"
 msgstr "Втрачений"
 
@@ -106,35 +95,35 @@ msgstr "Втрачений"
 msgid "No carts captured yet."
 msgstr "Поки що не захоплено жодного кошика."
 
-#: includes/Admin/CartsListTable.php:141
+#: includes/Admin/CartsListTable.php:144
 msgid "Registered customer"
 msgstr "Зареєстрований покупець"
 
 #. translators: %d: number of additional products not shown.
-#: includes/Admin/CartsListTable.php:166
+#: includes/Admin/CartsListTable.php:169
 #, php-format
 msgid "+%d more"
 msgstr "+%d ще"
 
 #. translators: %s: date and time the cart was marked as abandoned.
-#: includes/Admin/CartsListTable.php:231
+#: includes/Admin/CartsListTable.php:237
 #, php-format
 msgid "abandoned: %s"
 msgstr "кинуто: %s"
 
-#: includes/Admin/CartsListTable.php:250
+#: includes/Admin/CartsListTable.php:256
 msgid "Carts abandoned"
 msgstr "Кинуто кошиків"
 
-#: includes/Admin/CartsListTable.php:251
+#: includes/Admin/CartsListTable.php:257
 msgid "Carts recovered"
 msgstr "Відновлено кошиків"
 
-#: includes/Admin/CartsListTable.php:252
+#: includes/Admin/CartsListTable.php:258
 msgid "Revenue recovered"
 msgstr "Відновлена сума"
 
-#: includes/Admin/CartsListTable.php:253
+#: includes/Admin/CartsListTable.php:259
 msgid "Recovery rate"
 msgstr "Конверсія відновлення"
 
@@ -143,40 +132,42 @@ msgstr "Конверсія відновлення"
 msgid "Abandoned Carts"
 msgstr "Кинуті кошики"
 
-#: includes/Admin/CartsPage.php:51 includes/Core/Plugin.php:203
+#: includes/Admin/CartsPage.php:51 includes/Admin/ErrorsPage.php:98
+#: includes/Core/Plugin.php:145
 msgid "Settings"
 msgstr "Налаштування"
 
-#: includes/Admin/CartsPage.php:63
+#: includes/Admin/CartsPage.php:63 includes/Admin/CartsPage.php:69
+#: includes/Admin/ErrorsPage.php:176 includes/Admin/ErrorsPage.php:180
 msgid "Export CSV"
 msgstr "Експорт CSV"
 
-#: includes/Admin/CartsPage.php:76
+#: includes/Admin/CartsPage.php:84
 msgid "Search by e-mail"
 msgstr "Пошук за e-mail"
 
-#: includes/Admin/SettingsPage.php:32 includes/Admin/SettingsPage.php:33
-#: includes/Admin/SettingsPage.php:61
+#: includes/Admin/SettingsPage.php:34 includes/Admin/SettingsPage.php:35
+#: includes/Admin/SettingsPage.php:84
 msgid "Abandoned Cart Settings"
 msgstr "Налаштування кинутих кошиків"
 
-#: includes/Admin/SettingsPage.php:62
+#: includes/Admin/ErrorsPage.php:97 includes/Admin/SettingsPage.php:85
 msgid "Cart list"
 msgstr "Список кошиків"
 
-#: includes/Admin/SettingsPage.php:82 includes/Admin/SettingsPage.php:93
+#: includes/Admin/SettingsPage.php:105 includes/Admin/SettingsPage.php:118
 msgid "Save settings"
 msgstr "Зберегти налаштування"
 
-#: includes/Admin/SettingsPage.php:103
+#: includes/Admin/SettingsPage.php:128
 msgid "Timing"
 msgstr "Тайминг"
 
-#: includes/Admin/SettingsPage.php:108
+#: includes/Admin/SettingsPage.php:133
 msgid "Mark as abandoned after"
 msgstr "Вважати кинутим через"
 
-#: includes/Admin/SettingsPage.php:110
+#: includes/Admin/SettingsPage.php:135
 msgid ""
 "Minutes of inactivity before a cart is considered abandoned. The scan runs "
 "every 15 minutes."
@@ -184,89 +175,83 @@ msgstr ""
 "Хвилин бездіяльності, після яких кошик вважається кинутим. Сканування "
 "виконується кожні 15 хвилин."
 
-#: includes/Admin/SettingsPage.php:111 includes/Admin/SettingsPage.php:171
+#: includes/Admin/SettingsPage.php:136 includes/Admin/SettingsPage.php:198
+#: includes/Admin/SettingsPage.php:298
 msgid "minutes"
 msgstr "хвилин"
 
-#: includes/Admin/SettingsPage.php:116
+#: includes/Admin/SettingsPage.php:141
 msgid "Recovery link lifetime"
 msgstr "Термін дії посилання відновлення"
 
-#: includes/Admin/SettingsPage.php:118
+#: includes/Admin/SettingsPage.php:143
 msgid ""
 "How long a recovery link stays valid. Afterwards the cart is marked as lost."
 msgstr ""
 "Скільки діє посилання відновлення. Після цього кошик позначається як "
 "втрачений."
 
-#: includes/Admin/SettingsPage.php:119 includes/Admin/SettingsPage.php:127
-#: includes/Admin/SettingsPage.php:212 includes/Admin/SettingsPage.php:303
+#: includes/Admin/SettingsPage.php:144 includes/Admin/SettingsPage.php:152
+#: includes/Admin/SettingsPage.php:244 includes/Admin/SettingsPage.php:440
 msgid "days"
 msgstr "днів"
 
-#: includes/Admin/SettingsPage.php:124
+#: includes/Admin/SettingsPage.php:149
 msgid "Do not e-mail the same address more often than once every"
 msgstr "Не писати на ту саму адресу частіше ніж раз на"
 
-#: includes/Admin/SettingsPage.php:126
+#: includes/Admin/SettingsPage.php:151
 msgid ""
 "Protects frequent shoppers from repeated reminders. Set to 0 to disable."
 msgstr "Захищає постійних покупців від повторних нагадувань. 0 — вимкнути."
 
-#: includes/Admin/SettingsPage.php:138
+#: includes/Admin/SettingsPage.php:163
 msgid "Reminder e-mail 1"
 msgstr "Лист-нагадування 1"
 
-#: includes/Admin/SettingsPage.php:139
+#: includes/Admin/SettingsPage.php:164
 msgid "Reminder e-mail 2"
 msgstr "Лист-нагадування 2"
 
-#: includes/Admin/SettingsPage.php:140
+#: includes/Admin/SettingsPage.php:165
 msgid "Reminder e-mail 3"
 msgstr "Лист-нагадування 3"
 
-#: includes/Admin/SettingsPage.php:151
-msgid ""
-"The e-mail chain is a Pro feature. The free tier sends the first reminder "
-"only."
-msgstr ""
-"Ланцюжок листів — це Pro-функція. У безкоштовній версії надсилається лише "
-"перший лист."
-
-#: includes/Admin/SettingsPage.php:158 includes/Admin/SettingsPage.php:199
-#: includes/Admin/SettingsPage.php:226
+#: includes/Admin/SettingsPage.php:185 includes/Admin/SettingsPage.php:231
+#: includes/Admin/SettingsPage.php:267 includes/Admin/SettingsPage.php:339
 msgid "Enabled"
 msgstr "Увімкнено"
 
-#: includes/Admin/SettingsPage.php:160
+#: includes/Admin/SettingsPage.php:187
 msgid "Send this reminder"
 msgstr "Надсилати це нагадування"
 
-#: includes/Admin/SettingsPage.php:167
+#: includes/Admin/SettingsPage.php:194 includes/Admin/SettingsPage.php:298
 msgid "Send after abandonment"
 msgstr "Надіслати після покидання"
 
-#: includes/Admin/SettingsPage.php:168
+#: includes/Admin/SettingsPage.php:195
 msgid "Send after the previous reminder"
 msgstr "Надіслати після попереднього нагадування"
 
-#: includes/Admin/SettingsPage.php:176
+#: includes/Admin/SettingsPage.php:203
 msgid "Subject"
 msgstr "Тема"
 
-#: includes/Admin/SettingsPage.php:181
+#: includes/Admin/ErrorsPage.php:199 includes/Admin/SettingsPage.php:208
+#: includes/Admin/SettingsPage.php:306
 msgid "Message"
 msgstr "Повідомлення"
 
-#: includes/Admin/SettingsPage.php:183
+#: includes/Admin/SettingsPage.php:210 includes/Admin/SettingsPage.php:308
 msgid "Placeholders:"
 msgstr "Плейсхолдери:"
 
-#: includes/Admin/SettingsPage.php:195
+#: includes/Admin/SettingsPage.php:222
 msgid "Personal discount coupon"
 msgstr "Персональний купон-знижка"
 
-#: includes/Admin/SettingsPage.php:196
+#: includes/Admin/SettingsPage.php:223
 msgid ""
 "A single-use WooCommerce coupon is generated per cart, restricted to the "
 "shopper e-mail address, and inserted through the {coupon} placeholder."
@@ -274,67 +259,59 @@ msgstr ""
 "Для кожного кошика створюється одноразовий купон WooCommerce, обмежений "
 "e-mail покупця, і підставляється через плейсхолдер {coupon}."
 
-#: includes/Admin/SettingsPage.php:201
+#: includes/Admin/SettingsPage.php:233
 msgid "Attach a personal coupon to the reminders"
 msgstr "Додавати персональний купон до нагадувань"
 
-#: includes/Admin/SettingsPage.php:204
+#: includes/Admin/SettingsPage.php:236
 msgid "Discount type"
 msgstr "Тип знижки"
 
-#: includes/Admin/SettingsPage.php:206
+#: includes/Admin/SettingsPage.php:238
 msgid "Percentage discount"
 msgstr "Знижка у відсотках"
 
-#: includes/Admin/SettingsPage.php:207
+#: includes/Admin/SettingsPage.php:239
 msgid "Fixed cart discount"
 msgstr "Фіксована знижка на кошик"
 
-#: includes/Admin/SettingsPage.php:210
+#: includes/Admin/SettingsPage.php:242
 msgid "Discount value"
 msgstr "Розмір знижки"
 
-#: includes/Admin/SettingsPage.php:211
+#: includes/Admin/SettingsPage.php:243
 msgid "Attach starting from reminder"
 msgstr "Додавати починаючи з нагадування"
 
-#: includes/Admin/SettingsPage.php:211
+#: includes/Admin/SettingsPage.php:243
 msgid "Reminder number the coupon first appears in (2 by default)."
 msgstr "Номер листа, у якому вперше з'являється купон (за замовчуванням 2)."
 
-#: includes/Admin/SettingsPage.php:212
+#: includes/Admin/SettingsPage.php:244
 msgid "Coupon valid for"
 msgstr "Купон діє"
 
-#: includes/Admin/SettingsPage.php:222
+#: includes/Admin/SettingsPage.php:330
 msgid "Telegram notification"
 msgstr "Сповіщення в Telegram"
 
-#: includes/Admin/SettingsPage.php:223
-msgid ""
-"Sends you a message the moment a cart is marked as abandoned. This is the "
-"only external service the plugin contacts."
-msgstr ""
-"Надсилає вам повідомлення щойно кошик позначено кинутим. Це єдиний зовнішній"
-" сервіс, до якого звертається плагін."
-
-#: includes/Admin/SettingsPage.php:228
+#: includes/Admin/SettingsPage.php:341
 msgid "Notify me in Telegram"
 msgstr "Сповіщати мене в Telegram"
 
-#: includes/Admin/SettingsPage.php:231
+#: includes/Admin/SettingsPage.php:344
 msgid "Bot token"
 msgstr "Токен бота"
 
-#: includes/Admin/SettingsPage.php:233
+#: includes/Admin/SettingsPage.php:346
 msgid "Create a bot with @BotFather in Telegram and paste the token here."
 msgstr "Створіть бота через @BotFather у Telegram і вставте токен сюди."
 
-#: includes/Admin/SettingsPage.php:238
+#: includes/Admin/SettingsPage.php:351
 msgid "Chat ID"
 msgstr "Chat ID"
 
-#: includes/Admin/SettingsPage.php:240
+#: includes/Admin/SettingsPage.php:353
 msgid ""
 "Filled in automatically once you send /start to the bot — there is no need "
 "to look the number up by hand. A numeric chat id (negative for groups) or "
@@ -344,19 +321,19 @@ msgstr ""
 "номер вручну не потрібно. Також можна ввести числовий chat id (від’ємний для"
 " груп) або @channelname."
 
-#: includes/Admin/SettingsPage.php:258
+#: includes/Admin/SettingsPage.php:371
 msgid "Connection"
 msgstr "Підключення"
 
-#: includes/Admin/SettingsPage.php:262
+#: includes/Admin/SettingsPage.php:375
 msgid "Bot not connected."
 msgstr "Бот не підключений."
 
-#: includes/Admin/SettingsPage.php:266
+#: includes/Admin/SettingsPage.php:379
 msgid "Connect bot"
 msgstr "Підключити бота"
 
-#: includes/Admin/SettingsPage.php:267
+#: includes/Admin/SettingsPage.php:380
 msgid ""
 "Saves the settings and registers a Telegram webhook pointing at this store. "
 "Afterwards send /start to the bot and the chat ID appears in the field "
@@ -365,15 +342,15 @@ msgstr ""
 "Зберігає налаштування та реєструє вебхук Telegram на цей магазин. Після "
 "цього надішліть боту /start — і chat ID з’явиться в полі нижче."
 
-#: includes/Admin/SettingsPage.php:271
+#: includes/Admin/SettingsPage.php:384
 msgid "Bot connected — chat ID received."
 msgstr "Бот підключений — chat ID отримано."
 
-#: includes/Admin/SettingsPage.php:275
+#: includes/Admin/SettingsPage.php:388
 msgid "Bot connected — waiting for /start."
 msgstr "Бот підключений — чекаємо на /start."
 
-#: includes/Admin/SettingsPage.php:277
+#: includes/Admin/SettingsPage.php:390
 msgid ""
 "Open the chat with your bot (or add it to a group) and send /start. The bot "
 "replies with the chat ID and saves it here — reload this page to see it."
@@ -382,11 +359,11 @@ msgstr ""
 " відповідь надішле chat ID і збереже його тут — перезавантажте цю сторінку, "
 "щоб побачити."
 
-#: includes/Admin/SettingsPage.php:281
+#: includes/Admin/SettingsPage.php:394
 msgid "Disconnect bot"
 msgstr "Відключити бота"
 
-#: includes/Admin/SettingsPage.php:282
+#: includes/Admin/SettingsPage.php:395
 msgid ""
 "Send /start again at any time to move the notifications to a different chat "
 "or group."
@@ -394,7 +371,7 @@ msgstr ""
 "Щоб перенести сповіщення в інший чат або групу, будь-коли надішліть /start "
 "ще раз."
 
-#: includes/Admin/SettingsPage.php:285
+#: includes/Admin/SettingsPage.php:398
 msgid ""
 "Telegram allows a bot either a webhook or getUpdates polling, never both — "
 "so one bot can serve only one store. Create a separate bot for every shop "
@@ -404,70 +381,36 @@ msgstr ""
 " одночасно, тому один бот може обслуговувати лише один магазин. Створіть "
 "окремого бота для кожного магазину."
 
-#: includes/Admin/SettingsPage.php:295
+#: includes/Admin/SettingsPage.php:432
 msgid "Data retention"
 msgstr "Зберігання даних"
 
-#: includes/Admin/SettingsPage.php:296
-msgid ""
-"The plugin stores the e-mail address, the name and the cart contents of "
-"shoppers who did not complete an order. Rows are deleted automatically once "
-"they are older than the retention period."
-msgstr ""
-"Плагін зберігає e-mail, ім'я та вміст кошика покупців, які не завершили "
-"замовлення. Записи видаляються автоматично, коли перевищують термін "
-"зберігання."
-
-#: includes/Admin/SettingsPage.php:300
+#: includes/Admin/SettingsPage.php:437
 msgid "Delete cart data after"
 msgstr "Видаляти дані кошиків через"
 
-#: includes/Admin/SettingsPage.php:302
+#: includes/Admin/SettingsPage.php:439
 msgid "Set to 0 to keep the data indefinitely (not recommended)."
 msgstr "0 — зберігати дані безстроково (не рекомендується)."
 
-#: includes/Admin/SettingsPage.php:313
+#: includes/Admin/SettingsPage.php:457
 msgid "Pro licence"
 msgstr "Pro-ліцензія"
 
-#: includes/Admin/SettingsPage.php:316
+#: includes/Admin/SettingsPage.php:519
 msgid "Licence key"
 msgstr "Ліцензійний ключ"
 
-#: includes/Admin/SettingsPage.php:321
-msgid "Licence active — all Pro features are unlocked."
-msgstr "Ліцензія активна — усі Pro-функції відкрито."
-
-#. translators: %d: number of days left in the free Pro trial.
-#: includes/Admin/SettingsPage.php:326
-#, php-format
-msgid "Free Pro trial: %d days left."
-msgstr "Безкоштовний Pro-тріал: залишилось %d дн."
-
-#: includes/Admin/SettingsPage.php:330
-msgid ""
-"After the trial the free tier keeps working and the Pro features need a "
-"licence."
-msgstr ""
-"Після тріалу базовий режим працює далі, а Pro-функції потребують ліцензії."
-
-#: includes/Admin/SettingsPage.php:332
-msgid ""
-"The free Pro trial has ended. Enter a licence key to unlock the e-mail "
-"chain, coupons, Telegram notifications and CSV export."
-msgstr ""
-"Безкоштовний Pro-тріал завершено. Введіть ліцензійний ключ, щоб відкрити "
-"ланцюжок листів, купони, сповіщення в Telegram та експорт CSV."
-
-#: includes/Admin/SettingsPage.php:359 includes/Pro/Export.php:22
+#: includes/Admin/Ajax.php:30 includes/Admin/ErrorsPage.php:295
+#: includes/Admin/SettingsPage.php:616 includes/Pro/Export.php:22
 msgid "Insufficient permissions."
 msgstr "Недостатньо прав."
 
-#: includes/Admin/SettingsPage.php:416
+#: includes/Admin/SettingsPage.php:693
 msgid "Settings saved."
 msgstr "Налаштування збережено."
 
-#: includes/Core/Cron.php:39
+#: includes/Core/Cron.php:43
 msgid "Every 15 minutes (CatCode Abandoned Cart)"
 msgstr "Кожні 15 хвилин (CatCode Кинуті кошики)"
 
@@ -481,33 +424,7 @@ msgstr "вітаємо"
 msgid "%1$s — %2$d pcs — %3$s"
 msgstr "%1$s — %2$d шт. — %3$s"
 
-#. translators: %d: number of days left in the free Pro trial.
-#: includes/Core/Plugin.php:168
-#, php-format
-msgid ""
-"<strong>Abandoned Cart Recovery:</strong> all Pro features (up to three "
-"reminder e-mails, personal coupons, Telegram notifications, CSV export) are "
-"unlocked <strong>free for %d more days</strong>. When the trial ends the "
-"free tier keeps working and Pro stays available with a licence."
-msgstr ""
-"<strong>Кинуті кошики:</strong> усі Pro-функції (до трьох листів-нагадувань,"
-" персональні купони, сповіщення в Telegram, експорт CSV) відкрито "
-"<strong>безкоштовно ще %d дн.</strong> Після тріалу базовий режим працює "
-"далі, а Pro лишиться з ліцензією."
-
-#: includes/Core/Plugin.php:173
-msgid ""
-"<strong>Abandoned Cart Recovery:</strong> the free Pro trial has ended — the"
-" free tier keeps working. Activate a licence to bring the Pro features back."
-msgstr ""
-"<strong>Кинуті кошики:</strong> безкоштовний Pro-тріал завершено — базовий "
-"режим працює далі. Активуйте ліцензію, щоб повернути Pro-функції."
-
-#: includes/Core/Plugin.php:182
-msgid "Get a Pro licence →"
-msgstr "Купити Pro-ліцензію →"
-
-#: includes/Core/Plugin.php:205
+#: includes/Core/Plugin.php:147
 msgid "Carts"
 msgstr "Кошики"
 
@@ -543,7 +460,7 @@ msgstr "Надіслано нагадувань"
 msgid "Captured on"
 msgstr "Захоплено"
 
-#: includes/Core/Privacy.php:143
+#: includes/Core/Privacy.php:153
 msgid ""
 "When you add products to your cart and enter your e-mail address at "
 "checkout, this store saves your e-mail address, your name, the contents of "
@@ -555,7 +472,7 @@ msgstr ""
 " нагадування, якщо ви не завершите замовлення."
 
 #. translators: %d: number of days cart data is retained.
-#: includes/Core/Privacy.php:147
+#: includes/Core/Privacy.php:157
 #, php-format
 msgid ""
 "This data is stored in the store database and is automatically deleted %d "
@@ -568,23 +485,23 @@ msgstr ""
 msgid "This recovery link is no longer valid."
 msgstr "Це посилання відновлення більше не дійсне."
 
-#: includes/Core/Recovery.php:61
+#: includes/Core/Recovery.php:54
 msgid "This recovery link has expired."
 msgstr "Термін дії посилання відновлення минув."
 
-#: includes/Core/Recovery.php:80
+#: includes/Core/Recovery.php:67
 msgid "Welcome back — your cart has been restored."
 msgstr "З поверненням — ваш кошик відновлено."
 
-#: includes/Core/Recovery.php:89
+#: includes/Core/Recovery.php:76
 msgid "Sorry, the products from that cart are no longer available."
 msgstr "На жаль, товарів із того кошика вже немає в наявності."
 
-#: includes/Core/Rest.php:58
+#: includes/Core/ErrorLog.php:329 includes/Core/Rest.php:63
 msgid "Invalid security token."
 msgstr "Недійсний токен безпеки."
 
-#: includes/Core/Rest.php:67
+#: includes/Core/Rest.php:75
 msgid "A valid e-mail address is required."
 msgstr "Потрібна коректна e-mail адреса."
 
@@ -601,11 +518,11 @@ msgstr "Купон відновлення кинутого кошика для %
 msgid "Here is %1$s off with the code %2$s — it is valid for %3$d days."
 msgstr "Ось знижка %1$s за кодом %2$s — вона діє %3$d дн."
 
-#: includes/Pro/Export.php:27
+#: includes/Admin/ErrorsPage.php:300 includes/Pro/Export.php:27
 msgid "CSV export is a Pro feature."
 msgstr "Експорт CSV — це Pro-функція."
 
-#: includes/Pro/Export.php:41
+#: includes/Admin/ErrorsPage.php:312 includes/Pro/Export.php:41
 msgid "Could not open the output stream."
 msgstr "Не вдалося відкрити потік виводу."
 
@@ -674,37 +591,44 @@ msgstr ""
 msgid "Abandoned cart"
 msgstr "Кинутий кошик"
 
-#: includes/Pro/Telegram.php:285
+#: includes/Pro/Telegram.php:287
 msgid "E-mail:"
 msgstr "E-mail:"
 
-#: includes/Pro/Telegram.php:286
+#: includes/Pro/Telegram.php:292
 msgid "Total:"
 msgstr "Сума:"
 
-#: includes/Pro/Telegram.php:289
+#: includes/Pro/Telegram.php:294
 msgid "Customer:"
 msgstr "Покупець:"
 
 # --- 1.1.0: PRO-UX (licence client, trial on request, single notice) ---
+#: includes/Admin/Ajax.php:47
 msgid ""
 "Licence released from this site — the key can now be used on another store."
 msgstr ""
 "Ліцензію відвʼязано від цього сайту — ключ можна використати на іншому "
 "магазині."
 
+#: includes/Admin/Ajax.php:58
 msgid "Licence active — the Pro features are unlocked."
 msgstr "Ліцензія активна — Pro-можливості увімкнено."
 
+#. translators: %s: date the trial ends.
+#: includes/Admin/Ajax.php:87
+#, php-format
 msgid ""
 "Trial started — Pro works until %s. The key has also been e-mailed to you."
 msgstr ""
 "Пробний період увімкнено — Pro працює до %s. Ключ також надіслано вам на "
 "пошту."
 
+#: includes/Admin/Ajax.php:90
 msgid "Trial started. The key has also been e-mailed to you."
 msgstr "Пробний період увімкнено. Ключ також надіслано вам на пошту."
 
+#: includes/Admin/CartsPage.php:71
 msgid ""
 "Pro: download every captured cart with e-mails and totals for your mailing "
 "tool."
@@ -712,9 +636,11 @@ msgstr ""
 "Pro: вивантажити всі зафіксовані кошики з e-mail і сумами — для вашої "
 "розсилки."
 
+#: includes/Admin/Notice.php:66
 msgid "Abandoned Cart Recovery is working."
 msgstr "Відновлення кинутих кошиків працює."
 
+#: includes/Admin/Notice.php:70
 msgid ""
 "Pro adds a chain of up to three reminders, a personal discount coupon per "
 "cart, a Telegram alert the moment a cart is abandoned and CSV export. You "
@@ -724,21 +650,27 @@ msgstr ""
 "кошик, сповіщення в Telegram щойно кошик покинуто і експорт у CSV. Можна "
 "спробувати 7 днів, без картки."
 
+#: includes/Admin/Notice.php:72 includes/Admin/SettingsPage.php:548
+#: includes/Admin/SettingsPage.php:583
 msgid "Try Pro for 7 days"
 msgstr "Спробувати Pro 7 днів"
 
+#: includes/Admin/Notice.php:74
 msgid ""
 "If it suits you, please leave a review — it helps us keep the module going."
 msgstr ""
 "Якщо все влаштовує — залиште, будь ласка, відгук: це допомагає нам розвивати"
 " модуль."
 
+#: includes/Admin/Notice.php:78
 msgid "Leave a review"
 msgstr "Залишити відгук"
 
+#: includes/Admin/SettingsPage.php:68
 msgid "Could not reach the server. Try again in a moment."
 msgstr "Не вдалося звʼязатися з сервером. Спробуйте ще раз за хвилину."
 
+#: includes/Admin/SettingsPage.php:69
 msgid ""
 "Release the licence from this site? The Pro features switch off here and the"
 " key becomes free for another store."
@@ -746,6 +678,7 @@ msgstr ""
 "Відвʼязати ліцензію від цього сайту? Pro-можливості тут вимкнуться, а ключ "
 "звільниться для іншого магазину."
 
+#: includes/Admin/SettingsPage.php:177
 msgid ""
 "Pro: a second and third nudge win back the shoppers who ignored the first "
 "one — the free tier sends reminder 1 only."
@@ -753,6 +686,7 @@ msgstr ""
 "Pro: друге і третє нагадування повертають тих, хто проігнорував перше — "
 "безкоштовна версія надсилає лише перший лист."
 
+#: includes/Admin/SettingsPage.php:226
 msgid ""
 "Pro: a discount that belongs to one shopper and expires on its own — the "
 "usual reason a hesitating cart finally converts."
@@ -760,6 +694,7 @@ msgstr ""
 "Pro: знижка, яка належить одному покупцю і згорає сама — саме це найчастіше "
 "дотискає кошик, з яким вагаються."
 
+#: includes/Admin/SettingsPage.php:334
 msgid ""
 "Pro: you hear about an abandoned cart while the shopper is still around, and"
 " can call them back the same hour."
@@ -767,41 +702,47 @@ msgstr ""
 "Pro: ви дізнаєтесь про кинутий кошик, поки покупець ще поруч, і можете "
 "передзвонити тієї ж години."
 
+#: includes/Admin/SettingsPage.php:462
 msgid "Pro is on — trial."
 msgstr "Pro увімкнено — пробний період."
 
+#: includes/Admin/SettingsPage.php:466
 msgid "Pro is on — licence active."
 msgstr "Pro увімкнено — ліцензія активна."
 
+#: includes/Admin/SettingsPage.php:471
 msgid "Free version."
 msgstr "Безкоштовна версія."
 
-msgid ""
-"The first reminder, the cart list and the statistics work without a licence."
-" Pro adds reminders 2 and 3, personal coupons, Telegram alerts and CSV "
-"export."
-msgstr ""
-"Перше нагадування, список кошиків і статистика працюють без ліцензії. Pro "
-"додає листи 2 і 3, персональні купони, сповіщення в Telegram і експорт CSV."
-
+#. translators: %s: human-readable licence status.
+#: includes/Admin/SettingsPage.php:481
+#, php-format
 msgid "Status: %s."
 msgstr "Стан: %s."
 
+#. translators: %s: expiry date, YYYY-MM-DD.
+#: includes/Admin/SettingsPage.php:510
+#, php-format
 msgid "Valid until %s."
 msgstr "Діє до %s."
 
+#: includes/Admin/SettingsPage.php:525
 msgid "Activate key"
 msgstr "Активувати ключ"
 
+#: includes/Admin/SettingsPage.php:529
 msgid "Release licence"
 msgstr "Відвʼязати ліцензію"
 
+#: includes/Admin/SettingsPage.php:545
 msgid "No licence yet?"
 msgstr "Ще немає ліцензії?"
 
+#: includes/Admin/SettingsPage.php:550 includes/Admin/SettingsPage.php:556
 msgid "Buy a licence"
 msgstr "Придбати ліцензію"
 
+#: includes/Admin/SettingsPage.php:552
 msgid ""
 "The trial issues a real 7-day key to your e-mail. No card, nothing is "
 "charged, and it never starts by itself."
@@ -809,66 +750,79 @@ msgstr ""
 "Пробний період видає справжній 7-денний ключ на вашу пошту. Без картки, "
 "нічого не списується, і він ніколи не стартує сам."
 
+#: includes/Admin/SettingsPage.php:558
 msgid "The trial has already been used on this site — one per install."
 msgstr ""
 "Пробний період на цьому сайті вже використано — він один на встановлення."
 
-msgid ""
-"Reminders 2 and 3, personal coupons, Telegram alerts and CSV export — free "
-"for 7 days. We e-mail you the key and switch Pro on right away."
-msgstr ""
-"Листи 2 і 3, персональні купони, сповіщення в Telegram і експорт CSV — "
-"безкоштовно 7 днів. Ключ надішлемо на пошту і одразу увімкнемо Pro."
-
+#: includes/Admin/SettingsPage.php:585
 msgid "Your e-mail"
 msgstr "Ваш e-mail"
 
+#: includes/Admin/SettingsPage.php:588
 msgid "Get the key"
 msgstr "Отримати ключ"
 
+#: includes/Admin/SettingsPage.php:590
 msgid "Cancel"
 msgstr "Скасувати"
 
+#: includes/Admin/SettingsPage.php:593
 msgid "Your key:"
 msgstr "Ваш ключ:"
 
+#: includes/Pro/License.php:196
 msgid "not checked"
 msgstr "не перевірено"
 
+#: includes/Pro/License.php:215
 msgid "trial active"
 msgstr "пробний період активний"
 
+#: includes/Pro/License.php:218
 msgid "valid (not re-checked yet)"
 msgstr "дійсна (ще не перевірялася повторно)"
 
+#. translators: 1: days since the last check, 2: days of grace left.
+#: includes/Pro/License.php:225
+#, php-format
 msgid "valid (checked %1$d days ago, %2$d days of grace left)"
 msgstr "дійсна (перевірена %1$d дн. тому, ще %2$d дн. пільгового періоду)"
 
+#: includes/Pro/License.php:230
 msgid "valid (grace period over — waiting for a re-check)"
 msgstr "дійсна (пільговий період минув — очікує повторної перевірки)"
 
+#. translators: %s: date and time of the last check.
+#: includes/Pro/License.php:236
+#, php-format
 msgid "invalid (last checked %s)"
 msgstr "недійсна (остання перевірка %s)"
 
+#: includes/Pro/License.php:247
 msgid "Key not found. Check that you copied it in full, with no stray spaces."
 msgstr ""
 "Ключ не знайдено. Перевірте, чи скопіювали його повністю — без зайвих "
 "пробілів."
 
+#: includes/Pro/License.php:248
 msgid "This key is no longer valid. Contact support if that is a mistake."
 msgstr "Ключ більше недійсний. Звʼяжіться з підтримкою, якщо це помилка."
 
+#: includes/Pro/License.php:252
 msgid ""
 "This key is already in use on another store. Deactivate it there first."
 msgstr ""
 "Ключ уже використаний на іншому магазині. Спочатку відвʼяжіть його там."
 
+#: includes/Pro/License.php:253
 msgid ""
 "This key belongs to a different CatCode product, not to Abandoned Cart "
 "Recovery."
 msgstr ""
 "Цей ключ — від іншого продукту CatCode, не від Abandoned Cart Recovery."
 
+#: includes/Pro/License.php:254
 msgid ""
 "Could not reach our licence server. We will retry automatically in a few "
 "hours."
@@ -876,41 +830,54 @@ msgstr ""
 "Не вдалось перевірити ліцензію — наш сервер не відповідає. Спробуємо ще раз "
 "автоматично за кілька годин."
 
+#: includes/Pro/License.php:255
 msgid "Enter a licence key."
 msgstr "Введіть ключ ліцензії."
 
+#: includes/Pro/License.php:256
 msgid "No licence key is stored yet."
 msgstr "Ключ ліцензії ще не збережено."
 
+#: includes/Pro/License.php:257
 msgid "Enter a valid e-mail address — the key will be sent there."
 msgstr "Введіть коректну адресу e-mail — на неї прийде ключ."
 
+#: includes/Pro/License.php:258
 msgid "A trial has already been issued for this e-mail address."
 msgstr "Пробний період для цього e-mail уже видавався."
 
+#: includes/Pro/License.php:259
 msgid "A trial has already been issued for this site."
 msgstr "Пробний період для цього сайту вже видавався."
 
+#: includes/Pro/License.php:260
 msgid "Too many attempts. Try again in an hour."
 msgstr "Забагато спроб. Спробуйте ще раз за годину."
 
+#: includes/Pro/License.php:261
 msgid ""
 "The server answered with something we could not read. Try again in a few "
 "minutes."
 msgstr "Сервер відповів незрозуміло. Спробуйте ще раз за кілька хвилин."
 
+#: includes/Pro/License.php:264
 msgid "This key does not fit."
 msgstr "Ключ не підходить."
 
+#. translators: %d: days left in the trial.
+#: includes/Pro/License.php:211
+#, php-format
 msgid "trial — %d day left"
 msgid_plural "trial — %d days left"
 msgstr[0] "пробний період — залишився %d день"
 msgstr[1] "пробний період — залишилось %d дні"
 msgstr[2] "пробний період — залишилось %d днів"
 
+#: includes/Admin/SettingsPage.php:258
 msgid "Viber / SMS reminder"
 msgstr "Нагадування у Viber / SMS"
 
+#: includes/Admin/SettingsPage.php:259
 msgid ""
 "One short message with the recovery link through TurboSMS (turbosms.ua) — "
 "also for shoppers who typed only a phone number at checkout. One message per"
@@ -920,6 +887,7 @@ msgstr ""
 " — і для покупців, які на оформленні ввели лише телефон. Одне повідомлення "
 "на кошик, без ланцюжка; нагадування e-mail працюють як і раніше."
 
+#: includes/Admin/SettingsPage.php:262
 msgid ""
 "Pro: many shoppers leave a phone and no e-mail — a Viber message reaches "
 "them where they actually read."
@@ -927,16 +895,20 @@ msgstr ""
 "Pro: багато покупців лишають телефон без e-mail — повідомлення у Viber "
 "застає їх там, де вони справді читають."
 
+#: includes/Admin/SettingsPage.php:269
 msgid "Send a Viber / SMS reminder"
 msgstr "Надсилати нагадування у Viber / SMS"
 
+#: includes/Admin/SettingsPage.php:270
 msgid ""
 "While this is off the plugin does not store shoppers' phone numbers at all."
 msgstr "Поки це вимкнено, плагін узагалі не зберігає телефони покупців."
 
+#: includes/Admin/SettingsPage.php:273
 msgid "TurboSMS API token"
 msgstr "API-токен TurboSMS"
 
+#: includes/Admin/SettingsPage.php:275
 msgid ""
 "TurboSMS cabinet → Settings → API (HTTP). Viber and SMS sender names are "
 "registered in the same cabinet."
@@ -944,33 +916,43 @@ msgstr ""
 "Кабінет TurboSMS → Налаштування → API (HTTP). Імена відправників Viber і SMS"
 " реєструються там само."
 
+#: includes/Admin/SettingsPage.php:279
 msgid "Viber, SMS if Viber is not delivered"
 msgstr "Viber, а якщо не доставлено — SMS"
 
+#: includes/Admin/SettingsPage.php:280
 msgid "Viber only"
 msgstr "Лише Viber"
 
+#: includes/Admin/SettingsPage.php:281
 msgid "SMS only"
 msgstr "Лише SMS"
 
+#: includes/Admin/SettingsPage.php:283
 msgid "Channel"
 msgstr "Канал"
 
+#: includes/Admin/SettingsPage.php:290
 msgid "Viber sender"
 msgstr "Відправник Viber"
 
+#: includes/Admin/SettingsPage.php:294
 msgid "SMS sender (alpha name)"
 msgstr "Відправник SMS (альфа-ім'я)"
 
+#: includes/Admin/SettingsPage.php:300
 msgid "Quiet hours"
 msgstr "Тихі години"
 
+#: includes/Admin/SettingsPage.php:301
 msgid "from"
 msgstr "з"
 
+#: includes/Admin/SettingsPage.php:302
 msgid "to"
 msgstr "до"
 
+#: includes/Admin/SettingsPage.php:303
 msgid ""
 "Hours in the site timezone. Messages that fall due at night wait for the "
 "morning. Equal values switch the window off."
@@ -978,6 +960,7 @@ msgstr ""
 "Години за часовим поясом сайту. Повідомлення, час яких припав на ніч, "
 "чекають ранку. Однакові значення вимикають обмеження."
 
+#: includes/Admin/SettingsPage.php:310
 msgid ""
 "Keep it short: every 70 Cyrillic characters is one more paid SMS part. Leave"
 " empty for the default text."
@@ -985,15 +968,19 @@ msgstr ""
 "Пишіть коротко: кожні 70 символів кирилицею — ще одна платна частина SMS. "
 "Порожнє поле — стандартний текст."
 
+#: includes/Admin/SettingsPage.php:313
 msgid "Check"
 msgstr "Перевірка"
 
+#: includes/Admin/SettingsPage.php:315
 msgid "Check connection and balance"
 msgstr "Перевірити підключення і баланс"
 
+#: includes/Admin/SettingsPage.php:318
 msgid "Send test message"
 msgstr "Надіслати тестове повідомлення"
 
+#: includes/Admin/SettingsPage.php:319
 msgid ""
 "Both buttons save the settings first. The test message is a real, paid "
 "message."
@@ -1001,9 +988,11 @@ msgstr ""
 "Обидві кнопки спершу зберігають налаштування. Тестове повідомлення — "
 "справжнє і платне."
 
+#: includes/Admin/SettingsPage.php:331
 msgid "Sends you a message the moment a cart is marked as abandoned."
 msgstr "Надсилає вам повідомлення, щойно кошик позначено як покинутий."
 
+#: includes/Admin/SettingsPage.php:433
 msgid ""
 "The plugin stores the e-mail address (and, with the Viber/SMS reminder on, "
 "the phone), the name and the cart contents of shoppers who did not complete "
@@ -1014,6 +1003,7 @@ msgstr ""
 "телефон), ім'я та вміст кошика покупців, які не завершили замовлення. Записи"
 " видаляються автоматично, щойно стають старшими за строк зберігання."
 
+#: includes/Admin/SettingsPage.php:473
 msgid ""
 "The first reminder, the cart list and the statistics work without a licence."
 " Pro adds reminders 2 and 3, personal coupons, Viber/SMS reminders, Telegram"
@@ -1023,6 +1013,7 @@ msgstr ""
 "додає нагадування 2 і 3, персональні купони, нагадування у Viber/SMS, "
 "сповіщення в Telegram і експорт CSV."
 
+#: includes/Admin/SettingsPage.php:584
 msgid ""
 "Reminders 2 and 3, personal coupons, Viber/SMS reminders, Telegram alerts "
 "and CSV export — free for 7 days. We e-mail you the key and switch Pro on "
@@ -1032,23 +1023,31 @@ msgstr ""
 " Telegram і експорт CSV — безкоштовно 7 днів. Надішлемо ключ на e-mail і "
 "одразу ввімкнемо Pro."
 
+#. translators: 1: TurboSMS status code, 2: status text.
+#: includes/Admin/SettingsPage.php:744
 #, php-format
 msgid "TurboSMS refused the connection: %1$d %2$s. Check the API token."
 msgstr "TurboSMS відхилив підключення: %1$d %2$s. Перевірте API-токен."
 
+#. translators: %s: account balance.
+#: includes/Admin/SettingsPage.php:755
 #, php-format
 msgid "TurboSMS connected. Balance: %s UAH."
 msgstr "TurboSMS підключено. Баланс: %s грн."
 
+#: includes/Admin/SettingsPage.php:767
 msgid ""
 "Enter a Ukrainian phone number for the test message, e.g. 380XXXXXXXXX."
 msgstr ""
 "Вкажіть український номер для тестового повідомлення, наприклад "
 "380XXXXXXXXX."
 
+#: includes/Admin/SettingsPage.php:774
 msgid "Test"
 msgstr "Тест"
 
+#. translators: 1: TurboSMS status code, 2: status text.
+#: includes/Admin/SettingsPage.php:797
 #, php-format
 msgid ""
 "The test message was not accepted: %1$d %2$s. Codes 400–401 usually mean the"
@@ -1057,10 +1056,13 @@ msgstr ""
 "Тестове повідомлення не прийнято: %1$d %2$s. Коди 400–401 зазвичай "
 "означають, що ім'я відправника не погоджене для цього акаунта."
 
+#. translators: %s: TurboSMS message id.
+#: includes/Admin/SettingsPage.php:808
 #, php-format
 msgid "Test message accepted by TurboSMS (id %s)."
 msgstr "TurboSMS прийняв тестове повідомлення (id %s)."
 
+#: includes/Pro/Messenger.php:27
 msgid ""
 "{store_name}: you left items worth {cart_total} in your cart. It is saved "
 "for you: {recovery_link}"
@@ -1068,14 +1070,15 @@ msgstr ""
 "{store_name}: у вашому кошику товари на {cart_total}. Ми його зберегли: "
 "{recovery_link}"
 
+#: includes/Pro/Telegram.php:290
 msgid "Phone:"
 msgstr "Телефон:"
 
-#: includes/Pro/License.php
+#: includes/Pro/License.php:201
 msgid "purchased — the Pro features are yours for good"
 msgstr "придбано — Pro-можливості ваші назавжди"
 
-#: includes/Pro/License.php
+#: includes/Pro/License.php:202
 msgid ""
 "purchased — the Pro features are yours for good; the updates and support "
 "term has ended"
@@ -1083,7 +1086,7 @@ msgstr ""
 "придбано — Pro-можливості ваші назавжди; термін оновлень і підтримки "
 "завершився"
 
-#: includes/Pro/License.php
+#: includes/Pro/License.php:251
 msgid ""
 "The 7-day trial is over. Buy a licence on catcode.com.ua to switch the Pro "
 "features back on."
@@ -1091,16 +1094,18 @@ msgstr ""
 "7-денний пробний період завершився. Придбайте ліцензію на catcode.com.ua, "
 "щоб знову увімкнути Pro-можливості."
 
-#: includes/Admin/SettingsPage.php
+#: includes/Admin/SettingsPage.php:464
 msgid "Pro is on — licence purchased, the features stay on for good."
 msgstr "Pro увімкнено — ліцензію придбано, можливості лишаються назавжди."
 
-#: includes/Admin/SettingsPage.php
+#. translators: %s: date the updates and support term ends, YYYY-MM-DD.
+#: includes/Admin/SettingsPage.php:493
 #, php-format
 msgid "Updates and support until %s."
 msgstr "Оновлення й підтримка — до %s."
 
-#: includes/Admin/SettingsPage.php
+#. translators: %s: date the updates and support term ended, YYYY-MM-DD.
+#: includes/Admin/SettingsPage.php:498
 #, php-format
 msgid ""
 "The updates and support term ended on %s. Renew the licence to keep "
@@ -1109,11 +1114,11 @@ msgstr ""
 "Термін оновлень і підтримки завершився %s. Продовжте ліцензію, щоб "
 "отримувати нові версії, — Pro-можливості працюють у будь-якому разі."
 
-#: includes/Admin/SettingsPage.php
+#: includes/Admin/SettingsPage.php:504
 msgid "Renew the licence"
 msgstr "Продовжити ліцензію"
 
-#: includes/Admin/SettingsPage.php
+#: includes/Admin/SettingsPage.php:533
 msgid ""
 "The key arrives by e-mail after purchase and is checked against "
 "catcode.com.ua. Once a purchased key is confirmed, Pro stays on for good — "
@@ -1124,3 +1129,239 @@ msgstr ""
 "Щойно куплений ключ підтверджено, Pro лишається увімкненим назавжди — строк "
 "ліцензії покриває оновлення й підтримку. Пробний ключ вимикає Pro, коли "
 "минають його 7 днів."
+
+#. Description of the plugin
+#: catcode-abandoned-cart-recovery-for-woocommerce.php
+msgid ""
+"Captures abandoned WooCommerce carts and wins them back with a reminder "
+"email containing a one-click recovery link. Cart list with statistics, a "
+"checkout error log, configurable timings and templates."
+msgstr ""
+"Захоплює кинуті кошики WooCommerce і повертає покупців листом-нагадуванням "
+"із посиланням відновлення в один клік. Список кошиків зі статистикою, лог "
+"помилок чекауту, налаштовувані таймінги та шаблони."
+
+#: includes/Admin/ErrorsPage.php:38 includes/Admin/ErrorsPage.php:39
+#: includes/Admin/ErrorsPage.php:96
+msgid "Checkout Errors"
+msgstr "Помилки чекауту"
+
+#: includes/Admin/ErrorsPage.php:101
+msgid ""
+"What stopped shoppers on the checkout: form validation messages, payment "
+"failures and JavaScript errors, with the number of shoppers who then left "
+"without placing an order."
+msgstr ""
+"Що зупинило покупців на чекауті: помилки заповнення форми, відмови оплати та"
+" JavaScript-помилки, а також скільки покупців після цього пішли без "
+"замовлення."
+
+#: includes/Admin/ErrorsPage.php:104
+msgid "The checkout error log is switched off. Nothing new is being recorded."
+msgstr "Лог помилок чекауту вимкнено. Нові помилки не записуються."
+
+#: includes/Admin/ErrorsPage.php:105
+msgid "Turn it on in the settings"
+msgstr "Увімкнути в налаштуваннях"
+
+#: includes/Admin/ErrorsPage.php:113
+msgid "Errors shown to shoppers"
+msgstr "Помилок показано покупцям"
+
+#: includes/Admin/ErrorsPage.php:114
+msgid "Shoppers who hit an error"
+msgstr "Покупців зіткнулися з помилкою"
+
+#: includes/Admin/ErrorsPage.php:115
+msgid "Of them left without an order"
+msgstr "З них пішли без замовлення"
+
+#. translators: %d: minutes.
+#: includes/Admin/ErrorsPage.php:133
+#, php-format
+msgid ""
+"A shopper counts as \"left without an order\" when no order was placed in "
+"the same browser session and at least %d minutes have passed since the "
+"error."
+msgstr ""
+"Покупець вважається таким, що «пішов без замовлення», якщо в тій самій сесії"
+" браузера замовлення не оформлено і з моменту помилки минуло щонайменше %d "
+"хв."
+
+#: includes/Admin/ErrorsPage.php:145
+msgid "Period"
+msgstr "Період"
+
+#. translators: %d: number of days.
+#: includes/Admin/ErrorsPage.php:150
+#, php-format
+msgid "Last %d day"
+msgid_plural "Last %d days"
+msgstr[0] "Останній %d день"
+msgstr[1] "Останні %d дні"
+msgstr[2] "Останні %d днів"
+
+#: includes/Admin/ErrorsPage.php:160 includes/Admin/ErrorsPage.php:198
+msgid "Type"
+msgstr "Тип"
+
+#: includes/Admin/ErrorsPage.php:167
+msgid "Show"
+msgstr "Показати"
+
+#: includes/Admin/ErrorsPage.php:182
+msgid ""
+"Pro: 30 and 90-day reports, every occurrence with its cart, CSV export."
+msgstr ""
+"Pro: звіти за 30 і 90 днів, кожен випадок разом із кошиком, експорт CSV."
+
+#: includes/Admin/ErrorsPage.php:190
+msgid "Most frequent errors"
+msgstr "Найчастіші помилки"
+
+#: includes/Admin/ErrorsPage.php:192
+msgid "No checkout errors recorded in this period."
+msgstr "За цей період помилок чекауту не зафіксовано."
+
+#: includes/Admin/ErrorsPage.php:200
+msgid "Field / payment method"
+msgstr "Поле / спосіб оплати"
+
+#: includes/Admin/ErrorsPage.php:201
+msgid "Times"
+msgstr "Разів"
+
+#: includes/Admin/ErrorsPage.php:202
+msgid "Shoppers"
+msgstr "Покупців"
+
+#: includes/Admin/ErrorsPage.php:203
+msgid "Left without an order"
+msgstr "Пішли без замовлення"
+
+#: includes/Admin/ErrorsPage.php:204
+msgid "Last seen"
+msgstr "Остання поява"
+
+#: includes/Admin/ErrorsPage.php:230 includes/Admin/ErrorsPage.php:232
+#: includes/Admin/ErrorsPage.php:259
+msgid "Details"
+msgstr "Деталі"
+
+#: includes/Admin/ErrorsPage.php:247
+msgid "Latest occurrences"
+msgstr "Останні випадки"
+
+#: includes/Admin/ErrorsPage.php:249
+msgid "No occurrences in this period."
+msgstr "За цей період випадків немає."
+
+#: includes/Admin/ErrorsPage.php:256
+msgid "Time"
+msgstr "Час"
+
+#: includes/Admin/ErrorsPage.php:257
+msgid "Page"
+msgstr "Сторінка"
+
+#: includes/Admin/ErrorsPage.php:258
+msgid "Browser"
+msgstr "Браузер"
+
+#: includes/Admin/ErrorsPage.php:260
+msgid "Cart"
+msgstr "Кошик"
+
+#: includes/Admin/ErrorsPage.php:261
+msgid "Order placed"
+msgstr "Замовлення оформлено"
+
+#: includes/Admin/ErrorsPage.php:287
+msgid "Yes"
+msgstr "Так"
+
+#: includes/Admin/ErrorsPage.php:287
+msgid "No"
+msgstr "Ні"
+
+#: includes/Admin/SettingsPage.php:408
+msgid "Checkout error log"
+msgstr "Лог помилок чекауту"
+
+#: includes/Admin/SettingsPage.php:409
+msgid ""
+"Shows which checkout errors shoppers see and how many of them leave without "
+"an order. No names, e-mail addresses or phone numbers are stored with an "
+"error."
+msgstr ""
+"Показує, які помилки бачать покупці на чекауті і скільки з них ідуть без "
+"замовлення. Разом із помилкою не зберігаються імена, e-mail чи телефони."
+
+#: includes/Admin/SettingsPage.php:410
+msgid "Open the report"
+msgstr "Відкрити звіт"
+
+#: includes/Admin/SettingsPage.php:413
+msgid "Record checkout errors"
+msgstr "Записувати помилки чекауту"
+
+#: includes/Admin/SettingsPage.php:415
+msgid ""
+"Form validation messages and payment failures on the classic and block "
+"checkout"
+msgstr ""
+"Помилки заповнення форми та відмови оплати на класичному і блоковому чекауті"
+
+#: includes/Admin/SettingsPage.php:418
+msgid "Browser-side errors"
+msgstr "Помилки в браузері"
+
+#: includes/Admin/SettingsPage.php:420
+msgid ""
+"JavaScript errors on the checkout page and block checkout fields that failed"
+" validation before the order was sent"
+msgstr ""
+"JavaScript-помилки на сторінці чекауту та поля блокового чекауту, що не "
+"пройшли перевірку ще до відправлення замовлення"
+
+#: includes/Admin/SettingsPage.php:421
+msgid "At most 5 reports per page view and 300 per hour for the whole store."
+msgstr ""
+"Не більше 5 повідомлень за перегляд сторінки і 300 на годину для всього "
+"магазину."
+
+#: includes/Core/ErrorLog.php:75
+msgid "Form validation"
+msgstr "Заповнення форми"
+
+#: includes/Core/ErrorLog.php:77
+msgid "Payment"
+msgstr "Оплата"
+
+#: includes/Core/ErrorLog.php:79
+msgid "JavaScript"
+msgstr "JavaScript"
+
+#: includes/Core/ErrorLog.php:81
+msgid "Other"
+msgstr "Інше"
+
+#: includes/Core/ErrorLog.php:263
+msgid "The payment method returned a failure without a message."
+msgstr "Спосіб оплати повернув відмову без пояснення."
+
+#: includes/Core/Plugin.php:150
+msgid "Checkout errors"
+msgstr "Помилки чекауту"
+
+#: includes/Core/Privacy.php:161
+msgid ""
+"If an error prevents you from placing an order, the store records the error "
+"message, the checkout page address without its parameters, your browser name"
+" and version, and whether an order followed in the same session. This record"
+" does not include your name, e-mail address or phone number."
+msgstr ""
+"Якщо помилка заважає оформити замовлення, магазин записує текст помилки, "
+"адресу сторінки оформлення без параметрів, назву й версію вашого браузера та"
+" те, чи було оформлено замовлення в тій самій сесії. Цей запис не містить "
+"вашого імені, e-mail чи номера телефону."

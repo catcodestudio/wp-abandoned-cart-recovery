@@ -24,6 +24,10 @@ class Settings {
 			'retention_days'     => 90,   // Days before a finished cart row is deleted.
 			'email_cooldown'     => 3,    // Days before the same address may be mailed again.
 
+			// Checkout error log (free): server-side errors, plus browser reports.
+			'error_log_enabled'  => 'yes',
+			'error_log_js'       => 'yes',
+
 			// Reminder e-mail 1 (free).
 			'email_1_delay'      => 60,   // Minutes after abandonment.
 			'email_1_subject'    => 'You left something behind at {store_name}',

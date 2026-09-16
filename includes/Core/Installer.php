@@ -13,6 +13,7 @@ class Installer {
 
 	public static function activate(): void {
 		self::create_table();
+		ErrorLog::create_table();
 
 		if ( false === get_option( Settings::OPTION ) ) {
 			add_option( Settings::OPTION, Settings::defaults(), '', false );

@@ -111,6 +111,7 @@ class SettingsPage {
 		$this->section_coupon( $cfg, $is_pro );
 		$this->section_sms( $cfg, $is_pro );
 		$this->section_telegram( $cfg, $is_pro );
+		$this->section_error_log( $cfg );
 		$this->section_privacy( $cfg );
 		$this->section_license( $cfg );
 
@@ -402,6 +403,30 @@ class SettingsPage {
 	/**
 	 * @param array<string,mixed> $cfg Settings.
 	 */
+	private function section_error_log( array $cfg ): void {
+		echo '<div class="catcode-abandoned-cart-card">';
+		echo '<h2>' . esc_html__( 'Checkout error log', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</h2>';
+		echo '<p class="description">' . esc_html__( 'Shows which checkout errors shoppers see and how many of them leave without an order. No names, e-mail addresses or phone numbers are stored with an error.', 'catcode-abandoned-cart-recovery-for-woocommerce' )
+			. ' <a href="' . esc_url( admin_url( 'admin.php?page=' . ErrorsPage::SLUG ) ) . '">' . esc_html__( 'Open the report', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</a></p>';
+		echo '<table class="form-table" role="presentation">';
+
+		echo '<tr><th scope="row">' . esc_html__( 'Record checkout errors', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</th><td>';
+		echo '<label><input type="checkbox" name="error_log_enabled" value="yes"' . checked( 'yes', (string) $cfg['error_log_enabled'], false ) . '/> '
+			. esc_html__( 'Form validation messages and payment failures on the classic and block checkout', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label>';
+		echo '</td></tr>';
+
+		echo '<tr><th scope="row">' . esc_html__( 'Browser-side errors', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</th><td>';
+		echo '<label><input type="checkbox" name="error_log_js" value="yes"' . checked( 'yes', (string) $cfg['error_log_js'], false ) . '/> '
+			. esc_html__( 'JavaScript errors on the checkout page and block checkout fields that failed validation before the order was sent', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</label>';
+		echo '<p class="description">' . esc_html__( 'At most 5 reports per page view and 300 per hour for the whole store.', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</p>';
+		echo '</td></tr>';
+
+		echo '</table></div>';
+	}
+
+	/**
+	 * @param array<string,mixed> $cfg Settings.
+	 */
 	private function section_privacy( array $cfg ): void {
 		echo '<div class="catcode-abandoned-cart-card">';
 		echo '<h2>' . esc_html__( 'Data retention', 'catcode-abandoned-cart-recovery-for-woocommerce' ) . '</h2>';
@@ -600,6 +625,10 @@ class SettingsPage {
 			'token_lifetime' => $this->post_int( 'token_lifetime', (int) $current['token_lifetime'], 1 ),
 			'email_cooldown' => $this->post_int( 'email_cooldown', (int) $current['email_cooldown'], 0 ),
 			'retention_days' => $this->post_int( 'retention_days', (int) $current['retention_days'], 0 ),
+			// phpcs:disable WordPress.Security.NonceVerification.Missing -- verified by check_admin_referer() above.
+			'error_log_enabled' => isset( $_POST['error_log_enabled'] ) ? 'yes' : 'no',
+			'error_log_js'      => isset( $_POST['error_log_js'] ) ? 'yes' : 'no',
+			// phpcs:enable
 		);
 
 		// Reminder 1 is always editable; 2 and 3 only while Pro is unlocked, so a

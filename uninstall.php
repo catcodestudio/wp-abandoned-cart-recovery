@@ -1,6 +1,6 @@
 <?php
 /**
- * Uninstall — removes the cart table, the options and the per-user notice flag.
+ * Uninstall — removes the cart and checkout-error tables, the options and the per-user notice flag.
  *
  * Captured carts hold personal data, so nothing is left behind on uninstall.
  *
@@ -15,6 +15,8 @@ $catcode_abandoned_cart_table = $wpdb->prefix . 'catcode_abandoned_carts';
 
 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- one-off uninstall cleanup.
 $wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $catcode_abandoned_cart_table ) );
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- one-off uninstall cleanup.
+$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $wpdb->prefix . 'catcode_abandoned_cart_errors' ) );
 
 delete_option( 'catcode_abandoned_cart_settings' );
 delete_option( 'catcode_abandoned_cart_version' );

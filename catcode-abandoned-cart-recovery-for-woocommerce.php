@@ -3,8 +3,8 @@
  * Plugin Name: CatCode Abandoned Cart Recovery for WooCommerce
  * Plugin URI: https://catcode.com.ua/modules/catcode-abandoned-cart-recovery-for-woocommerce/
  * Update URI: https://catcode.com.ua/modules/catcode-abandoned-cart-recovery-for-woocommerce/
- * Description: Captures abandoned WooCommerce carts and wins them back with a reminder email containing a one-click recovery link. Cart list with statistics, configurable timings and templates.
- * Version: 1.2.2
+ * Description: Captures abandoned WooCommerce carts and wins them back with a reminder email containing a one-click recovery link. Cart list with statistics, a checkout error log, configurable timings and templates.
+ * Version: 1.3.0
  * Requires at least: 6.2
  * Requires PHP: 7.4
  * Requires Plugins: woocommerce
@@ -41,7 +41,7 @@ add_filter(
 // Per-constant guards keep WP's activation sandbox-scrape (which includes this
 // file twice) from emitting "already defined" warnings — without ever skipping
 // the include/hook registration below.
-defined( 'CATCODE_ABANDONED_CART_VERSION' ) || define( 'CATCODE_ABANDONED_CART_VERSION', '1.2.2' );
+defined( 'CATCODE_ABANDONED_CART_VERSION' ) || define( 'CATCODE_ABANDONED_CART_VERSION', '1.3.0' );
 defined( 'CATCODE_ABANDONED_CART_FILE' ) || define( 'CATCODE_ABANDONED_CART_FILE', __FILE__ );
 defined( 'CATCODE_ABANDONED_CART_DIR' ) || define( 'CATCODE_ABANDONED_CART_DIR', plugin_dir_path( __FILE__ ) );
 defined( 'CATCODE_ABANDONED_CART_URL' ) || define( 'CATCODE_ABANDONED_CART_URL', plugin_dir_url( __FILE__ ) );
@@ -62,6 +62,7 @@ foreach (
 		'includes/Pro/TurboSms.php',
 		'includes/Pro/Messenger.php',
 		'includes/Core/Capture.php',
+		'includes/Core/ErrorLog.php',
 		'includes/Core/Mailer.php',
 		'includes/Core/Recovery.php',
 		'includes/Core/Cron.php',
@@ -71,6 +72,7 @@ foreach (
 		'includes/Admin/Notice.php',
 		'includes/Admin/CartsListTable.php',
 		'includes/Admin/CartsPage.php',
+		'includes/Admin/ErrorsPage.php',
 		'includes/Admin/SettingsPage.php',
 		'includes/Core/Plugin.php',
 	) as $catcode_abandoned_cart_inc
@@ -83,6 +85,7 @@ register_activation_hook(
 	__FILE__,
 	static function () {
 		require_once __DIR__ . '/includes/Core/Installer.php';
+		require_once __DIR__ . '/includes/Core/ErrorLog.php';
 		\CatCode\AbandonedCart\Core\Installer::activate();
 	}
 );
