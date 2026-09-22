@@ -26,16 +26,45 @@ class Recovery {
 		return add_query_arg( self::QUERY_VAR, rawurlencode( $token ), $base );
 	}
 
+	/**
+	 * ⚠ Two steps on purpose. The link is opened from a mail client or webmail,
+	 * i.e. from ANOTHER site. Two things break when the GET does the work:
+	 *
+	 * 1. Link scanners (Outlook SafeLinks, Proofpoint, Barracuda, corporate
+	 *    antivirus) fetch every URL in a message before the human sees it. The
+	 *    one-time token was burned by that fetch, and the shopper then read
+	 *    "This recovery link is no longer valid."
+	 * 2. A shop whose session cookie is SameSite=Strict gets no cookie on a
+	 *    request coming from another site nor on any redirect in the same
+	 *    chain, so the restored cart landed in a session the next page never
+	 *    saw — "cart is empty".
+	 *
+	 * So the GET only answers a tiny page that re-submits the token by POST
+	 * from our own origin; that request carries the session cookie and does
+	 * the actual work.
+	 */
 	public function maybe_restore(): void {
 		// Read-only, token-authenticated entry point: the token itself is the
 		// credential, so a nonce would be meaningless in an e-mail link.
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( empty( $_GET[ self::QUERY_VAR ] ) ) {
+		$is_post = 'POST' === strtoupper( (string) ( $_SERVER['REQUEST_METHOD'] ?? 'GET' ) );
+
+		// phpcs:disable WordPress.Security.NonceVerification
+		$raw = $is_post
+			? ( $_POST[ self::QUERY_VAR ] ?? '' )
+			: ( $_GET[ self::QUERY_VAR ] ?? '' );
+		// phpcs:enable WordPress.Security.NonceVerification
+
+		if ( '' === $raw || ! is_string( $raw ) ) {
 			return;
 		}
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$token = sanitize_text_field( wp_unslash( (string) $_GET[ self::QUERY_VAR ] ) );
-		if ( '' === $token || ! function_exists( 'WC' ) ) {
+
+		$token = sanitize_text_field( wp_unslash( $raw ) );
+		if ( ! preg_match( '/^[A-Za-z0-9]{16,64}$/', $token ) || ! function_exists( 'WC' ) ) {
+			return;
+		}
+
+		if ( ! $is_post ) {
+			self::bounce_page( $token );
 			return;
 		}
 
@@ -77,6 +106,35 @@ class Recovery {
 		}
 
 		self::redirect_clean();
+	}
+
+	/**
+	 * The intermediate page of the recovery link: posts the token back to
+	 * maybe_restore() from our own origin, so the session cookie travels with
+	 * it. A visible button covers browsers with scripts switched off.
+	 */
+	private static function bounce_page( string $token ): void {
+		$action = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/' );
+		$title  = __( 'One moment — we are putting your cart back together…', 'catcode-abandoned-cart-recovery-for-woocommerce' );
+		$button = __( 'Open my cart', 'catcode-abandoned-cart-recovery-for-woocommerce' );
+
+		nocache_headers();
+		header( 'Content-Type: text/html; charset=utf-8' );
+		header( 'X-Robots-Tag: noindex, nofollow' );
+		header( 'Referrer-Policy: no-referrer' );
+
+		echo '<!DOCTYPE html><html lang="' . esc_attr( str_replace( '_', '-', get_locale() ) ) . '"><head><meta charset="utf-8">'
+			. '<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">'
+			. '<title>' . esc_html( $title ) . '</title></head>'
+			. '<body style="font-family:Arial,Helvetica,sans-serif;text-align:center;padding:48px 16px;color:#23282d">'
+			. '<form id="catcode-acr-recover" method="post" action="' . esc_url( $action ) . '">'
+			. '<input type="hidden" name="' . esc_attr( self::QUERY_VAR ) . '" value="' . esc_attr( $token ) . '">'
+			. '<p>' . esc_html( $title ) . '</p>'
+			. '<button type="submit" style="padding:10px 22px;font-size:15px;cursor:pointer">' . esc_html( $button ) . '</button>'
+			. '</form>'
+			. '<script>document.getElementById("catcode-acr-recover").submit();</script>'
+			. '</body></html>';
+		exit;
 	}
 
 	/**

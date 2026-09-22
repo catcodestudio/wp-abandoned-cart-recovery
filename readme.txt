@@ -4,7 +4,7 @@ Tags: woocommerce, abandoned cart, cart recovery, email, ecommerce
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,6 +151,10 @@ What is sent: your API token, the sender names, the shopper's phone number and t
 5. Checkout errors report: most frequent errors and shoppers who left without an order
 
 == Changelog ==
+
+= 1.3.1 =
+* Recovery links from the reminder e-mail no longer stop working before the shopper clicks them. Mail scanners (Outlook SafeLinks, Proofpoint, Barracuda, corporate antivirus) open every link in a message, and that fetch used to consume the one-time token, so the shopper was told the link was no longer valid. The link now opens an intermediate page that hands the token over from the shop's own address, so only a real visit restores the cart.
+* The same step fixes shops whose session cookie is set to SameSite=Strict, where the restored cart used to land in a session the cart page never saw and the shopper saw an empty cart.
 
 = 1.3.0 =
 * Checkout error log (WooCommerce → Checkout Errors): validation messages, payment failures, expired sessions and failed block checkout requests are recorded server-side; JavaScript errors and block checkout fields rejected in the browser are reported by the checkout page. The report groups identical errors and shows how many shoppers hit each one and how many left without an order. Free: last 7 days.
